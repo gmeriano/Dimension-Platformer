@@ -42,8 +42,8 @@ func _physics_process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("dimension_swap"):
 		can_move = false
-		TransitionScreen.transition()
-		await TransitionScreen.on_transition_finished
+		#TransitionScreen.transition()
+		#await TransitionScreen.on_transition_finished
 		can_move = true
 		if current_dimension == 0:
 			position.y += 400
@@ -112,7 +112,7 @@ func handleAcceleration(inputAxis, delta):
 		var proposed_position_x = global_position.x + target_velocity_x * delta
 		var half_width = 10  # example, set to half your player's width
 		
-		#print("proposed: ", proposed_position_x)
+		print("proposed: ", proposed_position_x)
 		if !is_within_camera_left(camera, proposed_position_x):
 			# Left boundary hit, block movement left
 			print("hi")
@@ -122,14 +122,8 @@ func handleAcceleration(inputAxis, delta):
 			target_velocity_x = min(0, target_velocity_x)  # disallow positive velocity.x
 		velocity.x = target_velocity_x
 
-func setCamera():
-	for child in get_children():
-		if child is RemoteTransform2D:
-			var cam_node = child.get_node_or_null(child.remote_path)
-			if cam_node != null:
-				camera = cam_node
-	push_error("Camera node not found!")
-	return null
+func setCamera(camera1: Camera2D):
+	camera = camera1
 	
 func is_within_camera_right(camera: Camera2D, x_pos: float) -> bool:
 	var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2

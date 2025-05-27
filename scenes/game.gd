@@ -18,6 +18,7 @@ var current_level_node: Node2D = null
 
 func _ready() -> void:
 	load_level(load("res://scenes/test_level.tscn"))
+	players["2"].camera.global_position.y += 400
 		
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("switch_scene"):
@@ -38,7 +39,7 @@ func _process(delta: float) -> void:
 	# Decide the X coordinate you want both cameras to have.
 	# Example: average the players' X positions, or choose one player's X
 
-	var target_x = (cam1.global_position.x + cam2.global_position.x) / 2
+	var target_x = (players["1"].player.global_position.x + players["2"].player.global_position.x) / 2
 
 	# Update both cameras to have the same X, keep their Y independent
 	cam1.global_position.x = target_x
@@ -51,14 +52,17 @@ func load_level(level: PackedScene) -> void:
 	$VBoxContainer/SubViewportContainer/SubViewport.move_child(level_node, 0)
 	current_level_node = level_node
 	players["2"].viewport.world_2d = players["1"].viewport.world_2d
+	
 	for node in players.values():
-		var remote_transform = RemoteTransform2D.new()
-		remote_transform.remote_path = node.camera.get_path()
+		#var remote_transform = RemoteTransform2D.new()
+		#remote_transform.remote_path = node.camera.get_path()
 		if node.idx == 1:
-			remote_transform.name = "RemoteTransformP1"
+			#remote_transform.name = "RemoteTransformP1"
 			node.player = level_node.get_node("Player1")
+			node.player.setCamera(players["1"].camera)
 		else:
-			remote_transform.name = "RemoteTransformP2"
+			#remote_transform.name = "RemoteTransformP2"
 			node.player = level_node.get_node("Player2")
-		node.player.add_child(remote_transform)
-		node.player.setCamera()
+			node.player.setCamera(players["1"].camera)
+		#node.player.add_child(remote_transform)
+		#node.player.setCamera()
