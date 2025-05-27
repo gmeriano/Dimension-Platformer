@@ -7,6 +7,7 @@ const JUMP_VELOCITY = -200.0
 @export var controls: Resource = null
 @export var current_dimension: int = 0
 @onready var player_shadow: Sprite2D = $PlayerShadow
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -19,6 +20,8 @@ var friction = 600
 var air_resistance = 200
 var can_move = true
 
+var camera: Camera2D = null
+
 func _ready():
 	if (current_dimension == 0):
 		player_shadow.offset.y += 400
@@ -26,7 +29,6 @@ func _ready():
 		player_shadow.offset.y -= 400
 	
 func _physics_process(delta: float) -> void:
-	print(player_shadow.offset.y)
 	if can_move:
 		handleGravity(delta)
 		handleJump()
@@ -52,6 +54,16 @@ func _physics_process(delta: float) -> void:
 			player_shadow.offset.y = 400
 			current_dimension = 0
 			
+func swapDimension():
+	if current_dimension == 0:
+			position.y += 400
+			player_shadow.offset.y = -400
+			current_dimension = 1
+	else:
+		position.y -= 400
+		player_shadow.offset.y = 400
+		current_dimension = 0
+
 func handleGravity(delta):
 	if not is_on_floor():
 		frames_since_last_on_ground += 1
@@ -94,8 +106,49 @@ func applyAirResistance(inputAxis, delta):
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
 		
 func handleAcceleration(inputAxis, delta):
+	# can handle separate acceleration with if check for is_on_floor() in future
 	if inputAxis != 0:
-		if is_on_floor():
-			velocity.x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
-		else:
-			velocity.x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
+		var target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
+		var proposed_position_x = global_position.x + target_velocity_x * delta
+		var half_width = 10  # example, set to half your player's width
+		
+		#print("proposed: ", proposed_position_x)
+		if !is_within_camera_left(camera, proposed_position_x):
+			# Left boundary hit, block movement left
+			print("hi")
+			target_velocity_x = max(0, target_velocity_x)  # disallow negative velocity.x
+		elif !is_within_camera_right(camera, proposed_position_x):
+			# Right boundary hit, block movement right
+			target_velocity_x = min(0, target_velocity_x)  # disallow positive velocity.x
+		velocity.x = target_velocity_x
+
+func setCamera():
+	for child in get_children():
+		if child is RemoteTransform2D:
+			var cam_node = child.get_node_or_null(child.remote_path)
+			if cam_node != null:
+				camera = cam_node
+	push_error("Camera node not found!")
+	return null
+	
+func is_within_camera_right(camera: Camera2D, x_pos: float) -> bool:
+	var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
+	var viewport_size = camera.get_viewport_rect().size
+	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
+	var camera_right_edge = camera.global_position.x + half_width
+	print("glob cam1: ", camera.global_position.x)
+	print("right1: ", camera_right_edge)
+	print("xpos1: ", x_pos)
+
+	return x_pos + player_half_size <= camera_right_edge
+	
+func is_within_camera_left(camera: Camera2D, x_pos: float) -> bool:
+	var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
+	var viewport_size = camera.get_viewport_rect().size
+	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
+	var camera_left_edge = camera.global_position.x - half_width
+	print("glob cam: ", camera.global_position.x)
+	print("left: ", camera_left_edge)
+	print("xpos: ", x_pos)
+	print("xpos half: ", x_pos - player_half_size)
+	return x_pos - player_half_size >= camera_left_edge
