@@ -22,10 +22,11 @@ func _ready() -> void:
 		
 func _process(delta: float) -> void:
 	handle_input()
-		
-	var target_x = (dimensions["1"].player.global_position.x + dimensions["2"].player.global_position.x) / 2
-	dimensions["1"].camera.global_position.x = target_x
-	dimensions["2"].camera.global_position.x = target_x
+	
+	if not dimensions["1"].player.is_tweening and not dimensions["2"].player.is_tweening:
+		var target_x = (dimensions["1"].player.global_position.x + dimensions["2"].player.global_position.x) / 2
+		dimensions["1"].camera.global_position.x = target_x
+		dimensions["2"].camera.global_position.x = target_x
 	
 func handle_input() -> void:
 	if Input.is_action_just_pressed("switch_scene"):

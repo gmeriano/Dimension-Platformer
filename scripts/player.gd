@@ -19,6 +19,7 @@ var speed = 100
 var friction = 600
 var air_resistance = 200
 var can_move = true
+var is_tweening = false
 
 var camera: Camera2D = null
 
@@ -42,16 +43,29 @@ func _physics_process(delta: float) -> void:
 
 func swap_dimension():
 	if current_dimension == 0:
-		position.y += Global.DIMENSION_OFFSET
+		#position.y += Global.DIMENSION_OFFSET
+		move_to(Vector2(0, Global.DIMENSION_OFFSET))
 		player_shadow.offset.y = -Global.DIMENSION_OFFSET
 		current_dimension = 1
-		unstick_player_if_necessary()
 	else:
-		position.y -= Global.DIMENSION_OFFSET
+		#position.y -= Global.DIMENSION_OFFSET
+		move_to(Vector2(0, -Global.DIMENSION_OFFSET))
 		player_shadow.offset.y = Global.DIMENSION_OFFSET
 		current_dimension = 0
-		unstick_player_if_necessary()
 
+# Inside your script attached to the object you're moving
+func move_to(target_position: Vector2, duration: float = 1.0):
+	can_move = false
+	is_tweening = true
+	var tween = create_tween()
+	tween.tween_property(self, "position", position + target_position, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.connect("finished", Callable(self, "_on_tween_finished"))
+
+func _on_tween_finished():
+	is_tweening = false
+	can_move = true
+	unstick_player_if_necessary()
+	
 # Try small diagonal and cardinal movements to escape the collision
 func unstick_player_if_necessary():
 	var offset_distance = collision_shape_2d.shape.get_rect().size.x
