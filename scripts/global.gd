@@ -1,0 +1,2 @@
+
+const DIMENSION_OFFSET = 400

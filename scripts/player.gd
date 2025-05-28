@@ -10,7 +10,6 @@ const JUMP_VELOCITY = -200.0
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
 var frames_since_last_on_ground = 0
 var coyote_time_frames = 5
 var double_jump = true
@@ -24,54 +23,40 @@ var camera: Camera2D = null
 
 func _ready():
 	if (current_dimension == 0):
-		player_shadow.offset.y += 400
+		player_shadow.offset.y += Global.DIMENSION_OFFSET
 	elif (current_dimension == 1):
-		player_shadow.offset.y -= 400
+		player_shadow.offset.y -= Global.DIMENSION_OFFSET
 	
 func _physics_process(delta: float) -> void:
 	if can_move:
-		handleGravity(delta)
-		handleJump()
-		handleWallJump()
+		handle_gravity(delta)
+		handle_jump()
+		handle_wall_jump()
 		var inputAxis = Input.get_axis(controls.move_left, controls.move_right)
 		if inputAxis != 0:
-			handleAcceleration(inputAxis, delta)
-		applyFriction(inputAxis, delta)
-		applyAirResistance(inputAxis, delta)
+			handle_acceleration(inputAxis, delta)
+		apply_friction(inputAxis, delta)
+		apply_air_resistance(inputAxis, delta)
 		move_and_slide()
-		
-	if Input.is_action_just_pressed("dimension_swap"):
-		can_move = false
-		#TransitionScreen.transition()
-		#await TransitionScreen.on_transition_finished
-		can_move = true
-		if current_dimension == 0:
-			position.y += 400
-			player_shadow.offset.y = -400
-			current_dimension = 1
-		else:
-			position.y -= 400
-			player_shadow.offset.y = 400
-			current_dimension = 0
-			
-func swapDimension():
+
+func swap_dimension():
 	if current_dimension == 0:
-			position.y += 400
-			player_shadow.offset.y = -400
+			position.y += Global.DIMENSION_OFFSET
+			player_shadow.offset.y = -Global.DIMENSION_OFFSET
 			current_dimension = 1
 	else:
-		position.y -= 400
-		player_shadow.offset.y = 400
+		position.y -= Global.DIMENSION_OFFSET
+		player_shadow.offset.y = Global.DIMENSION_OFFSET
 		current_dimension = 0
 
-func handleGravity(delta):
+func handle_gravity(delta):
 	if not is_on_floor():
 		frames_since_last_on_ground += 1
 		velocity.y += gravity * delta
 	else:
 		frames_since_last_on_ground = 0
 		
-func handleWallJump():
+func handle_wall_jump():
 	if not is_on_wall_only():
 		return
 	var wall_normal = get_wall_normal()
@@ -85,7 +70,7 @@ func handleWallJump():
 		velocity.x = wall_normal.x * speed
 		velocity.y = jump_velocity
 		
-func handleJump():
+func handle_jump():
 	if is_on_floor() or frames_since_last_on_ground < coyote_time_frames:
 		double_jump = true
 		if Input.is_action_just_pressed(controls.jump):
@@ -97,32 +82,30 @@ func handleJump():
 			velocity.y = jump_velocity * 0.8
 			double_jump = false
 			
-func applyFriction(inputAxis, delta):
+func apply_friction(inputAxis, delta):
 	if inputAxis == 0 and is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 		
-func applyAirResistance(inputAxis, delta):
+func apply_air_resistance(inputAxis, delta):
 	if inputAxis == 0 and not is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
 		
-func handleAcceleration(inputAxis, delta):
+func handle_acceleration(inputAxis, delta):
 	# can handle separate acceleration with if check for is_on_floor() in future
 	if inputAxis != 0:
 		var target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
 		var proposed_position_x = global_position.x + target_velocity_x * delta
-		var half_width = 10  # example, set to half your player's width
+		var half_width = collision_shape_2d.shape.get_rect().size.x / 2 
 		
-		print("proposed: ", proposed_position_x)
 		if !is_within_camera_left(camera, proposed_position_x):
 			# Left boundary hit, block movement left
-			print("hi")
-			target_velocity_x = max(0, target_velocity_x)  # disallow negative velocity.x
+			target_velocity_x = max(0, target_velocity_x) 
 		elif !is_within_camera_right(camera, proposed_position_x):
 			# Right boundary hit, block movement right
-			target_velocity_x = min(0, target_velocity_x)  # disallow positive velocity.x
+			target_velocity_x = min(0, target_velocity_x) 
 		velocity.x = target_velocity_x
 
-func setCamera(camera1: Camera2D):
+func set_camera(camera1: Camera2D):
 	camera = camera1
 	
 func is_within_camera_right(camera: Camera2D, x_pos: float) -> bool:
@@ -130,9 +113,6 @@ func is_within_camera_right(camera: Camera2D, x_pos: float) -> bool:
 	var viewport_size = camera.get_viewport_rect().size
 	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
 	var camera_right_edge = camera.global_position.x + half_width
-	print("glob cam1: ", camera.global_position.x)
-	print("right1: ", camera_right_edge)
-	print("xpos1: ", x_pos)
 
 	return x_pos + player_half_size <= camera_right_edge
 	
@@ -141,8 +121,4 @@ func is_within_camera_left(camera: Camera2D, x_pos: float) -> bool:
 	var viewport_size = camera.get_viewport_rect().size
 	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
 	var camera_left_edge = camera.global_position.x - half_width
-	print("glob cam: ", camera.global_position.x)
-	print("left: ", camera_left_edge)
-	print("xpos: ", x_pos)
-	print("xpos half: ", x_pos - player_half_size)
 	return x_pos - player_half_size >= camera_left_edge
