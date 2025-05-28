@@ -1,6 +1,6 @@
 extends Camera2D
 
-var camera_zoom = 3
+var camera_zoom = 1.5
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

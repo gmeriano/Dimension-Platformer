@@ -8,6 +8,7 @@ const JUMP_VELOCITY = -200.0
 @export var current_dimension: int = 0
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var tile_map_layer: TileMapLayer = $"../TileMapLayer"
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var frames_since_last_on_ground = 0
@@ -41,13 +42,49 @@ func _physics_process(delta: float) -> void:
 
 func swap_dimension():
 	if current_dimension == 0:
-			position.y += Global.DIMENSION_OFFSET
-			player_shadow.offset.y = -Global.DIMENSION_OFFSET
-			current_dimension = 1
+		position.y += Global.DIMENSION_OFFSET
+		player_shadow.offset.y = -Global.DIMENSION_OFFSET
+		current_dimension = 1
+		unstick_player_if_necessary()
 	else:
 		position.y -= Global.DIMENSION_OFFSET
 		player_shadow.offset.y = Global.DIMENSION_OFFSET
 		current_dimension = 0
+		unstick_player_if_necessary()
+
+# Try small diagonal and cardinal movements to escape the collision
+func unstick_player_if_necessary():
+	var offset_distance = collision_shape_2d.shape.get_rect().size.x
+	var directions = [
+		Vector2(0, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0),
+		Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1)
+	]
+
+	# Only try to unstick if we're colliding at the current position
+	if test_move(global_transform, Vector2.ZERO):
+		# first pass (small step)
+		for dir in directions:
+			var offset = dir.normalized() * offset_distance
+			var test_transform := global_transform.translated(offset)
+			if not test_move(test_transform, Vector2.ZERO):
+				global_position += offset
+				return
+		# second pass (bigger step)
+		for dir in directions:
+			var offset = dir.normalized() * (offset_distance + 2)
+			var test_transform := global_transform.translated(offset)
+			if not test_move(test_transform, Vector2.ZERO):
+				global_position += offset
+				return
+		# final pass (for when you are perfectly aligned with tile)
+		for dir in directions:
+			var offset = dir.normalized() * (offset_distance + 3)
+			var test_transform := global_transform.translated(offset)
+			if not test_move(test_transform, Vector2.ZERO):
+				global_position += offset
+				return
+		
+		print("suffocate")
 
 func handle_gravity(delta):
 	if not is_on_floor():
