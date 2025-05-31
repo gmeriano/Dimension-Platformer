@@ -6,39 +6,31 @@ var current_level_node: Node2D = null
 		idx = 1,
 		viewport = $VBoxContainer/SubViewportContainer/SubViewport,
 		camera = $VBoxContainer/SubViewportContainer/SubViewport/Camera2D,
-		player = null
 	},
 	"2": {
 		idx = 2,
 		viewport = $VBoxContainer/SubViewportContainer2/SubViewport,
 		camera = $VBoxContainer/SubViewportContainer2/SubViewport/Camera2D,
-		player = null
 	}
 }
+var player1: Player = null
+var player2: Player = null
+var players = null
 
 func _ready() -> void:
-	load_level(load("res://scenes/test_level.tscn"))
+	load_level(load("res://scenes/test_level3.tscn"))
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
 		
 func _process(delta: float) -> void:
 	handle_input()
-	
-	if not dimensions["1"].player.is_tweening and not dimensions["2"].player.is_tweening:
-		var target_x = (dimensions["1"].player.global_position.x + dimensions["2"].player.global_position.x) / 2
-		dimensions["1"].camera.global_position.x = target_x
-		dimensions["2"].camera.global_position.x = target_x
-	
+
 func handle_input() -> void:
 	if Input.is_action_just_pressed("switch_scene"):
 		load_level(preload("res://scenes/test_level2.tscn"))
 		
 	if Input.is_action_just_pressed("dimension_swap"):
-		for node in dimensions.values():
-			#node.player.can_move = false
-			#TransitionScreen.transition()
-			#await TransitionScreen.on_transition_finished
-			#node.player.can_move = true
-			node.player.swap_dimension()
+		for player in players:
+			player.swap_dimension()
 	
 func load_level(level: PackedScene) -> void:
 	var level_node: Node2D = level.instantiate()
@@ -49,10 +41,11 @@ func load_level(level: PackedScene) -> void:
 	
 	current_level_node = level_node
 
-	for node in dimensions.values():
-		if node.idx == 1:
-			node.player = current_level_node.get_node("Player1")
-			node.player.set_camera(dimensions["1"].camera)
-		else:
-			node.player = current_level_node.get_node("Player2")
-			node.player.set_camera(dimensions["2"].camera)
+	player1 = current_level_node.get_node("Player1")
+	player1.set_camera(dimensions["1"].camera)
+	player2 = current_level_node.get_node("Player2")
+	player2.set_camera(dimensions["2"].camera)
+	players = [player1, player2]
+	
+	dimensions["1"].camera.set_players(player1, player2)
+	dimensions["2"].camera.set_players(player1, player2)
