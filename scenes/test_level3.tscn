@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://dpdjd6dtqoa8w"]
+[gd_scene load_steps=10 format=4 uid="uid://dpdjd6dtqoa8w"]
 
 [ext_resource type="Texture2D" uid="uid://boqpirh0w02lj" path="res://assets/sprites/world_tileset.png" id="1_jfrut"]
 [ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/Player.tscn" id="2_vkhop"]
 [ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_8ef6v"]
 [ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_5hr7h"]
+[ext_resource type="PackedScene" uid="uid://lsjb0tkxg8k0" path="res://scenes/switch_platform.tscn" id="5_3tqe5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ntip3"]
 texture = ExtResource("1_jfrut")
@@ -331,3 +332,6 @@ controls = ExtResource("3_8ef6v")
 position = Vector2(2, 398)
 controls = ExtResource("4_5hr7h")
 current_dimension = 1
+
+[node name="SwitchPlatform" parent="." instance=ExtResource("5_3tqe5")]
+position = Vector2(257, -1)
