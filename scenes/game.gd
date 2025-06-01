@@ -21,41 +21,61 @@ var connected_joypads = Input.get_connected_joypads()  # e.g. [0, 1]
 var use_controller_for_p1 = true
 var use_controller_for_p2 = true
 
+var level_paths := [
+	"res://scenes/test_level.tscn",
+	"res://scenes/test_level2.tscn",
+	"res://scenes/test_level3.tscn"
+]
+var current_level_index = 1
 
 func _ready() -> void:
-	print("joy: ", connected_joypads)
-	load_level(load("res://scenes/test_level3.tscn"))
+	load_level(load("res://scenes/test_level.tscn"))
 	InputManager.setup_player_inputs(player1, player2)
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
 	
 	var joypads = Input.get_connected_joypads()
 	print("Connected joypads: ", joypads)
-		
-func _process(delta: float) -> void:
-	handle_input()
 
-func handle_input() -> void:
-	if Input.is_action_just_pressed("switch_scene"):
-		load_level(preload("res://scenes/test_level2.tscn"))
-		
-	if InputManager.is_dimension_swap_pressed(player1) or InputManager.is_dimension_swap_pressed(player2):
-		for player in players:
-			player.swap_dimension()
-	
+
+func get_next_level_path() -> String:
+	current_level_index = (current_level_index + 1) % level_paths.size()
+	return level_paths[current_level_index]
+
+func load_next_level() -> void:
+	TransitionScreen.transition()
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+
+func _on_transition_finished_load_next_level() -> void:
+	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	load_level(load(level_paths[current_level_index]))
+	current_level_index += 1
+	if current_level_index >= level_paths.size():
+		current_level_index = 0
+
 func load_level(level: PackedScene) -> void:
+	# Remove previous level if it exists
+	if current_level_node and current_level_node.get_parent():
+		current_level_node.get_parent().remove_child(current_level_node)
+		current_level_node.queue_free()
+
 	var level_node: Node2D = level.instantiate()
-	dimensions["1"].viewport.remove_child(current_level_node)
 	dimensions["1"].viewport.add_child(level_node)
 	dimensions["1"].viewport.move_child(level_node, 0)
 	dimensions["2"].viewport.world_2d = dimensions["1"].viewport.world_2d
-	
+
 	current_level_node = level_node
 
-	player1 = current_level_node.get_node("Player1")
-	player1.set_camera(dimensions["1"].camera)
-	player2 = current_level_node.get_node("Player2")
-	player2.set_camera(dimensions["2"].camera)
-	players = [player1, player2]
-	
-	dimensions["1"].camera.set_players(player1, player2)
-	dimensions["2"].camera.set_players(player1, player2)
+	# Re-assign players
+	if current_level_node.has_node("Player1") and current_level_node.has_node("Player2"):
+		player1 = current_level_node.get_node("Player1")
+		player1.set_camera(dimensions["1"].camera)
+
+		player2 = current_level_node.get_node("Player2")
+		player2.set_camera(dimensions["2"].camera)
+
+		players = [player1, player2]
+
+		dimensions["1"].camera.set_players(player1, player2)
+		dimensions["2"].camera.set_players(player1, player2)
+	else:
+		print("Player nodes not found in loaded level!")

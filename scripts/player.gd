@@ -23,6 +23,10 @@ var can_move = true
 var is_tweening = false
 var use_controller = false
 var previous_jump_pressed_for_controller = false
+var respawn_x = null
+var respawn_y = null
+@onready var game_manager: GameManager = $"../GameManager"
+var original_dimension = current_dimension
 
 const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
 const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
@@ -33,7 +37,11 @@ func _ready():
 	if (current_dimension == 0):
 		player_shadow.offset.y += Global.DIMENSION_OFFSET
 	elif (current_dimension == 1):
+		original_dimension = 1
 		player_shadow.offset.y -= Global.DIMENSION_OFFSET
+	respawn_x = global_position.x
+	respawn_y = global_position.y
+	game_manager.connect("respawn_players", Callable(self, "_on_respawn"))
 	
 func _physics_process(delta: float) -> void:
 	if can_move:
@@ -48,6 +56,7 @@ func _physics_process(delta: float) -> void:
 		apply_friction(inputAxis, delta)
 		apply_air_resistance(inputAxis, delta)
 		move_and_slide()
+		check_respawn()
 
 func swap_dimension():
 	if current_dimension == 0:
@@ -181,3 +190,21 @@ func is_within_camera_left(camera: Camera2D, x_pos: float) -> bool:
 	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
 	var camera_left_edge = camera.global_position.x - half_width
 	return x_pos - player_half_size >= camera_left_edge
+	
+func _on_respawn() -> void:
+	global_position.x = respawn_x
+	global_position.y = respawn_y
+	velocity = Vector2.ZERO
+	current_dimension = original_dimension
+	
+func check_respawn() -> void:
+	if original_dimension == current_dimension:
+		if not is_tweening and global_position.y > respawn_y + 200:
+			game_manager.respawn_all_players()
+	elif original_dimension < current_dimension:
+		if not is_tweening and global_position.y > respawn_y + 200 + Global.DIMENSION_OFFSET:
+			game_manager.respawn_all_players()
+	else:
+		if not is_tweening and global_position.y > respawn_y + 200 - Global.DIMENSION_OFFSET:
+			game_manager.respawn_all_players()
+	

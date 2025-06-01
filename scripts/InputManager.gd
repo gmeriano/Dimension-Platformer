@@ -3,7 +3,7 @@ extends Node
 const MAX_PLAYERS = 2
 const JOY_DEADZONE = 0.2
 
-@export var use_controller_for_p1 = false
+@export var use_controller_for_p1 = true
 @export var use_controller_for_p2 = true
 
 const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
