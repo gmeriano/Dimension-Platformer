@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://dnvdvrwi2m7qo"]
 
-[ext_resource type="Script" path="res://scenes/game.gd" id="1_i8god"]
-[ext_resource type="Script" path="res://scenes/sub_viewport.gd" id="2_ajk7u"]
-[ext_resource type="Script" path="res://scenes/camera_2d.gd" id="4_5y1uq"]
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="1_k5jh1"]
+[ext_resource type="Script" path="res://scripts/misc/sub_viewport.gd" id="2_t3hje"]
+[ext_resource type="Script" path="res://scripts/misc/camera_2d.gd" id="3_ovq0l"]
 
 [node name="Game" type="Node2D"]
-script = ExtResource("1_i8god")
+script = ExtResource("1_k5jh1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 512.0
@@ -18,10 +18,10 @@ layout_mode = 2
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer"]
 handle_input_locally = false
 render_target_update_mode = 4
-script = ExtResource("2_ajk7u")
+script = ExtResource("2_t3hje")
 
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer/SubViewport"]
-script = ExtResource("4_5y1uq")
+script = ExtResource("3_ovq0l")
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
 custom_minimum_size = Vector2(5, 5)
@@ -33,8 +33,8 @@ layout_mode = 2
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer2"]
 handle_input_locally = false
 render_target_update_mode = 4
-script = ExtResource("2_ajk7u")
+script = ExtResource("2_t3hje")
 
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer2/SubViewport"]
 zoom = Vector2(2, 2)
-script = ExtResource("4_5y1uq")
+script = ExtResource("3_ovq0l")

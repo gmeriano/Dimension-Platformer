@@ -22,14 +22,14 @@ var use_controller_for_p1 = true
 var use_controller_for_p2 = true
 
 var level_paths := [
-	"res://scenes/test_level.tscn",
-	"res://scenes/test_level2.tscn",
-	"res://scenes/test_level3.tscn"
+	"res://scenes/levels/test_level.tscn",
+	"res://scenes/levels/test_level2.tscn",
+	"res://scenes/levels/test_level3.tscn"
 ]
 var current_level_index = 1
 
 func _ready() -> void:
-	load_level(load("res://scenes/test_level.tscn"))
+	load_level(load("res://scenes/levels/test_level.tscn"))
 	InputManager.setup_player_inputs(player1, player2)
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
 	
@@ -77,5 +77,6 @@ func load_level(level: PackedScene) -> void:
 
 		dimensions["1"].camera.set_players(player1, player2)
 		dimensions["2"].camera.set_players(player1, player2)
+		InputManager.setup_player_inputs(player1, player2)
 	else:
 		print("Player nodes not found in loaded level!")

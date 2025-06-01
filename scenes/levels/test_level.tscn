@@ -1,13 +1,13 @@
 [gd_scene load_steps=8 format=4 uid="uid://bydivs6hu8b2u"]
 
-[ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/Player.tscn" id="1_odg4p"]
-[ext_resource type="Texture2D" uid="uid://boqpirh0w02lj" path="res://assets/sprites/world_tileset.png" id="2_juvue"]
-[ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_744lr"]
-[ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_jqeqx"]
-[ext_resource type="Script" path="res://scenes/game_manager.gd" id="5_pwdi2"]
+[ext_resource type="Texture2D" uid="uid://boqpirh0w02lj" path="res://assets/sprites/world_tileset.png" id="1_gecp2"]
+[ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="2_sa4wy"]
+[ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_6gn4h"]
+[ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_xl6nf"]
+[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="5_l02m6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ia4b7"]
-texture = ExtResource("2_juvue")
+texture = ExtResource("1_gecp2")
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0 = 0
@@ -171,13 +171,13 @@ position = Vector2(0, 400)
 tile_map_data = PackedByteArray("AAD+/wAAAAAEAAAAAAD//wAAAAAEAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAIAAIAAAAEAP//AAAEAAAAAAD+////AAAEAAAAAAD+/wEAAAAAAAEAAAD//wEAAAAAAAEAAAAAAAEAAAAAAAEAAAABAAEAAAAAAAEAAAABAAIAAAAAAAEAAAABAAMAAAAAAAEAAAAAAAMAAAAAAAEAAAD//wMAAAAAAAEAAAD+/wMAAAAAAAEAAAD+/wIAAAAAAAEAAAD//wIAAAAAAAEAAAAAAAIAAAAAAAEAAAADAAEAAAAAAAEAAAADAAIAAAAAAAEAAAADAAMAAAAAAAEAAAAEAAMAAAAAAAEAAAAEAAIAAAAAAAEAAAAEAAEAAAAAAAEAAAAFAAEAAAAAAAEAAAAFAAIAAAAAAAEAAAAFAAMAAAAAAAEAAAAGAAMAAAAAAAEAAAAGAAIAAAAAAAEAAAAGAAEAAAAAAAEAAAAHAP7/AAAEAAAAAAAIAP3/AAAEAAAAAAAJAP3/AAAEAAAAAAAKAP3/AAAEAAAAAAALAP3/AAAEAAAAAAAIAP7/AAABAAAAAAAJAP7/AAABAAAAAAAJAP//AAABAAAAAAAJAAAAAAABAAAAAAAJAAEAAAABAAAAAAAJAAIAAAABAAAAAAAKAAIAAAAAAAEAAAAHAP//AAAAAAEAAAAHAAAAAAAAAAEAAAAHAAEAAAAAAAEAAAAHAAIAAAAAAAEAAAAHAAMAAAAAAAEAAAAIAAMAAAAAAAEAAAAIAAIAAAAAAAEAAAAIAAEAAAAAAAEAAAAIAAAAAAAAAAEAAAAIAP//AAAAAAEAAAAKAP7/AAAAAAEAAAAKAP//AAAAAAEAAAAKAAAAAAAAAAEAAAAKAAEAAAAAAAEAAAAJAAMAAAAAAAEAAAAKAAMAAAAAAAEAAAALAAMAAAAAAAEAAAALAAIAAAAAAAEAAAALAAEAAAAAAAEAAAALAAAAAAAAAAEAAAALAP//AAAAAAEAAAALAP7/AAAAAAEAAAAMAP3/AAAEAAAAAAANAP3/AAAEAAAAAAAOAP3/AAAEAAAAAAAOAPz/AAAEAAAAAAAOAPv/AAAEAAAAAAAMAP//AAABAAEAAAAOAAIAAAABAAEAAAAMAAMAAAABAAEAAAANAAMAAAAAAAEAAAAOAAMAAAAAAAEAAAAMAAIAAAAAAAEAAAANAAIAAAAAAAEAAAANAAEAAAAAAAEAAAANAAAAAAAAAAEAAAANAP//AAAAAAEAAAANAP7/AAAAAAEAAAAMAP7/AAAAAAEAAAAMAAAAAAAAAAEAAAAMAAEAAAAAAAEAAAAOAP7/AAAAAAEAAAAOAP//AAAAAAEAAAAOAAAAAAAAAAEAAAAOAAEAAAAAAAEAAAA=")
 tile_set = SubResource("TileSet_d7cf6")
 
-[node name="Player1" parent="." instance=ExtResource("1_odg4p")]
-controls = ExtResource("3_744lr")
+[node name="Player1" parent="." instance=ExtResource("2_sa4wy")]
+controls = ExtResource("3_6gn4h")
 
-[node name="Player2" parent="." instance=ExtResource("1_odg4p")]
+[node name="Player2" parent="." instance=ExtResource("2_sa4wy")]
 position = Vector2(12, 395)
-controls = ExtResource("4_jqeqx")
+controls = ExtResource("4_xl6nf")
 current_dimension = 1
 
 [node name="GameManager" type="Node2D" parent="."]
-script = ExtResource("5_pwdi2")
+script = ExtResource("5_l02m6")

@@ -1,14 +1,14 @@
 [gd_scene load_steps=11 format=4 uid="uid://dpdjd6dtqoa8w"]
 
-[ext_resource type="Texture2D" uid="uid://boqpirh0w02lj" path="res://assets/sprites/world_tileset.png" id="1_jfrut"]
-[ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/Player.tscn" id="2_vkhop"]
-[ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_8ef6v"]
-[ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_5hr7h"]
-[ext_resource type="PackedScene" uid="uid://lsjb0tkxg8k0" path="res://scenes/switch_platform.tscn" id="5_3tqe5"]
-[ext_resource type="Script" path="res://scenes/game_manager.gd" id="6_s8eoc"]
+[ext_resource type="Texture2D" uid="uid://boqpirh0w02lj" path="res://assets/sprites/world_tileset.png" id="1_iqe2g"]
+[ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="2_d2kd8"]
+[ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_hn6vw"]
+[ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_nbow4"]
+[ext_resource type="PackedScene" uid="uid://lsjb0tkxg8k0" path="res://scenes/objects/switch_platform/switch_platform.tscn" id="5_fmssy"]
+[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="6_vo13i"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ntip3"]
-texture = ExtResource("1_jfrut")
+texture = ExtResource("1_iqe2g")
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0 = 0
@@ -162,7 +162,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_ntip3")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ilfdg"]
-texture = ExtResource("1_jfrut")
+texture = ExtResource("1_iqe2g")
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0 = 0
@@ -326,16 +326,16 @@ position = Vector2(0, 400)
 tile_map_data = PackedByteArray("AAD+/wAAAAAEAAAAAAD//wAAAAAEAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAGAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAD+////AAAGAAAAAAD+/wEAAAAAAAEAAAD//wEAAAAAAAEAAAAAAAEAAAAAAAEAAAABAAEAAAAAAAEAAAABAAIAAAAAAAEAAAABAAMAAAAAAAEAAAAAAAMAAAAAAAEAAAD//wMAAAAAAAEAAAD+/wMAAAAAAAEAAAD+/wIAAAAAAAEAAAD//wIAAAAAAAEAAAAAAAIAAAAAAAEAAAADAAEAAAAAAAEAAAADAAIAAAAAAAEAAAADAAMAAAAAAAEAAAAEAAMAAAAAAAEAAAAEAAIAAAAAAAEAAAAEAAEAAAAAAAEAAAAFAAEAAAAAAAEAAAAFAAIAAAAAAAEAAAAFAAMAAAAAAAEAAAAGAAMAAAAAAAEAAAAGAAIAAAAAAAEAAAAGAAEAAAAAAAEAAAAJAAAAAAABAAAAAAAJAAEAAAABAAAAAAAJAAIAAAABAAAAAAAKAAIAAAAAAAEAAAAHAAAAAAAAAAEAAAAHAAEAAAAAAAEAAAAHAAIAAAAAAAEAAAAHAAMAAAAAAAEAAAAIAAMAAAAAAAEAAAAIAAIAAAAAAAEAAAAIAAEAAAAAAAEAAAAIAAAAAAAAAAEAAAAKAAAAAAAAAAEAAAAKAAEAAAAAAAEAAAAJAAMAAAAAAAEAAAAKAAMAAAAAAAEAAAABAOf/AAAGAAAAAAATAAAAAAAEAAAAAAAUAAAAAAAEAAAAAAAVAAAAAAAEAAAAAAAWAAAAAAAEAAAAAAAfAAAAAAAEAAAAAAAgAAAAAAAEAAAAAAAhAAAAAAAEAAAAAAAiAAAAAAAEAAAAAAAqAAAAAAAEAAAAAAArAAAAAAAEAAAAAAAsAAAAAAAEAAAAAAAtAAAAAAAEAAAAAAASAAAAAAAEAAAAAAAUAP//AAAEAAAAAAAVAP//AAAEAAAAAAAVAP7/AAAEAAAAAAAWAP3/AAAEAAAAAAAWAP7/AAAEAAAAAAAWAP//AAAEAAAAAAAgAP//AAAEAAAAAAAhAP//AAAEAAAAAAAhAP7/AAAEAAAAAAAiAP7/AAAEAAAAAAAiAP//AAAEAAAAAAAiAP3/AAAEAAAAAAArAP//AAAEAAAAAAAsAP//AAAEAAAAAAAsAP7/AAAEAAAAAAAtAP7/AAAEAAAAAAAtAP//AAAEAAAAAAAtAP3/AAAEAAAAAAA=")
 tile_set = SubResource("TileSet_l6mnh")
 
-[node name="Player1" parent="." instance=ExtResource("2_vkhop")]
-controls = ExtResource("3_8ef6v")
+[node name="Player1" parent="." instance=ExtResource("2_d2kd8")]
+controls = ExtResource("3_hn6vw")
 
-[node name="Player2" parent="." instance=ExtResource("2_vkhop")]
+[node name="Player2" parent="." instance=ExtResource("2_d2kd8")]
 position = Vector2(2, 398)
-controls = ExtResource("4_5hr7h")
+controls = ExtResource("4_nbow4")
 current_dimension = 1
 
-[node name="SwitchPlatform" parent="." instance=ExtResource("5_3tqe5")]
+[node name="SwitchPlatform" parent="." instance=ExtResource("5_fmssy")]
 position = Vector2(257, -1)
 
 [node name="GameManager" type="Node2D" parent="."]
-script = ExtResource("6_s8eoc")
+script = ExtResource("6_vo13i")
