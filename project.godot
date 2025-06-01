@@ -19,6 +19,7 @@ config/icon="res://assets/icon.svg"
 
 TransitionScreen="*res://scenes/transition_screen.tscn"
 Global="*res://scripts/global.gd"
+InputManager="*res://scripts/InputManager.gd"
 
 [display]
 

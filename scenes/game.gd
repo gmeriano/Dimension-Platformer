@@ -16,10 +16,20 @@ var current_level_node: Node2D = null
 var player1: Player = null
 var player2: Player = null
 var players = null
+var connected_joypads = Input.get_connected_joypads()  # e.g. [0, 1]
+
+var use_controller_for_p1 = true
+var use_controller_for_p2 = true
+
 
 func _ready() -> void:
+	print("joy: ", connected_joypads)
 	load_level(load("res://scenes/test_level3.tscn"))
+	InputManager.setup_player_inputs(player1, player2)
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
+	
+	var joypads = Input.get_connected_joypads()
+	print("Connected joypads: ", joypads)
 		
 func _process(delta: float) -> void:
 	handle_input()
@@ -28,7 +38,7 @@ func handle_input() -> void:
 	if Input.is_action_just_pressed("switch_scene"):
 		load_level(preload("res://scenes/test_level2.tscn"))
 		
-	if Input.is_action_just_pressed("dimension_swap"):
+	if InputManager.is_dimension_swap_pressed(player1) or InputManager.is_dimension_swap_pressed(player2):
 		for player in players:
 			player.swap_dimension()
 	

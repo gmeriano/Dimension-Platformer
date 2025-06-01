@@ -5,6 +5,7 @@ const SPEED = 100.0
 const JUMP_VELOCITY = -200.0
 
 @export var controls: Resource = null
+@export var device_id: int = 0  # Each player gets their own controller ID
 @export var current_dimension: int = 0
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
@@ -20,6 +21,11 @@ var friction = 600
 var air_resistance = 200
 var can_move = true
 var is_tweening = false
+var use_controller = false
+var previous_jump_pressed_for_controller = false
+
+const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
+const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 
 var camera: Camera2D = null
 
@@ -34,7 +40,9 @@ func _physics_process(delta: float) -> void:
 		handle_gravity(delta)
 		handle_jump()
 		handle_wall_jump()
-		var inputAxis = Input.get_axis(controls.move_left, controls.move_right)
+		#var inputAxis = Input.get_axis(controls.move_left, controls.move_right)
+		#var inputAxis = Input.get_joy_axis(device_id, MOVE_AXIS)
+		var inputAxis = InputManager.get_input_axis(self)
 		if inputAxis != 0:
 			handle_acceleration(inputAxis, delta)
 		apply_friction(inputAxis, delta)
@@ -117,22 +125,22 @@ func handle_wall_jump():
 		velocity.x = wall_normal.x * speed
 		velocity.y = jump_velocity
 	if Input.is_action_just_pressed(controls.move_right) and Input.is_action_pressed(controls.jump) and wall_normal == Vector2.RIGHT:
-
 		velocity.x = wall_normal.x * speed
 		velocity.y = jump_velocity
-		
 func handle_jump():
 	if is_on_floor() or frames_since_last_on_ground < coyote_time_frames:
 		double_jump = true
-		if Input.is_action_just_pressed(controls.jump):
+		if InputManager.is_jump_just_pressed(self):
 			velocity.y = jump_velocity
 	else:
-		if Input.is_action_just_released(controls.jump) and velocity.y < jump_velocity / 2:
-			velocity.y = jump_velocity / 2
-		if Input.is_action_just_pressed(controls.jump) and double_jump:
+		if InputManager.is_jump_just_released(self) and velocity.y < 0:
+			velocity.y /= 2
+		if InputManager.is_jump_just_pressed(self) and double_jump:
 			velocity.y = jump_velocity * 0.8
 			double_jump = false
-			
+	if use_controller:
+		previous_jump_pressed_for_controller = Input.is_joy_button_pressed(device_id, JUMP_BUTTON)
+
 func apply_friction(inputAxis, delta):
 	if inputAxis == 0 and is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
