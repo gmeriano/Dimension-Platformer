@@ -1,5 +1,7 @@
 extends Node2D
 class_name GameManager
+@onready var level_complete_zone: Node2D = $"../LevelCompleteZone"
+@onready var level_complete_zone_2: Node2D = $"../LevelCompleteZone2"
 
 @onready var player_1: Player = $"../Player1"
 @onready var player_2: Player = $"../Player2"
@@ -13,6 +15,7 @@ func _ready():
 	
 func _process(delta: float) -> void:
 	handle_inputs()
+	check_level_complete()
 
 func handle_inputs() -> void:
 	if InputManager.is_dimension_swap_pressed(player_1) or InputManager.is_dimension_swap_pressed(player_2):
@@ -34,6 +37,10 @@ func _on_transition_finished_respawn():
 func set_can_move(can_move: bool) -> void:
 	player_1.can_move = can_move
 	player_2.can_move = can_move
+	
+func check_level_complete() -> void:
+	if level_complete_zone.complete == true and level_complete_zone_2.complete == true:
+		load_next_level()
 	
 func load_next_level() -> void:
 	var game_node = get_tree().get_root().get_node("Game")

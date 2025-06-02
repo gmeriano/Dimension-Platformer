@@ -9,7 +9,9 @@ const JUMP_VELOCITY = -200.0
 @export var current_dimension: int = 0
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
-@onready var tile_map_layer: TileMapLayer = $"../TileMapLayer"
+@onready var color_rect: ColorRect = $ColorRect
+
+@export var color: Color
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var frames_since_last_on_ground = 0
@@ -34,6 +36,7 @@ const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 var camera: Camera2D = null
 
 func _ready():
+	color_rect.color = color
 	if (current_dimension == 0):
 		player_shadow.offset.y += Global.DIMENSION_OFFSET
 	elif (current_dimension == 1):
@@ -136,6 +139,7 @@ func handle_wall_jump():
 	if Input.is_action_just_pressed(controls.move_right) and Input.is_action_pressed(controls.jump) and wall_normal == Vector2.RIGHT:
 		velocity.x = wall_normal.x * speed
 		velocity.y = jump_velocity
+
 func handle_jump():
 	if is_on_floor() or frames_since_last_on_ground < coyote_time_frames:
 		double_jump = true

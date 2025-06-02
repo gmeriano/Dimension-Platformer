@@ -1,61 +1,23 @@
-[gd_scene load_steps=10 format=3 uid="uid://dalyetdhjh33m"]
+[gd_scene load_steps=4 format=3 uid="uid://dalyetdhjh33m"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8a6k0"]
-[ext_resource type="Texture2D" uid="uid://3yugmseusdfy" path="res://assets/sprites/knight.png" id="1_xmsia"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vi1m1"]
-atlas = ExtResource("1_xmsia")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_435tu"]
-atlas = ExtResource("1_xmsia")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pq3lu"]
-atlas = ExtResource("1_xmsia")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2wdrv"]
-atlas = ExtResource("1_xmsia")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_lnx8h"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vi1m1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_435tu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pq3lu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2wdrv")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 10.0
-}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7eey0"]
-radius = 5.0
+radius = 8.0
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_rpa1y"]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_8a6k0")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -12)
-sprite_frames = SubResource("SpriteFrames_lnx8h")
-animation = &"idle"
-autoplay = "idle"
-frame_progress = 0.513583
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -16.0
+offset_right = 8.0
+color = Color(0.0901961, 0.4, 1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -5)
+position = Vector2(0, -8)
 shape = SubResource("CircleShape2D_7eey0")
 
 [node name="PlayerShadow" type="Sprite2D" parent="."]

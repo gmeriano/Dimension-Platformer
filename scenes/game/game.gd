@@ -22,14 +22,13 @@ var use_controller_for_p1 = true
 var use_controller_for_p2 = true
 
 var level_paths := [
-	"res://scenes/levels/test_level.tscn",
-	"res://scenes/levels/test_level2.tscn",
-	"res://scenes/levels/test_level3.tscn"
+	"res://scenes/levels/level1.tscn",
+	"res://scenes/levels/level2.tscn",
 ]
 var current_level_index = 1
 
 func _ready() -> void:
-	load_level(load("res://scenes/levels/test_level.tscn"))
+	load_level(load("res://scenes/levels/level1.tscn"))
 	InputManager.setup_player_inputs(player1, player2)
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
 	

@@ -1,0 +1,11 @@
+extends Node2D
+
+var complete = false
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body is Player:
+		complete = true
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body is Player:
+		complete = false
