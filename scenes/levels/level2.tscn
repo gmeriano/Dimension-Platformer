@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://dcrd50q7r2100"]
+[gd_scene load_steps=8 format=3 uid="uid://dcrd50q7r2100"]
 
 [ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="2_quoct"]
 [ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_0br7j"]
 [ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_e7fnx"]
 [ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="5_fa5sv"]
-[ext_resource type="PackedScene" uid="uid://lsjb0tkxg8k0" path="res://scenes/objects/switch_platform/switch_platform.tscn" id="6_6dt16"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_jcjpi"]
+[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="7_jrrsh"]
+[ext_resource type="PackedScene" uid="uid://3xk4fdftjod6" path="res://scenes/objects/player_entered_switch_platform/player_entered_switch_platform.tscn" id="7_wvdba"]
 
 [node name="Level2" type="Node2D"]
 
@@ -29,29 +30,29 @@ position = Vector2(728, -8)
 [node name="LevelCompleteZone2" parent="." instance=ExtResource("6_jcjpi")]
 position = Vector2(729, 390)
 
-[node name="SwitchPlatform" parent="." instance=ExtResource("6_6dt16")]
-position = Vector2(-40, 20)
+[node name="PlayerEnteredSwitchPlatform" parent="." instance=ExtResource("7_wvdba")]
+position = Vector2(-40, 18)
 
-[node name="SwitchPlatform2" parent="." instance=ExtResource("6_6dt16")]
-position = Vector2(80, 420)
-current_dimension = 1
-
-[node name="SwitchPlatform3" parent="." instance=ExtResource("6_6dt16")]
+[node name="PlayerEnteredSwitchPlatform3" parent="." instance=ExtResource("7_wvdba")]
 position = Vector2(190, 20)
 
-[node name="SwitchPlatform4" parent="." instance=ExtResource("6_6dt16")]
-position = Vector2(330, 420)
-current_dimension = 1
-
-[node name="SwitchPlatform5" parent="." instance=ExtResource("6_6dt16")]
+[node name="PlayerEnteredSwitchPlatform5" parent="." instance=ExtResource("7_wvdba")]
 position = Vector2(440, 20)
 
-[node name="SwitchPlatform6" parent="." instance=ExtResource("6_6dt16")]
-position = Vector2(590, 420)
+[node name="PlayerEnteredSwitchPlatform2" parent="." instance=ExtResource("7_wvdba")]
+position = Vector2(79, 421)
 current_dimension = 1
 
-[node name="SwitchPlatform7" parent="." instance=ExtResource("6_6dt16")]
-position = Vector2(689, 419)
+[node name="PlayerEnteredSwitchPlatform4" parent="." instance=ExtResource("7_wvdba")]
+position = Vector2(330, 419)
+current_dimension = 1
 
-[node name="SwitchPlatform8" parent="." instance=ExtResource("6_6dt16")]
-position = Vector2(690, 26)
+[node name="PlayerEnteredSwitchPlatform6" parent="." instance=ExtResource("7_wvdba")]
+position = Vector2(588, 420)
+current_dimension = 1
+
+[node name="Platform" parent="." instance=ExtResource("7_jrrsh")]
+position = Vector2(688, 420)
+
+[node name="Platform2" parent="." instance=ExtResource("7_jrrsh")]
+position = Vector2(687, 24)

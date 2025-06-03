@@ -1,35 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://lsjb0tkxg8k0"]
+[gd_scene load_steps=3 format=3 uid="uid://lsjb0tkxg8k0"]
 
-[ext_resource type="Texture2D" uid="uid://c4p0gfgpmwn38" path="res://assets/icon.svg" id="1_0g244"]
 [ext_resource type="Script" path="res://scenes/objects/switch_platform/switch_platform.gd" id="1_eklr3"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_th7yd"]
-size = Vector2(91, 18)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_b184h"]
-size = Vector2(94, 11)
+[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="2_li5ji"]
 
 [node name="SwitchPlatform" type="Node2D"]
 script = ExtResource("1_eklr3")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(49.25, 9)
-scale = Vector2(0.730469, 0.125)
-texture = ExtResource("1_0g244")
-
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(11, 53)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(40, -44)
-shape = SubResource("RectangleShape2D_th7yd")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(3, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(48, 7.5)
-shape = SubResource("RectangleShape2D_b184h")
-
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[node name="Platform" parent="." instance=ExtResource("2_li5ji")]
