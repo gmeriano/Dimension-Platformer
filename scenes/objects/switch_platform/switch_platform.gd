@@ -21,26 +21,6 @@ func _ready() -> void:
 func get_game_manager() -> GameManager:
 	return get_tree().get_current_scene().find_child("GameManager", true, false)
 
-
-#func _process(delta: float) -> void:
-	#update_color()
-	#
-
-#func _on_area_2d_body_entered(body: Node2D) -> void:
-	#if body is Player:
-		#var player = body as Player
-		#if !player.is_tweening:
-			#player_on_platform = true
-
-
-#func _on_area_2d_body_exited(body: Node2D) -> void:
-	#if body is Player:
-		#var player: Player = body as Player
-		#if player_on_platform:
-			#player_on_platform = false
-			#if not player.is_tweening:
-				#switch_dimension()
-
 func _on_respawn() -> void:
 	global_position.x = respawn_x
 	global_position.y = respawn_y
@@ -54,9 +34,3 @@ func switch_dimension() -> void:
 	else:
 		global_position.y -= Global.DIMENSION_OFFSET
 		current_dimension = 0
-
-#func update_color() -> void:
-	#if player_on_platform:
-		#platform.sprite_2d.modulate = Color(1, 0, 0)
-	#else:
-		#platform.sprite_2d.modulate = Color(0, 0, 0)

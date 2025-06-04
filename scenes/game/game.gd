@@ -38,6 +38,8 @@ func _ready() -> void:
 	var joypads = Input.get_connected_joypads()
 	print("Connected joypads: ", joypads)
 
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+
 
 func get_next_level_path() -> String:
 	current_level_index = (current_level_index + 1) % level_paths.size()
@@ -45,10 +47,8 @@ func get_next_level_path() -> String:
 
 func load_next_level() -> void:
 	TransitionScreen.transition()
-	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 
 func _on_transition_finished_load_next_level() -> void:
-	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 	load_level(load(level_paths[current_level_index]))
 	current_level_index += 1
 	if current_level_index >= level_paths.size():
