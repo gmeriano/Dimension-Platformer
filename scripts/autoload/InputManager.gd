@@ -6,6 +6,8 @@ const JOY_DEADZONE = 0.2
 @export var use_controller_for_p1 = true
 @export var use_controller_for_p2 = true
 
+const DEADZONE = 0.2
+
 const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
 const SWAP_BUTTON = 1        # JOY_BUTTON_1 (right button: O/B)
 const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
@@ -25,7 +27,10 @@ func setup_player_inputs(player1: Player, player2: Player) -> void:
 
 func get_input_axis(player: Player) -> float:
 	if player.use_controller:
-		return Input.get_joy_axis(player.device_id, MOVE_AXIS)
+		var axis_value = Input.get_joy_axis(player.device_id, MOVE_AXIS)
+		if abs(axis_value) < DEADZONE:
+			return 0.0
+		return axis_value
 	else:
 		return Input.get_axis(player.controls.move_left, player.controls.move_right)	
 
@@ -54,3 +59,9 @@ func is_dimension_swap_pressed(player) -> bool:
 		else:
 			return Input.is_action_just_pressed("dimension_swap")
 	return false
+
+func is_interact_pressed(player) -> bool:
+	if player.use_controller:
+		return Input.is_joy_button_pressed(player.device_id, 2)
+	else:
+		return Input.is_action_just_pressed(player.controls.interact)

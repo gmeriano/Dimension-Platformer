@@ -8,6 +8,7 @@ const JUMP_VELOCITY = -200.0
 @export var device_id: int = 0  # Each player gets their own controller ID
 @export var current_dimension: int = 0
 @onready var player_shadow: Sprite2D = $PlayerShadow
+
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var color_rect: ColorRect = $ColorRect
 
@@ -37,11 +38,15 @@ var camera: Camera2D = null
 
 func _ready():
 	color_rect.color = color
+	var shadow_color = color
+	shadow_color.a = 0.3
+	player_shadow.modulate = shadow_color
 	if (current_dimension == 0):
-		player_shadow.offset.y += Global.DIMENSION_OFFSET
+		# times 2 bc we scaled sprite by 0.5, + 16 to match rect exactly
+		player_shadow.offset.y += (Global.DIMENSION_OFFSET * 2 - 16)
 	elif (current_dimension == 1):
 		original_dimension = 1
-		player_shadow.offset.y -= Global.DIMENSION_OFFSET
+		player_shadow.offset.y -= (Global.DIMENSION_OFFSET * 2 + 16)
 	respawn_x = global_position.x
 	respawn_y = global_position.y
 	game_manager.connect("respawn_players", Callable(self, "_on_respawn"))
@@ -63,25 +68,32 @@ func _physics_process(delta: float) -> void:
 
 func swap_dimension():
 	if current_dimension == 0:
-		#position.y += Global.DIMENSION_OFFSET
 		move_to(Vector2(0, Global.DIMENSION_OFFSET))
-		player_shadow.offset.y = -Global.DIMENSION_OFFSET
+		# Sprite is scaled by 0.5, so we multiply offset by 2, and add half of size
+		player_shadow.offset.y = -(Global.DIMENSION_OFFSET * 2 + 16)
 		current_dimension = 1
 	else:
-		#position.y -= Global.DIMENSION_OFFSET
 		move_to(Vector2(0, -Global.DIMENSION_OFFSET))
-		player_shadow.offset.y = Global.DIMENSION_OFFSET
+		player_shadow.offset.y = (Global.DIMENSION_OFFSET * 2 - 16)
 		current_dimension = 0
 
 # Inside your script attached to the object you're moving
 func move_to(target_position: Vector2, duration: float = 1.0):
 	can_move = false
 	is_tweening = true
+	color_rect.color.a = 0.2
 	var tween = create_tween()
-	tween.tween_property(self, "position", position + target_position, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.set_parallel(true)
+	tween.tween_property(self, "position", position + target_position, duration)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(self, "rotation", rotation + TAU, duration)\
+		.set_trans(Tween.TRANS_LINEAR)\
+		.set_ease(Tween.EASE_IN_OUT)
 	tween.connect("finished", Callable(self, "_on_tween_finished"))
 
 func _on_tween_finished():
+	color_rect.color.a = 1
 	is_tweening = false
 	can_move = true
 	unstick_player_if_necessary()
@@ -110,7 +122,7 @@ func unstick_player_if_necessary():
 			if not test_move(test_transform, Vector2.ZERO):
 				global_position += offset
 				return
-		# final pass (for when you are perfectly aligned with tile)
+		# final pass (largest step)
 		for dir in directions:
 			var offset = dir.normalized() * (offset_distance + 3)
 			var test_transform := global_transform.translated(offset)
@@ -118,7 +130,7 @@ func unstick_player_if_necessary():
 				global_position += offset
 				return
 		
-		print("suffocate")
+		game_manager.respawn_all_players()
 
 func handle_gravity(delta):
 	if not is_on_floor():
@@ -167,12 +179,11 @@ func handle_acceleration(inputAxis, delta):
 	if inputAxis != 0:
 		var target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
 		var proposed_position_x = global_position.x + target_velocity_x * delta
-		var half_width = collision_shape_2d.shape.get_rect().size.x / 2 
 		
-		if !is_within_camera_left(camera, proposed_position_x):
+		if !is_within_camera_left(proposed_position_x):
 			# Left boundary hit, block movement left
 			target_velocity_x = max(0, target_velocity_x) 
-		elif !is_within_camera_right(camera, proposed_position_x):
+		elif !is_within_camera_right(proposed_position_x):
 			# Right boundary hit, block movement right
 			target_velocity_x = min(0, target_velocity_x) 
 		velocity.x = target_velocity_x
@@ -180,7 +191,7 @@ func handle_acceleration(inputAxis, delta):
 func set_camera(camera1: Camera2D):
 	camera = camera1
 	
-func is_within_camera_right(camera: Camera2D, x_pos: float) -> bool:
+func is_within_camera_right(x_pos: float) -> bool:
 	var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
 	var viewport_size = camera.get_viewport_rect().size
 	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
@@ -188,7 +199,7 @@ func is_within_camera_right(camera: Camera2D, x_pos: float) -> bool:
 
 	return x_pos + player_half_size <= camera_right_edge
 	
-func is_within_camera_left(camera: Camera2D, x_pos: float) -> bool:
+func is_within_camera_left(x_pos: float) -> bool:
 	var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
 	var viewport_size = camera.get_viewport_rect().size
 	var half_width = (viewport_size.x / camera.zoom.x) / 2.0

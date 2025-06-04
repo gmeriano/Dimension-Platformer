@@ -11,7 +11,6 @@ signal respawn_players
 
 func _ready():
 	players = [player_1, player_2]
-	#print("Players: ", players)
 	
 func _process(delta: float) -> void:
 	handle_inputs()

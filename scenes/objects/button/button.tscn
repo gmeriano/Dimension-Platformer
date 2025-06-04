@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjs342hs0jykq"]
+
+[ext_resource type="Script" path="res://button.gd" id="1_6ygod"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_drkas"]
+size = Vector2(78, 60)
+
+[node name="Button" type="Node2D"]
+script = ExtResource("1_6ygod")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.756863, 0.603922, 0.419608, 1)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_drkas")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_cooldown_timer_timeout"]

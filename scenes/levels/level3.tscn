@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://b5xxxymtvbtil"]
+
+[ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="1_pxcxy"]
+[ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="2_e8g5y"]
+[ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="3_32dpf"]
+[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="4_07nc1"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="5_sijq2"]
+[ext_resource type="PackedScene" uid="uid://3xk4fdftjod6" path="res://scenes/objects/player_entered_switch_platform/player_entered_switch_platform.tscn" id="6_e4n3s"]
+[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="7_ds1ek"]
+
+[node name="Level3" type="Node2D"]
+
+[node name="Player1" parent="." instance=ExtResource("1_pxcxy")]
+position = Vector2(4, -38)
+controls = ExtResource("2_e8g5y")
+color = Color(0.2596, 0.88, 0.0528, 1)
+
+[node name="Player2" parent="." instance=ExtResource("1_pxcxy")]
+position = Vector2(120, 371)
+controls = ExtResource("3_32dpf")
+current_dimension = 1
+color = Color(0.709804, 0, 0, 1)
+
+[node name="GameManager" type="Node2D" parent="."]
+script = ExtResource("4_07nc1")
+
+[node name="LevelCompleteZone" parent="." instance=ExtResource("5_sijq2")]
+position = Vector2(728, -8)
+
+[node name="LevelCompleteZone2" parent="." instance=ExtResource("5_sijq2")]
+position = Vector2(729, 390)
+
+[node name="PlayerEnteredSwitchPlatform5" parent="." instance=ExtResource("6_e4n3s")]
+position = Vector2(440, 20)
+
+[node name="PlayerEnteredSwitchPlatform2" parent="." instance=ExtResource("6_e4n3s")]
+position = Vector2(79, 421)
+current_dimension = 1
+
+[node name="PlayerEnteredSwitchPlatform4" parent="." instance=ExtResource("6_e4n3s")]
+position = Vector2(330, 419)
+current_dimension = 1
+
+[node name="PlayerEnteredSwitchPlatform6" parent="." instance=ExtResource("6_e4n3s")]
+position = Vector2(588, 420)
+current_dimension = 1
+
+[node name="Platform" parent="." instance=ExtResource("7_ds1ek")]
+position = Vector2(688, 420)
+
+[node name="Platform2" parent="." instance=ExtResource("7_ds1ek")]
+position = Vector2(687, 24)
+
+[node name="Platform3" parent="." instance=ExtResource("7_ds1ek")]
+position = Vector2(-40, 25)
+
+[node name="Platform4" parent="." instance=ExtResource("7_ds1ek")]
+position = Vector2(211, 22)
+
+[node name="Platform5" parent="." instance=ExtResource("7_ds1ek")]
+position = Vector2(-40, 26)
+
+[node name="Platform6" parent="." instance=ExtResource("7_ds1ek")]
+position = Vector2(213, 23)

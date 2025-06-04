@@ -5,6 +5,7 @@ extends Node2D
 
 func _ready() -> void:
 	switch_platform.current_dimension = current_dimension
+	switch_platform.original_dimension = current_dimension
 
 func _process(delta: float) -> void:
 	update_color()
