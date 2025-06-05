@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://bre2p53b6ueao"]
+[gd_scene load_steps=12 format=4 uid="uid://bre2p53b6ueao"]
 
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_tv5bj"]
 [ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="2_sa1rs"]
@@ -400,6 +400,9 @@ terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_mkjiw")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_no67j"]
+size = Vector2(42.5, 242)
+
 [node name="FireWallLevel" type="Node2D"]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -455,13 +458,28 @@ script = ExtResource("8_2fiyt")
 
 [node name="ColorRect" type="ColorRect" parent="Area2D"]
 offset_left = -170.0
-offset_top = 36.0
+offset_top = -207.0
 offset_right = -125.0
 offset_bottom = 42.0
-color = Color(0.72, 0.59256, 0.2952, 1)
+color = Color(0.72, 0.59256, 0.2952, 0.152941)
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-position = Vector2(-62, 42)
-polygon = PackedVector2Array(-61, 0, -102, 120, -107, 444, -108, -1, -109, -154, -60, -154)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-148.25, -84)
+shape = SubResource("RectangleShape2D_no67j")
+
+[node name="Area2D2" type="Area2D" parent="."]
+script = ExtResource("8_2fiyt")
+
+[node name="ColorRect" type="ColorRect" parent="Area2D2"]
+offset_left = -168.0
+offset_top = 193.0
+offset_right = -123.0
+offset_bottom = 442.0
+color = Color(0.72, 0.59256, 0.2952, 0.152941)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+position = Vector2(-149, 317)
+shape = SubResource("RectangleShape2D_no67j")
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_entered" from="Area2D2" to="Area2D2" method="_on_body_entered"]
