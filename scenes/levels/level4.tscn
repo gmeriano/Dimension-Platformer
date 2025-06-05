@@ -34,11 +34,11 @@ position = Vector2(746, 390)
 position = Vector2(437, -37)
 
 [node name="PlayerEnteredSwitchPlatform2" parent="." instance=ExtResource("6_fx7e7")]
-position = Vector2(99, 439)
+position = Vector2(96, 406)
 current_dimension = 1
 
 [node name="PlayerEnteredSwitchPlatform4" parent="." instance=ExtResource("6_fx7e7")]
-position = Vector2(330, 436)
+position = Vector2(325, 406)
 current_dimension = 1
 
 [node name="PlayerEnteredSwitchPlatform6" parent="." instance=ExtResource("6_fx7e7")]

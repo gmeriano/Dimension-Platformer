@@ -31,6 +31,7 @@ var respawn_y = null
 @onready var game_manager: GameManager = $"../GameManager"
 var original_dimension = current_dimension
 var tween: Tween = null
+var bounce = false
 
 const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
 const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
@@ -158,6 +159,10 @@ func handle_wall_jump():
 		velocity.y = jump_velocity
 
 func handle_jump():
+	if bounce:
+		velocity.y = jump_velocity*3
+		bounce = false
+		return
 	if is_on_floor() or frames_since_last_on_ground < coyote_time_frames:
 		double_jump = true
 		if InputManager.is_jump_just_pressed(self):

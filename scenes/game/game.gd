@@ -26,13 +26,14 @@ var level_paths := [
 	"res://scenes/levels/easy_platform_level.tscn",
 	"res://scenes/levels/level2.tscn",
 	"res://scenes/levels/level3.tscn",
-	#"res://scenes/levels/level4.tscn",
-	"res://scenes/levels/button_platform_level.tscn"
+	"res://scenes/levels/level4.tscn",
+	"res://scenes/levels/button_platform_level.tscn",
+	"res://scenes/levels/fire_wall_level.tscn",
 ]
-var current_level_index = 1
+var current_level_index = 0
 
 func _ready() -> void:
-	load_level(load("res://scenes/levels/fire_wall_level.tscn"))
+	load_level(load(level_paths[current_level_index]))
 	InputManager.setup_player_inputs(player1, player2)
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
 	
@@ -48,11 +49,11 @@ func load_next_level() -> void:
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 
 func _on_transition_finished_load_next_level() -> void:
-	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
-	load_level(load(level_paths[current_level_index]))
 	current_level_index += 1
 	if current_level_index >= level_paths.size():
 		current_level_index = 0
+	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	load_level(load(level_paths[current_level_index]))
 
 func load_level(level: PackedScene) -> void:
 	# Remove previous level if it exists
