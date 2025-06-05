@@ -30,6 +30,7 @@ var respawn_x = null
 var respawn_y = null
 @onready var game_manager: GameManager = $"../GameManager"
 var original_dimension = current_dimension
+var tween: Tween = null
 
 const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
 const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
@@ -82,7 +83,11 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 	can_move = false
 	is_tweening = true
 	color_rect.color.a = 0.2
-	var tween = create_tween()
+	
+	if tween and tween.is_valid():
+		tween.kill()
+		
+	tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(self, "position", position + target_position, duration)\
 		.set_trans(Tween.TRANS_SINE)\
@@ -207,6 +212,13 @@ func is_within_camera_left(x_pos: float) -> bool:
 	return x_pos - player_half_size >= camera_left_edge
 	
 func _on_respawn() -> void:
+	if tween and tween.is_valid():
+		tween.kill()
+		color_rect.color.a = 1
+		rotation = 0
+		is_tweening = false
+		can_move = true
+		
 	global_position.x = respawn_x
 	global_position.y = respawn_y
 	velocity = Vector2.ZERO
@@ -222,4 +234,7 @@ func check_respawn() -> void:
 	else:
 		if not is_tweening and global_position.y > respawn_y + 200 - Global.DIMENSION_OFFSET:
 			game_manager.respawn_all_players()
+
+func on_hit() -> void:
+	game_manager.respawn_all_players()
 	

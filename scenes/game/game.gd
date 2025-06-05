@@ -32,7 +32,7 @@ var level_paths := [
 var current_level_index = 1
 
 func _ready() -> void:
-	load_level(load("res://scenes/levels/level3.tscn"))
+	load_level(load("res://scenes/levels/fire_wall_level.tscn"))
 	InputManager.setup_player_inputs(player1, player2)
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
 	
