@@ -26,20 +26,18 @@ var level_paths := [
 	"res://scenes/levels/easy_platform_level.tscn",
 	"res://scenes/levels/level2.tscn",
 	"res://scenes/levels/level3.tscn",
+	#"res://scenes/levels/level4.tscn",
 	"res://scenes/levels/button_platform_level.tscn"
 ]
 var current_level_index = 1
 
 func _ready() -> void:
-	load_level(load("res://scenes/levels/level1.tscn"))
+	load_level(load("res://scenes/levels/level3.tscn"))
 	InputManager.setup_player_inputs(player1, player2)
 	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
 	
 	var joypads = Input.get_connected_joypads()
 	print("Connected joypads: ", joypads)
-
-	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
-
 
 func get_next_level_path() -> String:
 	current_level_index = (current_level_index + 1) % level_paths.size()
@@ -47,8 +45,10 @@ func get_next_level_path() -> String:
 
 func load_next_level() -> void:
 	TransitionScreen.transition()
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 
 func _on_transition_finished_load_next_level() -> void:
+	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 	load_level(load(level_paths[current_level_index]))
 	current_level_index += 1
 	if current_level_index >= level_paths.size():

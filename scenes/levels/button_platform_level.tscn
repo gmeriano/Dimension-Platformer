@@ -441,5 +441,4 @@ position = Vector2(832, 5)
 position = Vector2(831, 407)
 
 [node name="ButtonPressedSwitchPlatform" parent="." instance=ExtResource("8_jsvsv")]
-position = Vector2(307, 400)
-current_dimension = 1
+position = Vector2(307, -400)

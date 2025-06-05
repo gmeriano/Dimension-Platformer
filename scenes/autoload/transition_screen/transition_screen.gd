@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+
 signal on_transition_finished
 
 @onready var color_rect: ColorRect = $ColorRect
@@ -9,6 +10,10 @@ func _onready():
 	color_rect.visible = false	
 
 func transition():
+	color_rect.visible = true
+	animation_player.play("fade_to_black")
+	
+func transition_respawn():
 	color_rect.visible = true
 	animation_player.play("fade_to_black")
 

@@ -20,9 +20,9 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:
 		var player: Player = body as Player
 		if switch_platform.player_on_platform:
-			switch_platform.player_on_platform = false
-			if not player.is_tweening:
-				switch_platform.switch_dimension()
+			if !player.is_tweening:
+				switch_platform.player_on_platform = false
+			switch_platform.switch_dimension()
 				
 func update_color() -> void:
 	if switch_platform.player_on_platform:
