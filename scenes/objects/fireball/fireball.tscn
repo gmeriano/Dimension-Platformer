@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://446mij02hd3y"]
 
-[ext_resource type="Script" path="res://fireball.gd" id="1_qy0au"]
+[ext_resource type="Script" path="res://scenes/objects/fireball/fireball.gd" id="1_qy0au"]
 [ext_resource type="Texture2D" uid="uid://dsu0jn20q26rn" path="res://assets/sprites/fireball.png" id="2_dmamv"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vbaw0"]

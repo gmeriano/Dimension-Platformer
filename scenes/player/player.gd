@@ -43,23 +43,24 @@ func _ready():
 	var shadow_color = color
 	shadow_color.a = 0.3
 	player_shadow.modulate = shadow_color
+	initialize_shadow_location()
+	respawn_x = global_position.x
+	respawn_y = global_position.y
+	game_manager.connect("respawn_players", Callable(self, "_on_respawn"))
+
+func initialize_shadow_location() -> void:
+	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 0):
 		# times 2 bc we scaled sprite by 0.5, + 16 to match rect exactly
 		player_shadow.offset.y += (Global.DIMENSION_OFFSET * 2 - 16)
 	elif (current_dimension == 1):
 		original_dimension = 1
 		player_shadow.offset.y -= (Global.DIMENSION_OFFSET * 2 + 16)
-	respawn_x = global_position.x
-	respawn_y = global_position.y
-	game_manager.connect("respawn_players", Callable(self, "_on_respawn"))
-	
+
 func _physics_process(delta: float) -> void:
 	if can_move:
 		handle_gravity(delta)
 		handle_jump()
-		handle_wall_jump()
-		#var inputAxis = Input.get_axis(controls.move_left, controls.move_right)
-		#var inputAxis = Input.get_joy_axis(device_id, MOVE_AXIS)
 		var inputAxis = InputManager.get_input_axis(self)
 		if inputAxis != 0:
 			handle_acceleration(inputAxis, delta)
@@ -67,6 +68,17 @@ func _physics_process(delta: float) -> void:
 		apply_air_resistance(inputAxis, delta)
 		move_and_slide()
 		check_respawn()
+		clamp_x_by_camera()
+
+func clamp_x_by_camera():
+	var new_x = global_position.x
+	# Clamp to left camera bound
+	if not is_within_camera_left(new_x):
+		new_x = camera.global_position.x - ((camera.get_viewport_rect().size.x / camera.zoom.x) / 2.0) + (collision_shape_2d.shape.get_rect().size.x / 2)
+	# Clamp to right camera bound
+	if not is_within_camera_right(new_x):
+		new_x = camera.global_position.x + ((camera.get_viewport_rect().size.x / camera.zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
+	global_position.x = new_x
 
 func swap_dimension():
 	if current_dimension == 0:
@@ -144,19 +156,6 @@ func handle_gravity(delta):
 		velocity.y += gravity * delta
 	else:
 		frames_since_last_on_ground = 0
-		
-func handle_wall_jump():
-	if not is_on_wall_only():
-		return
-	var wall_normal = get_wall_normal()
-
-	if Input.is_action_just_pressed(controls.move_left) and Input.is_action_pressed(controls.jump) and wall_normal == Vector2.LEFT:
-
-		velocity.x = wall_normal.x * speed
-		velocity.y = jump_velocity
-	if Input.is_action_just_pressed(controls.move_right) and Input.is_action_pressed(controls.jump) and wall_normal == Vector2.RIGHT:
-		velocity.x = wall_normal.x * speed
-		velocity.y = jump_velocity
 
 func handle_jump():
 	if bounce:
@@ -228,6 +227,7 @@ func _on_respawn() -> void:
 	global_position.y = respawn_y
 	velocity = Vector2.ZERO
 	current_dimension = original_dimension
+	initialize_shadow_location()
 	
 func check_respawn() -> void:
 	if original_dimension == current_dimension:

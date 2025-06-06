@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://diyo0uxywwon"]
 
-[ext_resource type="Script" path="res://fireball_spawner.gd" id="1_f61da"]
+[ext_resource type="Script" path="res://scenes/objects/fireball_spawner/fireball_spawner.gd" id="1_f61da"]
 [ext_resource type="PackedScene" uid="uid://446mij02hd3y" path="res://scenes/objects/fireball/fireball.tscn" id="2_mgflj"]
 
 [node name="FireballSpawner" type="Node2D"]
