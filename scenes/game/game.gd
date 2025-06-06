@@ -30,8 +30,9 @@ var level_paths := [
 	"res://scenes/levels/button_platform_level.tscn",
 	"res://scenes/levels/fire_wall_level.tscn",
 	"res://scenes/levels/moving_platform_level.tscn",
+	"res://scenes/levels/pole_jump_level.tscn",
 ]
-var current_level_index = 0
+var current_level_index = 8
 
 func _ready() -> void:
 	load_level(load(level_paths[current_level_index]))
