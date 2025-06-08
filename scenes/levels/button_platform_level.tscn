@@ -1,10 +1,7 @@
-[gd_scene load_steps=11 format=4 uid="uid://cx0nvqurd1bn6"]
+[gd_scene load_steps=8 format=4 uid="uid://cx0nvqurd1bn6"]
 
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_fvgci"]
-[ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="2_wu3n1"]
-[ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_cckns"]
-[ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_vhcoc"]
-[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="5_43six"]
+[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="5_43six"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_2px47"]
 [ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="7_ocqm0"]
 [ext_resource type="PackedScene" uid="uid://rfsx5rigaqks" path="res://scenes/objects/button_pressed_switch_platform/button_pressed_switch_platform.tscn" id="8_jsvsv"]
@@ -420,17 +417,7 @@ position = Vector2(-5, 399)
 [node name="Button2" parent="." groups=["trigger_buttons"] instance=ExtResource("7_ocqm0")]
 position = Vector2(630, 398)
 
-[node name="Player1" parent="." instance=ExtResource("2_wu3n1")]
-controls = ExtResource("3_cckns")
-color = Color(0.2596, 0.88, 0.0528, 1)
-
-[node name="Player2" parent="." instance=ExtResource("2_wu3n1")]
-position = Vector2(-67, 426)
-controls = ExtResource("4_vhcoc")
-current_dimension = 1
-color = Color(0.709804, 0, 0, 1)
-
-[node name="GameManager" type="Node2D" parent="."]
+[node name="LevelManager" type="Node2D" parent="."]
 position = Vector2(-52, 53)
 script = ExtResource("5_43six")
 
@@ -442,3 +429,9 @@ position = Vector2(831, 407)
 
 [node name="ButtonPressedSwitchPlatform" parent="." instance=ExtResource("8_jsvsv")]
 position = Vector2(307, -400)
+
+[node name="Player1Spawn" type="Marker2D" parent="."]
+position = Vector2(-45, 41)
+
+[node name="Player2Spawn" type="Marker2D" parent="."]
+position = Vector2(-135, 393)

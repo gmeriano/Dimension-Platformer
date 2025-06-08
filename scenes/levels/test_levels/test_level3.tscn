@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_ejr2k"]
 [ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_aeiab"]
 [ext_resource type="PackedScene" uid="uid://lsjb0tkxg8k0" path="res://scenes/objects/switch_platform/switch_platform.tscn" id="5_up6lm"]
-[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="6_uiwbv"]
+[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="6_uiwbv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ntip3"]
 texture = ExtResource("1_bd81q")
@@ -337,5 +337,5 @@ current_dimension = 1
 [node name="SwitchPlatform" parent="." instance=ExtResource("5_up6lm")]
 position = Vector2(257, -1)
 
-[node name="GameManager" type="Node2D" parent="."]
+[node name="LevelManager" type="Node2D" parent="."]
 script = ExtResource("6_uiwbv")

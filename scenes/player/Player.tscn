@@ -1,10 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://dalyetdhjh33m"]
+[gd_scene load_steps=5 format=3 uid="uid://dalyetdhjh33m"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8a6k0"]
 [ext_resource type="Texture2D" uid="uid://1lifn7h5b57d" path="res://assets/sprites/square.png" id="2_oqytx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7eey0"]
 radius = 8.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v68sj"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:current_dimension")
+properties/1/spawn = true
+properties/1/replication_mode = 2
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_8a6k0")
@@ -22,3 +30,6 @@ shape = SubResource("CircleShape2D_7eey0")
 [node name="PlayerShadow" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_oqytx")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_v68sj")

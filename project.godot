@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Platformer Game"
-run/main_scene="res://scenes/game/game.tscn"
+run/main_scene="res://scenes/game/main_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
@@ -20,6 +20,7 @@ config/icon="res://assets/icon.svg"
 TransitionScreen="*res://scenes/autoload/transition_screen/transition_screen.tscn"
 Global="*res://scripts/autoload/global.gd"
 InputManager="*res://scripts/autoload/InputManager.gd"
+GameManager="*res://scripts/autoload/game_manager.gd"
 
 [display]
 

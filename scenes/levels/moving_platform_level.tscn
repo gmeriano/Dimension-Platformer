@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=4 uid="uid://b4uec6w7qmgcs"]
+[gd_scene load_steps=9 format=4 uid="uid://b4uec6w7qmgcs"]
 
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_tjovl"]
 [ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="2_5xoxt"]
 [ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_d0ocf"]
 [ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_221nq"]
-[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="5_m8618"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_haa2b"]
 [ext_resource type="PackedScene" uid="uid://cbfgos42nb2ht" path="res://scenes/objects/moving_platform/moving_platform.tscn" id="7_udks7"]
 
@@ -424,9 +423,8 @@ controls = ExtResource("4_221nq")
 current_dimension = 1
 color = Color(0.709804, 0, 0, 1)
 
-[node name="GameManager" type="Node2D" parent="."]
+[node name="LevelManager" type="Node2D" parent="."]
 position = Vector2(-52, 53)
-script = ExtResource("5_m8618")
 
 [node name="LevelCompleteZone" parent="." instance=ExtResource("6_haa2b")]
 position = Vector2(830, -35)

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PlayerMovement" load_steps=2 format=3 uid="uid://b4yqekkhiep33"]
 
-[ext_resource type="Script" path="res://scripts/player/player_movement.gd" id="1_h5g34"]
+[ext_resource type="Script" uid="uid://go8ynl7bb0s" path="res://scripts/player/player_movement.gd" id="1_h5g34"]
 
 [resource]
 script = ExtResource("1_h5g34")
@@ -8,3 +8,4 @@ player_index = 0
 move_left = "p1_move_left"
 move_right = "p1_move_right"
 jump = "p1_jump"
+interact = "p1_interact"

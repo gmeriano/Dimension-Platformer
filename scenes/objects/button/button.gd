@@ -11,13 +11,16 @@ signal button_pressed
 func _process(delta: float) -> void:
 	if player:
 		if can_be_pressed and InputManager.is_interact_pressed(player):
-			cooldown_timer.start()
-			can_be_pressed = false
-			emit_signal("button_pressed")
-			var tween = create_tween()
-			color_rect.modulate = Color(1, 1, 1, 0.5)
-			tween.tween_property(color_rect, "modulate:a", 1.0, cooldown_timer.wait_time)
-			
+			on_button_pressed.rpc()
+
+@rpc("any_peer", "call_local")
+func on_button_pressed() -> void:
+	cooldown_timer.start()
+	can_be_pressed = false
+	emit_signal("button_pressed")
+	var tween = create_tween()
+	color_rect.modulate = Color(1, 1, 1, 0.5)
+	tween.tween_property(color_rect, "modulate:a", 1.0, cooldown_timer.wait_time)
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:

@@ -18,14 +18,16 @@ func setup_player_inputs(player1: Player, player2: Player) -> void:
 	if use_controller_for_p1 and 0 in connected_joypads:
 		player1.device_id = connected_joypads[0]
 		player1.use_controller = true
-	if use_controller_for_p2 and 1 in connected_joypads:
+	if use_controller_for_p2 and 1 in connected_joypads and !Global.IS_ONLINE_MULTIPLAYER:
 		player2.device_id = connected_joypads[1]
 		player2.use_controller = true
-	elif !player1.use_controller and 0 in connected_joypads:
+	elif !player1.use_controller and 0 in connected_joypads and !Global.IS_ONLINE_MULTIPLAYER:
 		player2.device_id = connected_joypads[0]
 		player2.use_controller = true
 
 func get_input_axis(player: Player) -> float:
+	if !read_player_input(player):
+		return false
 	if player.use_controller:
 		var axis_value = Input.get_joy_axis(player.device_id, MOVE_AXIS)
 		if abs(axis_value) < DEADZONE:
@@ -35,6 +37,8 @@ func get_input_axis(player: Player) -> float:
 		return Input.get_axis(player.controls.move_left, player.controls.move_right)	
 
 func is_jump_just_pressed(player) -> bool:
+	if !read_player_input(player):
+		return false
 	if player.use_controller:
 		var current = Input.is_joy_button_pressed(player.device_id, JUMP_BUTTON)
 		var just_pressed = current and not player.previous_jump_pressed_for_controller
@@ -44,6 +48,8 @@ func is_jump_just_pressed(player) -> bool:
 		return Input.is_action_just_pressed(player.controls.jump)
 
 func is_jump_just_released(player) -> bool:
+	if !read_player_input(player):
+		return false
 	if player.use_controller:
 		var current = not Input.is_joy_button_pressed(player.device_id, JUMP_BUTTON)
 		var just_released = current and not player.previous_jump_pressed_for_controller
@@ -53,6 +59,8 @@ func is_jump_just_released(player) -> bool:
 		return Input.is_action_just_released(player.controls.jump)
 
 func is_dimension_swap_pressed(player) -> bool:
+	if !read_player_input(player):
+		return false
 	if not player.is_tweening:
 		if player.use_controller:
 			return Input.is_joy_button_pressed(player.device_id, SWAP_BUTTON)
@@ -61,7 +69,12 @@ func is_dimension_swap_pressed(player) -> bool:
 	return false
 
 func is_interact_pressed(player) -> bool:
+	if !read_player_input(player):
+		return false
 	if player.use_controller:
 		return Input.is_joy_button_pressed(player.device_id, 2)
 	else:
 		return Input.is_action_just_pressed(player.controls.interact)
+		
+func read_player_input(player: Player) -> bool:
+	return !Global.IS_ONLINE_MULTIPLAYER or player.is_multiplayer_authority()

@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=3 uid="uid://j2ljf86useln"]
+
+[ext_resource type="Script" path="res://scenes/game/main_menu.gd" id="1_bb2h3"]
+[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="1_yimtf"]
+
+[node name="MainMenu" type="Node"]
+script = ExtResource("1_bb2h3")
+
+[node name="Platform" parent="." instance=ExtResource("1_yimtf")]
+position = Vector2(0, 45)
+
+[node name="Platform2" parent="." instance=ExtResource("1_yimtf")]
+position = Vector2(178, 45)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(140, 11)
+zoom = Vector2(4, 4)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Multiplayer" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Multiplayer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Title" type="Label" parent="UI/Multiplayer/VBoxContainer"]
+layout_mode = 2
+text = "Dimension Platformer"
+
+[node name="Host" type="Button" parent="UI/Multiplayer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="Join" type="Button" parent="UI/Multiplayer/VBoxContainer"]
+layout_mode = 2
+text = "Join
+"
+
+[node name="Local" type="Button" parent="UI/Multiplayer/VBoxContainer"]
+layout_mode = 2
+text = "Local"
+
+[node name="Start" type="Button" parent="UI/Multiplayer/VBoxContainer"]
+layout_mode = 2
+text = "Start
+"
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/player/Player.tscn")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Local" to="." method="_on_local_pressed"]
+[connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Start" to="." method="_on_start_pressed"]

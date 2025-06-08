@@ -4,6 +4,8 @@ class_name Player
 const SPEED = 100.0
 const JUMP_VELOCITY = -200.0
 
+signal respawn
+
 @export var controls: Resource = null
 @export var device_id: int = 0  # Each player gets their own controller ID
 @export var current_dimension: int = 0
@@ -26,9 +28,10 @@ var can_move = true
 var is_tweening = false
 var use_controller = false
 var previous_jump_pressed_for_controller = false
-var respawn_x = null
-var respawn_y = null
-@onready var game_manager: GameManager = $"../GameManager"
+var respawn_point: Vector2
+#@onready var level_manager: LevelManager = $LevelManager
+
+#@onready var level_manager: LevelManager = $"../LevelManager"
 var original_dimension = current_dimension
 var tween: Tween = null
 var bounce = false
@@ -38,15 +41,40 @@ const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 
 var camera: Camera2D = null
 
+func _enter_tree():
+	if Global.IS_ONLINE_MULTIPLAYER:
+		set_multiplayer_authority(int(str(name)))
+
 func _ready():
+	if Global.IS_ONLINE_MULTIPLAYER:
+		print("here")
+		if is_multiplayer_authority() and multiplayer.is_server():
+			print("here1")
+			color = Color.GREEN
+			GameManager.set_player_1(self)
+		elif is_multiplayer_authority() and !multiplayer.is_server():
+			color = Color.RED
+			GameManager.set_player_2(self)
+			current_dimension = 1
+			original_dimension = 1
+		elif !is_multiplayer_authority() and !multiplayer.is_server():
+			color = Color.GREEN
+			GameManager.set_player_1(self)
+		else:
+			GameManager.set_player_2(self)
+			current_dimension = 1
+			original_dimension = 1
+			color = Color.RED
+	if controls == null and Global.IS_ONLINE_MULTIPLAYER:
+		print("controls null")
+		controls = load("res://assets/resources/player1_movement.tres")
 	color_rect.color = color
 	var shadow_color = color
 	shadow_color.a = 0.3
 	player_shadow.modulate = shadow_color
 	initialize_shadow_location()
-	respawn_x = global_position.x
-	respawn_y = global_position.y
-	game_manager.connect("respawn_players", Callable(self, "_on_respawn"))
+	respawn_point = global_position
+	#level_manager.connect("respawn_players", Callable(self, "_on_respawn"))
 
 func initialize_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
@@ -58,6 +86,8 @@ func initialize_shadow_location() -> void:
 		player_shadow.offset.y -= (Global.DIMENSION_OFFSET * 2 + 16)
 
 func _physics_process(delta: float) -> void:
+	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
+		return
 	if can_move:
 		handle_gravity(delta)
 		handle_jump()
@@ -80,16 +110,19 @@ func clamp_x_by_camera():
 		new_x = camera.global_position.x + ((camera.get_viewport_rect().size.x / camera.zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
 	global_position.x = new_x
 
+@rpc("any_peer", "call_local")
 func swap_dimension():
 	if current_dimension == 0:
 		move_to(Vector2(0, Global.DIMENSION_OFFSET))
 		# Sprite is scaled by 0.5, so we multiply offset by 2, and add half of size
 		player_shadow.offset.y = -(Global.DIMENSION_OFFSET * 2 + 16)
-		current_dimension = 1
+		if Global.IS_ONLINE_MULTIPLAYER && is_multiplayer_authority():
+			current_dimension = 1
 	else:
 		move_to(Vector2(0, -Global.DIMENSION_OFFSET))
 		player_shadow.offset.y = (Global.DIMENSION_OFFSET * 2 - 16)
-		current_dimension = 0
+		if Global.IS_ONLINE_MULTIPLAYER && is_multiplayer_authority():
+			current_dimension = 0
 
 # Inside your script attached to the object you're moving
 func move_to(target_position: Vector2, duration: float = 1.0):
@@ -112,6 +145,7 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 
 func _on_tween_finished():
 	color_rect.color.a = 1
+	color_rect.rotation = 0
 	is_tweening = false
 	can_move = true
 	unstick_player_if_necessary()
@@ -147,8 +181,8 @@ func unstick_player_if_necessary():
 			if not test_move(test_transform, Vector2.ZERO):
 				global_position += offset
 				return
-		
-		game_manager.respawn_all_players()
+		emit_signal("respawn")
+		#level_manager.respawn_all_players()
 
 func handle_gravity(delta):
 	if not is_on_floor():
@@ -201,21 +235,25 @@ func set_camera(camera1: Camera2D):
 	camera = camera1
 	
 func is_within_camera_right(x_pos: float) -> bool:
-	var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
-	var viewport_size = camera.get_viewport_rect().size
-	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
-	var camera_right_edge = camera.global_position.x + half_width
+	if camera:
+		var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
+		var viewport_size = camera.get_viewport_rect().size
+		var half_width = (viewport_size.x / camera.zoom.x) / 2.0
+		var camera_right_edge = camera.global_position.x + half_width
+		return x_pos + player_half_size <= camera_right_edge
+	return true
 
-	return x_pos + player_half_size <= camera_right_edge
-	
 func is_within_camera_left(x_pos: float) -> bool:
-	var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
-	var viewport_size = camera.get_viewport_rect().size
-	var half_width = (viewport_size.x / camera.zoom.x) / 2.0
-	var camera_left_edge = camera.global_position.x - half_width
-	return x_pos - player_half_size >= camera_left_edge
-	
-func _on_respawn() -> void:
+	if camera:
+		var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
+		var viewport_size = camera.get_viewport_rect().size
+		var half_width = (viewport_size.x / camera.zoom.x) / 2.0
+		var camera_left_edge = camera.global_position.x - half_width
+		return x_pos - player_half_size >= camera_left_edge
+	return true
+
+@rpc("any_peer", "call_local")
+func on_respawn(position: Vector2) -> void:
 	if tween and tween.is_valid():
 		tween.kill()
 		color_rect.color.a = 1
@@ -223,23 +261,22 @@ func _on_respawn() -> void:
 		is_tweening = false
 		can_move = true
 		
-	global_position.x = respawn_x
-	global_position.y = respawn_y
+	global_position = position
 	velocity = Vector2.ZERO
 	current_dimension = original_dimension
 	initialize_shadow_location()
 	
 func check_respawn() -> void:
 	if original_dimension == current_dimension:
-		if not is_tweening and global_position.y > respawn_y + 200:
-			game_manager.respawn_all_players()
+		if not is_tweening and global_position.y > respawn_point.y + 200:
+			emit_signal("respawn")
 	elif original_dimension < current_dimension:
-		if not is_tweening and global_position.y > respawn_y + 200 + Global.DIMENSION_OFFSET:
-			game_manager.respawn_all_players()
+		if not is_tweening and global_position.y > respawn_point.y + 200 + Global.DIMENSION_OFFSET:
+			emit_signal("respawn")
 	else:
-		if not is_tweening and global_position.y > respawn_y + 200 - Global.DIMENSION_OFFSET:
-			game_manager.respawn_all_players()
+		if not is_tweening and global_position.y > respawn_point.y + 200 - Global.DIMENSION_OFFSET:
+			emit_signal("respawn")
 
-func on_hit() -> void:
-	game_manager.respawn_all_players()
+#func on_hit() -> void:
+	#level_manager.respawn_all_players()
 	

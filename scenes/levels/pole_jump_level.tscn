@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="2_x7qvg"]
 [ext_resource type="Resource" uid="uid://b4yqekkhiep33" path="res://assets/resources/player1_movement.tres" id="3_pkx3f"]
 [ext_resource type="Resource" uid="uid://dbrabrlg3j6nx" path="res://assets/resources/player2_movement.tres" id="4_vyho4"]
-[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="5_1m3ww"]
+[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="5_1m3ww"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_7a15m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v5one"]
@@ -423,7 +423,7 @@ controls = ExtResource("4_vyho4")
 current_dimension = 1
 color = Color(0.709804, 0, 0, 1)
 
-[node name="GameManager" type="Node2D" parent="."]
+[node name="LevelManager" type="Node2D" parent="."]
 script = ExtResource("5_1m3ww")
 
 [node name="LevelCompleteZone" parent="." instance=ExtResource("6_7a15m")]

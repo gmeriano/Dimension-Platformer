@@ -7,3 +7,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	pass
+
+
+func _on_host_pressed() -> void:
+	pass # Replace with function body.
