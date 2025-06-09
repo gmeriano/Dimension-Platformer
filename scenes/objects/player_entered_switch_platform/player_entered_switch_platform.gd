@@ -1,9 +1,11 @@
 extends Node2D
+class_name PlayerEnteredSwitchPlatform
 
 @onready var switch_platform: SwitchPlatform = $SwitchPlatform
 @export var current_dimension: int = 0
 
 func _ready() -> void:
+	add_to_group("player_entered_switch_platform")
 	switch_platform.current_dimension = current_dimension
 	switch_platform.original_dimension = current_dimension
 

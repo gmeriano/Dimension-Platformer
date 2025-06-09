@@ -32,7 +32,7 @@ var level_paths := [
 	"res://scenes/levels/moving_platform_level.tscn",
 	"res://scenes/levels/pole_jump_level.tscn",
 ]
-var current_level_index = 5
+var current_level_index = 0
 
 func _ready() -> void:
 	player1 = GameManager.get_player_1()
@@ -75,14 +75,11 @@ func load_level(level: PackedScene) -> void:
 	current_level_node = level_node
 
 	# Re-assign players
-	#if current_level_node.has_node("Player1") and current_level_node.has_node("Player2"):
-	#player1 = current_level_node.get_node("Player1")
 	current_level_node.add_child(player1)
 	player1.global_position = current_level_node.get_node("Player1Spawn").global_position
 	player1.respawn_point = player1.global_position
 	player1.set_camera(dimensions["1"].camera)
 	
-	#player2 = current_level_node.get_node("Player2")
 	current_level_node.add_child(player2)
 	player2.global_position = current_level_node.get_node("Player2Spawn").global_position
 	player2.respawn_point = player2.global_position
@@ -93,5 +90,3 @@ func load_level(level: PackedScene) -> void:
 	dimensions["1"].camera.set_players(player1, player2)
 	dimensions["2"].camera.set_players(player1, player2)
 	InputManager.setup_player_inputs(player1, player2)
-	#else:
-		#print("Player nodes not found in loaded level!")

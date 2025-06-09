@@ -21,8 +21,17 @@ func is_player_1_set() -> bool:
 func is_player_2_set() -> bool:
 	return player2 != null
 
-@rpc("any_peer", "call_local")
 func load_next_level() -> void:
+	if Global.IS_ONLINE_MULTIPLAYER:
+		load_next_level_remote.rpc()
+		return
+	_load_next_level()
+
+@rpc("any_peer", "call_local")
+func load_next_level_remote() -> void:
+	_load_next_level()
+
+func _load_next_level() -> void:
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
 	

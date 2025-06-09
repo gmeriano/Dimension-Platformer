@@ -10,7 +10,3 @@ func _on_body_entered(body):
 	if body is Player:
 		for spawner in spawners:
 			spawner.shoot_fireball()
-		
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass

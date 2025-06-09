@@ -21,7 +21,7 @@ func _ready() -> void:
 func get_level_manager() -> LevelManager:
 	return get_tree().get_current_scene().find_child("LevelManager", true, false)
 
-func _on_respawn() -> void:
+func respawn() -> void:
 	global_position.x = respawn_x
 	global_position.y = respawn_y
 	current_dimension = original_dimension
