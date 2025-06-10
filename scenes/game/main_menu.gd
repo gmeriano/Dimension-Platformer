@@ -4,17 +4,25 @@ const PLAYER = preload("res://scenes/player/Player.tscn")
 @onready var multiplayer_ui = $UI/Multiplayer
 @onready var player_1_spawn: Marker2D = $Player1Spawn
 @onready var player_2_spawn: Marker2D = $Player2Spawn
+@onready var oid_lbl: Label = $UI/Multiplayer/VBoxContainer/OID
+@onready var oid_input: LineEdit = $UI/Multiplayer/VBoxContainer/OIDInput
 
 var peer
 var controls1 = preload("res://assets/resources/player1_movement.tres")
 var controls2 = preload("res://assets/resources/player2_movement.tres")
 
+func _ready():
+	set_oid()
+	
+
+func set_oid():
+	await Multiplayer.noray_connected
+	oid_lbl.text = Noray.oid
 
 func _on_host_pressed():
-	peer = ENetMultiplayerPeer.new()
+	#await Multiplayer.setup_noray()
 	Global.IS_ONLINE_MULTIPLAYER = true
-	peer.create_server(25565)
-	multiplayer.multiplayer_peer = peer
+	Multiplayer.host()
 	
 	multiplayer.peer_connected.connect(
 		func(pid):
@@ -25,10 +33,9 @@ func _on_host_pressed():
 	add_player_online(multiplayer.get_unique_id())
 
 func _on_join_pressed():
-	peer = ENetMultiplayerPeer.new()
+	#await Multiplayer.setup_noray()
 	Global.IS_ONLINE_MULTIPLAYER = true
-	peer.create_client("localhost", 25565)
-	multiplayer.multiplayer_peer = peer
+	Multiplayer.join(oid_input.text)
 
 func add_player_online(pid):
 	var player = PLAYER.instantiate()
@@ -71,3 +78,7 @@ func _start_game() -> void:
 		remove_child(GameManager.get_player_1())
 		remove_child(GameManager.get_player_2())
 		get_tree().change_scene_to_file("res://scenes/game/game.tscn")
+
+
+func _on_copy_oid_pressed() -> void:
+	DisplayServer.clipboard_set(Noray.oid)

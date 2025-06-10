@@ -21,10 +21,17 @@ TransitionScreen="*res://scenes/autoload/transition_screen/transition_screen.tsc
 Global="*res://scripts/autoload/global.gd"
 InputManager="*res://scripts/autoload/InputManager.gd"
 GameManager="*res://scripts/autoload/game_manager.gd"
+Multiplayer="*res://scripts/autoload/multiplayer.gd"
+Noray="*res://addons/netfox.noray/noray.gd"
+PacketHandshake="*res://addons/netfox.noray/packet-handshake.gd"
 
 [display]
 
 window/stretch/mode="viewport"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/netfox.internals/plugin.cfg", "res://addons/netfox.noray/plugin.cfg")
 
 [input]
 

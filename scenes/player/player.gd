@@ -10,9 +10,10 @@ signal respawn
 @export var device_id: int = 0  # Each player gets their own controller ID
 @export var current_dimension: int = 0
 @onready var player_shadow: Sprite2D = $PlayerShadow
-
+@onready var position_tween_node: Node2D = $PositionTweenNode
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
-@onready var color_rect: ColorRect = $ColorRect
+@onready var color_rect: ColorRect = $PositionTweenNode/ColorRect
+@onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
 @export var color: Color
 
@@ -29,6 +30,7 @@ var is_tweening = false
 var use_controller = false
 var previous_jump_pressed_for_controller = false
 var respawn_point: Vector2
+var after_swap_position: Vector2
 
 var original_dimension = current_dimension
 var tween: Tween = null
@@ -76,11 +78,13 @@ func initialize_shadow_location() -> void:
 	elif (current_dimension == 1):
 		original_dimension = 1
 		player_shadow.offset.y -= (Global.DIMENSION_OFFSET * 2 + 16)
-
+signal dim_swap
 func _physics_process(delta: float) -> void:
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
 	if can_move:
+		#if InputManager.is_dimension_swap_pressed(self):
+		#	send_dim_swap_signal_remote.rpc()
 		handle_gravity(delta)
 		handle_jump()
 		var inputAxis = InputManager.get_input_axis(self)
@@ -91,6 +95,10 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		check_respawn()
 		clamp_x_by_camera()
+		
+@rpc("any_peer", "call_local")
+func send_dim_swap_signal_remote() -> void:
+	emit_signal("dim_swap")
 
 func clamp_x_by_camera():
 	var new_x = global_position.x
@@ -103,36 +111,33 @@ func clamp_x_by_camera():
 	global_position.x = new_x
 
 func swap_dimension() -> void:
-	if Global.IS_ONLINE_MULTIPLAYER:
-		swap_dimension_remote.rpc()
-		return
-	_swap_dimension()
+	swap_dimension_remote.rpc()  # Everyone runs _swap_dimension()
 
 @rpc("any_peer", "call_local")
 func swap_dimension_remote() -> void:
-	_swap_dimension()
+	_swap_dimension()  # Run it everywhere
+
+@rpc("authority")
+func perform_teleport():
+	# You are now on the authority for this player
+	if current_dimension == 0:
+		global_position.y += 400  # Or whatever your dimension offset is
+	else:
+		global_position.y -= 400
 
 func _swap_dimension():
 	if current_dimension == 0:
-		move_to(Vector2(0, Global.DIMENSION_OFFSET))
-		# Sprite is scaled by 0.5, so we multiply offset by 2, and add half of size
+		global_position.y += Global.DIMENSION_OFFSET
 		player_shadow.offset.y = -(Global.DIMENSION_OFFSET * 2 + 16)
-		if Global.IS_ONLINE_MULTIPLAYER:
-			if is_multiplayer_authority():
-				current_dimension = 1
-		else: # local multiplayer
-			current_dimension = 1
+		current_dimension = 1
 	else:
-		move_to(Vector2(0, -Global.DIMENSION_OFFSET))
+		global_position.y -= Global.DIMENSION_OFFSET
 		player_shadow.offset.y = (Global.DIMENSION_OFFSET * 2 - 16)
-		if Global.IS_ONLINE_MULTIPLAYER:
-			if is_multiplayer_authority():
-				current_dimension = 0
-		else: # local multiplayer
-			current_dimension = 0
+		current_dimension = 0
 
 # Inside your script attached to the object you're moving
 func move_to(target_position: Vector2, duration: float = 1.0):
+	multiplayer_synchronizer.replication_interval = 5.0
 	can_move = false
 	is_tweening = true
 	color_rect.color.a = 0.2
@@ -142,10 +147,10 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 		
 	tween = create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(self, "position", position + target_position, duration)\
+	tween.tween_property(self, "global_position", target_position, duration)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(self, "rotation", rotation + TAU, duration)\
+	tween.tween_property(self, "rotation", TAU, duration)\
 		.set_trans(Tween.TRANS_LINEAR)\
 		.set_ease(Tween.EASE_IN_OUT)
 	tween.connect("finished", Callable(self, "_on_tween_finished"))
@@ -153,10 +158,44 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 func _on_tween_finished():
 	color_rect.color.a = 1
 	color_rect.rotation = 0
+	#update_position_after_tween()
+	position_tween_node.position = Vector2.ZERO
 	is_tweening = false
 	can_move = true
+	print("TWEEN FINISHED FOR ", name)
+	multiplayer_synchronizer.replication_interval = 0.0
+	if current_dimension == 0:
+		current_dimension = 1
+	else:
+		current_dimension = 0
+	#global_position = after_swap_position
 	unstick_player_if_necessary()
-	
+
+func update_position_after_tween():
+	if Global.IS_ONLINE_MULTIPLAYER:
+		update_position_after_tween_remote(position_tween_node.global_position)
+	else:
+		global_position = position_tween_node.global_position
+
+@rpc("call_local", "any_peer")
+func update_player_position_rpc(new_position: Vector2):
+	print("Player ", self.name, " received RPC to tween position to: ", new_position)
+	var tmp_position = global_position
+	#move_to(Vector2(global_position.x, new_position.y))
+	#global_position = new_position
+	#if current_position_tween and current_position_tween.is_valid():
+		#current_position_tween.kill()
+		#current_position_tween = null # Clear the reference
+	#current_position_tween = create_tween()
+	#current_position_tween.set_trans(Tween.TRANS_QUAD) # Example transition type
+	#current_position_tween.set_ease(Tween.EASE_OUT)    # Example ease type
+	#current_position_tween.tween_property(self, "global_position", new_position, swap_tween_duration)
+
+@rpc("any_peer", "call_local")
+func update_position_after_tween_remote(new_pos: Vector2):
+	if is_multiplayer_authority():
+		global_position = new_pos
+
 # Try small diagonal and cardinal movements to escape the collision
 func unstick_player_if_necessary():
 	var offset_distance = collision_shape_2d.shape.get_rect().size.x
