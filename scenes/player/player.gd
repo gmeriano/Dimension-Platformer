@@ -169,8 +169,7 @@ func unstick_player_if_necessary():
 			if not test_move(test_transform, Vector2.ZERO):
 				global_position += offset
 				return
-		print("unstuck respawn")
-		send_respawn_signal()
+		send_respawn_signal.rpc()
 
 func handle_gravity(delta):
 	if not is_on_floor():
@@ -240,17 +239,8 @@ func is_within_camera_left(x_pos: float) -> bool:
 		return x_pos - player_half_size >= camera_left_edge
 	return true
 
-func on_respawn(respawn_position: Vector2) -> void:
-	if Global.IS_ONLINE_MULTIPLAYER:
-		on_respawn_remote.rpc(respawn_position)
-		return
-	_on_respawn(respawn_position)
-
 @rpc("any_peer", "call_local")
-func on_respawn_remote(respawn_position: Vector2) -> void:
-	_on_respawn(respawn_position)
-
-func _on_respawn(respawn_position: Vector2) -> void:
+func on_respawn(respawn_position: Vector2) -> void:
 	if tween and tween.is_valid():
 		tween.kill()
 		color_rect.color.a = 1
@@ -266,28 +256,19 @@ func _on_respawn(respawn_position: Vector2) -> void:
 func should_respawn() -> bool:
 	if original_dimension == current_dimension:
 		if can_move and global_position.y > respawn_point.y + 200:
-			print("respawn1")
 			return true
 	elif original_dimension < current_dimension:
 		if can_move and global_position.y > respawn_point.y + 200 + Global.DIMENSION_OFFSET:
-			print("respawn2")
 			return true
 	else:
 		if can_move and global_position.y > respawn_point.y + 200 - Global.DIMENSION_OFFSET:
-			print("respawn3")
 			return true
 	return false
 
-func send_respawn_signal() -> void:
-	if Global.IS_ONLINE_MULTIPLAYER:
-		send_respawn_signal_remote.rpc()
-		return
-	emit_signal("respawn")
-
 @rpc("any_peer", "call_local")
-func send_respawn_signal_remote() -> void:
+func send_respawn_signal() -> void:
 	emit_signal("respawn")
 
 func on_hit() -> void:
 	print("on hit respawn")
-	send_respawn_signal()
+	send_respawn_signal.rpc()

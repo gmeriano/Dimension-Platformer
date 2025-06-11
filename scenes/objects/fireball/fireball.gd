@@ -15,11 +15,14 @@ func _physics_process(delta: float) -> void:
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is Player:
-		if Global.IS_ONLINE_MULTIPLAYER:
-			if body.is_multiplayer_authority():
-				body.on_hit()
-		else:
-			body.on_hit()
+		register_hit(body)
+
+func register_hit(player: Player) -> void:
+	if Global.IS_ONLINE_MULTIPLAYER:
+		if player.is_multiplayer_authority():
+			player.on_hit()
+	else:
+		player.on_hit()
 
 func _on_top_jumpbox_body_entered(body: Node2D) -> void:
 	if body is Player:

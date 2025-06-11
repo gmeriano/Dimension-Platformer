@@ -20,7 +20,6 @@ func set_oid():
 	oid_lbl.text = Noray.oid
 
 func _on_host_pressed():
-	#await Multiplayer.setup_noray()
 	Global.IS_ONLINE_MULTIPLAYER = true
 	Multiplayer.host()
 	
@@ -33,7 +32,6 @@ func _on_host_pressed():
 	add_player_online(multiplayer.get_unique_id())
 
 func _on_join_pressed():
-	#await Multiplayer.setup_noray()
 	Global.IS_ONLINE_MULTIPLAYER = true
 	Multiplayer.join(oid_input.text)
 

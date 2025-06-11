@@ -20,10 +20,7 @@ func _ready():
 
 func _physics_process(_delta: float) -> void:
 	handle_inputs()
-	if Global.IS_ONLINE_MULTIPLAYER:
-		if multiplayer.is_server():
-			check_level_complete_or_respawn()
-	else:
+	if multiplayer.is_server():
 		check_level_complete_or_respawn()
 
 func check_level_complete_or_respawn():
@@ -33,41 +30,22 @@ func check_level_complete_or_respawn():
 			return
 		for player in players:
 			if player.can_move && player.should_respawn():
-				print("respawning")
-				respawn_all_players()
+				respawn_all_players.rpc()
 				break
 
 func handle_inputs() -> void:
 	if !swapping and (InputManager.is_dimension_swap_pressed(players[0]) or InputManager.is_dimension_swap_pressed(players[1])):
 		swapping = true
-		dimension_swap()
+		dimension_swap.rpc()
 		await reset_swapping_delay()
 
-func dimension_swap():
-	if Global.IS_ONLINE_MULTIPLAYER:
-		dimension_swap_remote.rpc()
-	else:
-		_dimension_swap()
-
 @rpc("any_peer", "call_local")
-func dimension_swap_remote() -> void:
-	_dimension_swap()
-
-func _dimension_swap():
+func dimension_swap():
 	for player in players:
 		player.swap_dimension()
 
-func respawn_all_players():
-	if Global.IS_ONLINE_MULTIPLAYER:
-		respawn_all_players_remote.rpc()
-	else:
-		_respawn_all_players()
-
 @rpc("any_peer", "call_local")
-func respawn_all_players_remote():
-	_respawn_all_players()
-
-func _respawn_all_players():
+func respawn_all_players():
 	GameManager.set_can_move(false)
 	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
@@ -78,7 +56,7 @@ func _on_transition_finished_respawn():
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
 	for i in range(players.size()):
 		var player = players[i]
-		player.on_respawn(spawn_positions[i].global_position)
+		player.on_respawn.rpc(spawn_positions[i].global_position)
 	reset_platforms()
 
 func reset_platforms() -> void:
@@ -102,7 +80,7 @@ func despawn_objects() -> void:
 func check_level_complete() -> void:
 	if level_complete_zone.complete == true and level_complete_zone_2.complete == true:
 		level_complete = true
-		GameManager.load_next_level()
+		GameManager.load_next_level.rpc()
 
 func reset_swapping_delay() -> void:
 	await get_tree().create_timer(1.0).timeout  # 1 second delay
