@@ -440,6 +440,7 @@ position = Vector2(111, -8)
 position = Vector2(111, -22)
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_mask = 4
 script = ExtResource("8_2fiyt")
 
 [node name="ColorRect" type="ColorRect" parent="Area2D"]
@@ -455,6 +456,7 @@ position = Vector2(-148.25, -84)
 shape = SubResource("RectangleShape2D_no67j")
 
 [node name="Area2D2" type="Area2D" parent="."]
+collision_mask = 4
 script = ExtResource("8_2fiyt")
 
 [node name="ColorRect" type="ColorRect" parent="Area2D2"]

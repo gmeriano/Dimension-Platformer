@@ -89,7 +89,6 @@ func _physics_process(delta: float) -> void:
 		apply_friction(inputAxis, delta)
 		apply_air_resistance(inputAxis, delta)
 		move_and_slide()
-		check_respawn()
 		clamp_x_by_camera()
 
 func clamp_x_by_camera():
@@ -170,6 +169,7 @@ func unstick_player_if_necessary():
 			if not test_move(test_transform, Vector2.ZERO):
 				global_position += offset
 				return
+		print("unstuck respawn")
 		send_respawn_signal()
 
 func handle_gravity(delta):
@@ -256,23 +256,27 @@ func _on_respawn(respawn_position: Vector2) -> void:
 		color_rect.color.a = 1
 		rotation = 0
 		is_tweening = false
-		can_move = true
 		
+	color_rect.visible = true
 	global_position = respawn_position
 	velocity = Vector2.ZERO
 	current_dimension = original_dimension
 	initialize_shadow_location()
-	
-func check_respawn() -> void:
+
+func should_respawn() -> bool:
 	if original_dimension == current_dimension:
-		if not is_tweening and global_position.y > respawn_point.y + 200:
-			send_respawn_signal()
+		if can_move and global_position.y > respawn_point.y + 200:
+			print("respawn1")
+			return true
 	elif original_dimension < current_dimension:
-		if not is_tweening and global_position.y > respawn_point.y + 200 + Global.DIMENSION_OFFSET:
-			send_respawn_signal()
+		if can_move and global_position.y > respawn_point.y + 200 + Global.DIMENSION_OFFSET:
+			print("respawn2")
+			return true
 	else:
-		if not is_tweening and global_position.y > respawn_point.y + 200 - Global.DIMENSION_OFFSET:
-			send_respawn_signal()
+		if can_move and global_position.y > respawn_point.y + 200 - Global.DIMENSION_OFFSET:
+			print("respawn3")
+			return true
+	return false
 
 func send_respawn_signal() -> void:
 	if Global.IS_ONLINE_MULTIPLAYER:
@@ -285,4 +289,5 @@ func send_respawn_signal_remote() -> void:
 	emit_signal("respawn")
 
 func on_hit() -> void:
+	print("on hit respawn")
 	send_respawn_signal()

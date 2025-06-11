@@ -413,12 +413,13 @@ tile_set = SubResource("TileSet_4oeef")
 script = ExtResource("5_pmwfk")
 
 [node name="LevelCompleteZone" parent="." instance=ExtResource("6_dqgw3")]
-position = Vector2(88, 7)
+position = Vector2(835, 5)
 
 [node name="LevelCompleteZone2" parent="." instance=ExtResource("6_dqgw3")]
-position = Vector2(87, 407)
+position = Vector2(832, 405)
 
 [node name="Player1Spawn" type="Marker2D" parent="."]
+position = Vector2(0, 32)
 
 [node name="Player2Spawn" type="Marker2D" parent="."]
-position = Vector2(4, 391)
+position = Vector2(0, 432)

@@ -422,10 +422,10 @@ position = Vector2(-52, 53)
 script = ExtResource("5_43six")
 
 [node name="LevelCompleteZone" parent="." instance=ExtResource("6_2px47")]
-position = Vector2(832, 5)
+position = Vector2(832, 7)
 
 [node name="LevelCompleteZone2" parent="." instance=ExtResource("6_2px47")]
-position = Vector2(831, 407)
+position = Vector2(831, 405)
 
 [node name="ButtonPressedSwitchPlatform" parent="." instance=ExtResource("8_jsvsv")]
 position = Vector2(307, -400)

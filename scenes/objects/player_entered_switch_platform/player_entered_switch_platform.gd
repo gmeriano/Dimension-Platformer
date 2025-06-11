@@ -15,14 +15,14 @@ func _process(delta: float) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		var player = body as Player
-		if !player.is_tweening:
+		if !player.is_tweening && player.can_move:
 			switch_platform.player_on_platform = true
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:
 		var player: Player = body as Player
 		if switch_platform.player_on_platform:
-			if !player.is_tweening:
+			if !player.is_tweening && player.can_move:
 				switch_platform.player_on_platform = false
 			switch_platform.switch_dimension()
 				

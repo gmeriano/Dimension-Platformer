@@ -32,7 +32,7 @@ var level_paths := [
 	"res://scenes/levels/moving_platform_level.tscn",
 	"res://scenes/levels/pole_jump_level.tscn",
 ]
-var current_level_index = 0
+var current_level_index = 5
 
 func _ready() -> void:
 	player1 = GameManager.get_player_1()
@@ -49,6 +49,7 @@ func get_next_level_path() -> String:
 	return level_paths[current_level_index]
 
 func load_next_level() -> void:
+	GameManager.set_can_move(false)
 	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 
@@ -75,15 +76,17 @@ func load_level(level: PackedScene) -> void:
 	current_level_node = level_node
 
 	# Re-assign players
-	current_level_node.add_child(player1)
 	player1.global_position = current_level_node.get_node("Player1Spawn").global_position
 	player1.respawn_point = player1.global_position
 	player1.set_camera(dimensions["1"].camera)
+	player1.current_dimension = 0
+	current_level_node.add_child(player1)
 	
-	current_level_node.add_child(player2)
 	player2.global_position = current_level_node.get_node("Player2Spawn").global_position
 	player2.respawn_point = player2.global_position
 	player2.set_camera(dimensions["2"].camera)
+	player2.current_dimension = 1
+	current_level_node.add_child(player2)
 
 	players = [player1, player2]
 

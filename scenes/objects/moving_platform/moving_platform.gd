@@ -14,8 +14,6 @@ func _ready() -> void:
 	starting_direction = direction
 
 func _physics_process(delta: float) -> void:
-	if not platform:
-		return
 	var velocity := Vector2(direction * speed, 0)
 	var collision = platform.move_and_collide(velocity * delta)
 

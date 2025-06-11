@@ -10,13 +10,16 @@ func _ready():
 	
 func _physics_process(delta: float) -> void:
 	position += direction * speed * delta
+	if abs(position.x) > 4000:
+		queue_free()
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is Player:
-		body.on_hit()
-		for fireball in get_tree().get_nodes_in_group("fireballs"):
-			fireball.queue_free()
-
+		if Global.IS_ONLINE_MULTIPLAYER:
+			if body.is_multiplayer_authority():
+				body.on_hit()
+		else:
+			body.on_hit()
 
 func _on_top_jumpbox_body_entered(body: Node2D) -> void:
 	if body is Player:

@@ -77,8 +77,14 @@ func _start_game() -> void:
 	if GameManager.is_player_1_set() && GameManager.is_player_2_set():
 		remove_child(GameManager.get_player_1())
 		remove_child(GameManager.get_player_2())
-		get_tree().change_scene_to_file("res://scenes/game/game.tscn")
+		GameManager.set_can_move(false)
+		TransitionScreen.transition()
+		TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_start_game"))
+		TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))
 
+func _on_transition_finished_start_game():
+	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_start_game"))
+	get_tree().change_scene_to_file("res://scenes/game/game.tscn")
 
 func _on_copy_oid_pressed() -> void:
 	DisplayServer.clipboard_set(Noray.oid)

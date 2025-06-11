@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_4tckc"]
 [ext_resource type="PackedScene" uid="uid://3xk4fdftjod6" path="res://scenes/objects/player_entered_switch_platform/player_entered_switch_platform.tscn" id="7_3nob1"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lg66w"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7xw6o"]
 texture = ExtResource("1_la58i")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
@@ -394,7 +394,7 @@ physics_layer_0/collision_layer = 1
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/0 = SubResource("TileSetAtlasSource_lg66w")
+sources/0 = SubResource("TileSetAtlasSource_7xw6o")
 
 [node name="EasyPlatformLevel" type="Node2D"]
 
@@ -427,7 +427,7 @@ position = Vector2(510, 438)
 current_dimension = 1
 
 [node name="Player1Spawn" type="Marker2D" parent="."]
-position = Vector2(10, 0)
+position = Vector2(0, 32)
 
 [node name="Player2Spawn" type="Marker2D" parent="."]
-position = Vector2(128, 400)
+position = Vector2(0, 432)

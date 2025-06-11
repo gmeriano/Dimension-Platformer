@@ -8,6 +8,7 @@ class_name LevelManager
 var players: Array[Player] = []
 var spawn_positions: Array[Marker2D]
 var swapping = false
+var level_complete = false
 
 signal respawn_players
 
@@ -15,19 +16,31 @@ func _ready():
 	spawn_positions = [player_1_spawn, player_2_spawn]
 	players = [GameManager.get_player_1(), GameManager.get_player_2()]
 	for player in players:
-		player.connect("respawn", Callable(self, "_respawn_all_players"))
-		player.connect("dim_swap", Callable(self, "_dim_swap_all_players"))
-	
+		player.connect("respawn", Callable(self, "respawn_all_players"))
+
 func _physics_process(_delta: float) -> void:
 	handle_inputs()
-	if multiplayer.is_server():
+	if Global.IS_ONLINE_MULTIPLAYER:
+		if multiplayer.is_server():
+			check_level_complete_or_respawn()
+	else:
+		check_level_complete_or_respawn()
+
+func check_level_complete_or_respawn():
+	if !level_complete:
 		check_level_complete()
+		if level_complete:
+			return
+		for player in players:
+			if player.can_move && player.should_respawn():
+				print("respawning")
+				respawn_all_players()
+				break
 
 func handle_inputs() -> void:
 	if !swapping and (InputManager.is_dimension_swap_pressed(players[0]) or InputManager.is_dimension_swap_pressed(players[1])):
 		swapping = true
 		dimension_swap()
-		dimension_swap.rpc()
 		await reset_swapping_delay()
 
 func dimension_swap():
@@ -44,10 +57,22 @@ func _dimension_swap():
 	for player in players:
 		player.swap_dimension()
 
+func respawn_all_players():
+	if Global.IS_ONLINE_MULTIPLAYER:
+		respawn_all_players_remote.rpc()
+	else:
+		_respawn_all_players()
+
+@rpc("any_peer", "call_local")
+func respawn_all_players_remote():
+	_respawn_all_players()
+
 func _respawn_all_players():
-	set_can_move(false)
+	GameManager.set_can_move(false)
 	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
+	TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))
+	despawn_objects()
 
 func _on_transition_finished_respawn():
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
@@ -55,11 +80,11 @@ func _on_transition_finished_respawn():
 		var player = players[i]
 		player.on_respawn(spawn_positions[i].global_position)
 	reset_platforms()
-	set_can_move(true)
 
 func reset_platforms() -> void:
 	reset_player_entered_switch_platforms()
 	reset_moving_platforms()
+	
 func reset_player_entered_switch_platforms() -> void:
 	for node in get_tree().get_nodes_in_group("player_entered_switch_platform"):
 		var player_entered_switch_platform = node as PlayerEnteredSwitchPlatform
@@ -70,12 +95,13 @@ func reset_moving_platforms() -> void:
 		var moving_platform = node as MovingPlatform
 		moving_platform.respawn() 
 
-func set_can_move(can_move: bool) -> void:
-	players[0].can_move = can_move
-	players[1].can_move = can_move
-	
+func despawn_objects() -> void:
+	for fireball in get_tree().get_nodes_in_group("fireballs"):
+		fireball.queue_free()
+
 func check_level_complete() -> void:
 	if level_complete_zone.complete == true and level_complete_zone_2.complete == true:
+		level_complete = true
 		GameManager.load_next_level()
 
 func reset_swapping_delay() -> void:
