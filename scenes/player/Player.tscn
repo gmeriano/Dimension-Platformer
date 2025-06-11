@@ -29,9 +29,7 @@ texture = ExtResource("2_oqytx")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_v68sj")
 
-[node name="PositionTweenNode" type="Node2D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="PositionTweenNode"]
+[node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -8.0
 offset_top = -16.0
 offset_right = 8.0

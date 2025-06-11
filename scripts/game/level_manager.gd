@@ -20,82 +20,35 @@ func _ready():
 	
 func _physics_process(_delta: float) -> void:
 	handle_inputs()
-	check_level_complete()
+	if multiplayer.is_server():
+		check_level_complete()
 
 func handle_inputs() -> void:
 	if !swapping and (InputManager.is_dimension_swap_pressed(players[0]) or InputManager.is_dimension_swap_pressed(players[1])):
 		swapping = true
-		#teleport_players.rpc()
-		print("pressed swap")
-		request_dimension_swap.rpc()
+		dimension_swap()
+		dimension_swap.rpc()
 		await reset_swapping_delay()
 
-@rpc("any_peer", "call_local")
-func request_dimension_swap() -> void:
-	print("requesting swap")
-	perform_tween()
-	if multiplayer.is_server():
-		handle_dimension_swap()
-
-@rpc("any_peer", "call_local")
-func teleport_all_players():
-	for player in players:
-		player._swap_dimension()
-
-func perform_tween() -> void:
-	var new_player1_position = Vector2.ZERO
-	var new_player2_position = Vector2.ZERO
-	if players[0].current_dimension == 0:
-		players[0].move_to(Vector2(players[0].global_position.x, players[0].global_position.y + Global.DIMENSION_OFFSET))
-		players[1].move_to(Vector2(players[1].global_position.x, players[1].global_position.y - Global.DIMENSION_OFFSET))
-		#new_player1_position = players[0].global_position + Vector2(0, Global.DIMENSION_OFFSET)
-		#new_player2_position = players[1].global_position - Vector2(0, Global.DIMENSION_OFFSET)
+func dimension_swap():
+	if Global.IS_ONLINE_MULTIPLAYER:
+		dimension_swap_remote.rpc()
 	else:
-		players[0].move_to(Vector2(players[0].global_position.x, players[0].global_position.y - Global.DIMENSION_OFFSET))
-		players[1].move_to(Vector2(players[1].global_position.x, players[1].global_position.y + Global.DIMENSION_OFFSET))
-		#new_player1_position = players[0].global_position - Vector2(0, Global.DIMENSION_OFFSET)
-		#new_player2_position = players[1].global_position + Vector2(0, Global.DIMENSION_OFFSET)
-		
-	#players[0].move_to(new_player1_position)
-	#players[1].move_to(new_player2_position)
+		_dimension_swap()
 
-func handle_dimension_swap() -> void:
-	if not multiplayer.is_server():
-		return
-	print("handling swap")
-	#players[0]._swap_dimension()
-	#players[1]._swap_dimension()
-	var new_player1_position = Vector2.ZERO
-	var new_player2_position = Vector2.ZERO
-	if players[0].current_dimension == 0:
-		new_player1_position = players[0].global_position + Vector2(0, Global.DIMENSION_OFFSET)
-		new_player2_position = players[1].global_position - Vector2(0, Global.DIMENSION_OFFSET)
-	else:
-		new_player1_position = players[0].global_position - Vector2(0, Global.DIMENSION_OFFSET)
-		new_player2_position = players[1].global_position + Vector2(0, Global.DIMENSION_OFFSET)
+@rpc("any_peer", "call_local")
+func dimension_swap_remote() -> void:
+	_dimension_swap()
 
-	players[0].update_player_position_rpc.rpc(new_player1_position)
-	players[1].update_player_position_rpc.rpc(new_player2_position)
-	#rpc("update_player_position_rpc", new_player1_position)
-	#rpc("update_player_position_rpc", new_player2_position)
-
-@rpc("any_peer")
-func teleport_players():
+func _dimension_swap():
 	for player in players:
-		player.rpc_id(player.get_multiplayer_authority(), "perform_teleport")
+		player.swap_dimension()
 
 func _respawn_all_players():
 	set_can_move(false)
 	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
 
-func _dim_swap_all_players():
-	for player in players:
-		if player.current_dimension == 0:
-			player.global_position.y += 400
-		else:
-			player.global_position.y -= 400
-			
 func _on_transition_finished_respawn():
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
 	for i in range(players.size()):
