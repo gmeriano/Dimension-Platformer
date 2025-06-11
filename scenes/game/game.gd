@@ -32,7 +32,7 @@ var level_paths := [
 	"res://scenes/levels/moving_platform_level.tscn",
 	"res://scenes/levels/pole_jump_level.tscn",
 ]
-var current_level_index = 5
+var current_level_index = 7
 
 func _ready() -> void:
 	player1 = GameManager.get_player_1()
