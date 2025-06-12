@@ -20,15 +20,18 @@ func _ready():
 
 func _physics_process(_delta: float) -> void:
 	handle_inputs()
+	check_respawn()
 	if multiplayer.is_server():
-		check_level_complete_or_respawn()
-
-func check_level_complete_or_respawn():
-	if !level_complete:
 		check_level_complete()
-		if level_complete:
-			return
-		for player in players:
+
+func check_level_complete() -> void:
+	if level_complete_zone.complete == true and level_complete_zone_2.complete == true:
+		level_complete = true
+		GameManager.load_next_level.rpc()
+
+func check_respawn():
+	for player in players:
+		if player.is_multiplayer_authority():
 			if player.can_move && player.should_respawn():
 				respawn_all_players.rpc()
 				break
@@ -62,6 +65,10 @@ func _on_transition_finished_respawn():
 func reset_platforms() -> void:
 	reset_player_entered_switch_platforms()
 	reset_moving_platforms()
+
+func despawn_objects() -> void:
+	for fireball in get_tree().get_nodes_in_group("fireballs"):
+		fireball.queue_free()
 	
 func reset_player_entered_switch_platforms() -> void:
 	for node in get_tree().get_nodes_in_group("player_entered_switch_platform"):
@@ -72,15 +79,6 @@ func reset_moving_platforms() -> void:
 	for node in get_tree().get_nodes_in_group("moving_platform"):
 		var moving_platform = node as MovingPlatform
 		moving_platform.respawn() 
-
-func despawn_objects() -> void:
-	for fireball in get_tree().get_nodes_in_group("fireballs"):
-		fireball.queue_free()
-
-func check_level_complete() -> void:
-	if level_complete_zone.complete == true and level_complete_zone_2.complete == true:
-		level_complete = true
-		GameManager.load_next_level.rpc()
 
 func reset_swapping_delay() -> void:
 	await get_tree().create_timer(1.0).timeout  # 1 second delay

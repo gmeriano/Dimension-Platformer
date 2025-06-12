@@ -26,13 +26,13 @@ func disable_buttons():
 	join.disabled = true
 	local.disabled = true
 
-#func _physics_process(delta: float) -> void:
-	#if GameManager.get_player_1():
-		#if GameManager.get_player_1().global_position.y - player_1_spawn.global_position.y > 500:
-			#GameManager.get_player_1().global_position = player_1_spawn.global_position
-	#if GameManager.get_player_2():
-		#if GameManager.get_player_2().global_position.y - player_2_spawn.global_position.y > 500:
-			#GameManager.get_player_2().global_position = player_2_spawn.global_position
+func _physics_process(delta: float) -> void:
+	if GameManager.get_player_1():
+		if GameManager.get_player_1().global_position.y - player_1_spawn.global_position.y > 500:
+			GameManager.get_player_1().global_position = player_1_spawn.global_position
+	if GameManager.get_player_2():
+		if GameManager.get_player_2().global_position.y - player_2_spawn.global_position.y > 500:
+			GameManager.get_player_2().global_position = player_2_spawn.global_position
 
 func _on_host_pressed():
 	disable_buttons()

@@ -130,16 +130,16 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 func _on_tween_finished():
 	color_rect.color.a = 1
 	color_rect.rotation = 0
-	is_tweening = false
-	can_move = true
 	player_shadow.visible = true
 	if current_dimension == 0:
 		current_dimension = 1
-		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
+		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
 	else:
 		current_dimension = 0
-		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
+		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 	unstick_player_if_necessary()
+	is_tweening = false
+	can_move = true
 	multiplayer_synchronizer.replication_interval = 0.0
 
 # Try small diagonal and cardinal movements to escape the collision
@@ -258,16 +258,20 @@ func on_respawn(respawn_position: Vector2) -> void:
 	initialize_shadow_location()
 
 func should_respawn() -> bool:
-	if original_dimension == current_dimension:
-		if can_move and global_position.y > respawn_point.y + 200:
-			return true
-	elif original_dimension < current_dimension:
-		if can_move and global_position.y > respawn_point.y + 200 + Global.DIMENSION_OFFSET:
-			return true
+	if !can_move || is_tweening:
+		return false
+	if current_dimension == 0:
+		var top_camera: Camera2D = GameManager.get_player_1().camera
+		var viewport_size := top_camera.get_viewport_rect().size
+		var half_height := (viewport_size.y / top_camera.zoom.y) / 2.0
+		var camera_bottom_y := top_camera.global_position.y + half_height + 32
+		return global_position.y > camera_bottom_y
 	else:
-		if can_move and global_position.y > respawn_point.y + 200 - Global.DIMENSION_OFFSET:
-			return true
-	return false
+		var bottom_camera: Camera2D = GameManager.get_player_2().camera
+		var viewport_size := bottom_camera.get_viewport_rect().size
+		var half_height := (viewport_size.y / bottom_camera.zoom.y) / 2.0
+		var camera_bottom_y := bottom_camera.global_position.y + half_height + 32
+		return global_position.y > camera_bottom_y
 
 @rpc("any_peer", "call_local")
 func send_respawn_signal() -> void:
