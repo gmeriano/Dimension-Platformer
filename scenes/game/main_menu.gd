@@ -6,6 +6,9 @@ const PLAYER = preload("res://scenes/player/Player.tscn")
 @onready var player_2_spawn: Marker2D = $Player2Spawn
 @onready var oid_lbl: Label = $UI/Multiplayer/VBoxContainer/OID
 @onready var oid_input: LineEdit = $UI/Multiplayer/VBoxContainer/OIDInput
+@onready var host: Button = $UI/Multiplayer/VBoxContainer/Host
+@onready var join: Button = $UI/Multiplayer/VBoxContainer/Join
+@onready var local: Button = $UI/Multiplayer/VBoxContainer/Local
 
 var peer
 var controls1 = preload("res://assets/resources/player1_movement.tres")
@@ -19,7 +22,21 @@ func set_oid():
 	await Multiplayer.noray_connected
 	oid_lbl.text = Noray.oid
 
+func disable_buttons():
+	host.disabled = true
+	join.disabled = true
+	local.disabled = true
+
+func _physics_process(delta: float) -> void:
+	if GameManager.get_player_1():
+		if GameManager.get_player_1().global_position.y - player_1_spawn.global_position.y > 500:
+			GameManager.get_player_1().global_position = player_1_spawn.global_position
+	if GameManager.get_player_2():
+		if GameManager.get_player_2().global_position.y - player_2_spawn.global_position.y > 500:
+			GameManager.get_player_2().global_position = player_2_spawn.global_position
+
 func _on_host_pressed():
+	disable_buttons()
 	Global.IS_ONLINE_MULTIPLAYER = true
 	Multiplayer.host()
 	
@@ -32,6 +49,7 @@ func _on_host_pressed():
 	add_player_online(multiplayer.get_unique_id())
 
 func _on_join_pressed():
+	disable_buttons()
 	Global.IS_ONLINE_MULTIPLAYER = true
 	Multiplayer.join(oid_input.text)
 
@@ -55,6 +73,7 @@ func set_player_positions_in_menu(player_name: String):
 		
 
 func _on_local_pressed() -> void:
+	disable_buttons()
 	var player1 = PLAYER.instantiate()
 	player1.controls = load("res://assets/resources/player1_movement.tres")
 	var player2 = PLAYER.instantiate()
@@ -73,18 +92,8 @@ func _on_local_pressed() -> void:
 func _on_start_pressed() -> void:
 	start_game()
 
-
-func start_game() -> void:
-	if Global.IS_ONLINE_MULTIPLAYER:
-		start_game_remote.rpc()
-		return
-	_start_game()
-
 @rpc("any_peer", "call_local")
-func start_game_remote() -> void:
-	_start_game()
-
-func _start_game() -> void:
+func start_game() -> void:
 	if GameManager.is_player_1_set() && GameManager.is_player_2_set():
 		remove_child(GameManager.get_player_1())
 		remove_child(GameManager.get_player_2())
