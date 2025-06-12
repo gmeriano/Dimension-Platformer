@@ -72,10 +72,10 @@ func initialize_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 0):
 		# times 2 bc we scaled sprite by 0.5, + 16 to match rect exactly
-		player_shadow.offset.y += (Global.DIMENSION_OFFSET * 2 - 16)
+		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
 	elif (current_dimension == 1):
 		original_dimension = 1
-		player_shadow.offset.y -= (Global.DIMENSION_OFFSET * 2 + 16)
+		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 
 func _physics_process(delta: float) -> void:
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
@@ -112,6 +112,7 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 	can_move = false
 	is_tweening = true
 	color_rect.color.a = 0.2
+	player_shadow.visible = false
 	
 	if tween and tween.is_valid():
 		tween.kill()
@@ -127,16 +128,19 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 	tween.connect("finished", Callable(self, "_on_tween_finished"))
 
 func _on_tween_finished():
-	multiplayer_synchronizer.replication_interval = 0.0
 	color_rect.color.a = 1
 	color_rect.rotation = 0
 	is_tweening = false
 	can_move = true
+	player_shadow.visible = true
 	if current_dimension == 0:
 		current_dimension = 1
+		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 	else:
 		current_dimension = 0
+		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
 	unstick_player_if_necessary()
+	multiplayer_synchronizer.replication_interval = 0.0
 
 # Try small diagonal and cardinal movements to escape the collision
 func unstick_player_if_necessary():

@@ -39,7 +39,20 @@ func add_player_online(pid):
 	var player = PLAYER.instantiate()
 	player.name = str(pid)
 	player.set_multiplayer_authority(int(str(pid)))
+	
 	add_child(player)
+	
+	set_player_positions_in_menu.rpc(player.name)
+
+@rpc("any_peer", "call_local")
+func set_player_positions_in_menu(player_name: String):
+	var player = get_node(player_name)
+	if player.is_multiplayer_authority():
+		if multiplayer.is_server():
+			player.global_position = player_1_spawn.global_position
+		else:
+			player.global_position = player_2_spawn.global_position
+		
 
 func _on_local_pressed() -> void:
 	var player1 = PLAYER.instantiate()

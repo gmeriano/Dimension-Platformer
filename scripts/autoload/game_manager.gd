@@ -23,6 +23,8 @@ func is_player_2_set() -> bool:
 
 @rpc("any_peer", "call_local")
 func load_next_level() -> void:
+	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100)
+	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100)
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
 
