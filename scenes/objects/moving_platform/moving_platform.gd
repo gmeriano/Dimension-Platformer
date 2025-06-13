@@ -9,7 +9,7 @@ var platform_starting_position: Vector2
 var starting_direction: float
 var can_move = false
 var start_time = 0
-var first_tick = true
+var first_tick = false
 
 func _ready() -> void:
 	add_to_group("moving_platform")
@@ -44,5 +44,5 @@ func _on_fade_to_normal_finished_platform_can_move_true():
 @rpc("call_local", "any_peer")
 func start_platform(start_time_sent):
 	can_move = true
-	first_tick = true
+	first_tick = false
 	start_time = start_time_sent
