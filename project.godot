@@ -24,6 +24,7 @@ GameManager="*res://scripts/autoload/game_manager.gd"
 Multiplayer="*res://scripts/autoload/multiplayer.gd"
 Noray="*res://addons/netfox.noray/noray.gd"
 PacketHandshake="*res://addons/netfox.noray/packet-handshake.gd"
+Keys="*res://scripts/keys.gd"
 
 [display]
 

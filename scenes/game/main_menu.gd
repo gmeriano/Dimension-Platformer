@@ -4,22 +4,61 @@ const PLAYER = preload("res://scenes/player/Player.tscn")
 @onready var multiplayer_ui = $UI/Multiplayer
 @onready var player_1_spawn: Marker2D = $Player1Spawn
 @onready var player_2_spawn: Marker2D = $Player2Spawn
-@onready var oid_lbl: Label = $UI/Multiplayer/VBoxContainer/OID
-@onready var oid_input: LineEdit = $UI/Multiplayer/VBoxContainer/OIDInput
+@onready var room_code: LineEdit = $UI/Multiplayer/VBoxContainer/RoomCode
 @onready var host: Button = $UI/Multiplayer/VBoxContainer/Host
 @onready var join: Button = $UI/Multiplayer/VBoxContainer/Join
 @onready var local: Button = $UI/Multiplayer/VBoxContainer/Local
+@onready var start: Button = $UI/Multiplayer/VBoxContainer/Start
+@onready var loading: Label = $UI/Multiplayer/VBoxContainer/Loading
+@onready var http_request: HTTPRequest = $HTTPRequest
 
 var peer
 var controls1 = preload("res://assets/resources/player1_movement.tres")
 var controls2 = preload("res://assets/resources/player2_movement.tres")
+var noray_oid = ""
+var in_game = false
 
 func _ready():
 	set_oid()
+	host.disabled = true
+	join.disabled = true
+	start.disabled = true
+	http_request.request_completed.connect(_on_request_completed)
+	room_code.text_changed.connect(_on_room_code_text_changed)
+
+func _on_room_code_text_changed(new_text: String) -> void:
+	if not in_game:
+		join.disabled = new_text.strip_edges() == ""
+		host.disabled = new_text.strip_edges() == ""
+		start.disabled = new_text.strip_edges() == ""
+
+func _on_request_completed(result, response_code, headers, body):
+	if response_code == 201:
+		print("Set Room Code")
+	elif response_code == 200:
+		var json = JSON.new()
+		var parse_status = json.parse(body.get_string_from_utf8())
+
+		if parse_status == OK:
+			var data = json.data
+			if data.size() > 0:
+				var oid = data[0]["oid"]
+				print("Found Room")
+				loading.visible = false
+				room_code.editable = false
+				disable_buttons()
+				in_game = true
+				Multiplayer.join(oid)
+			else:
+				loading.text = "Room code not found."
+		else:
+			loading.text = "Room code not found."
+	else:
+		loading.text = "Error"
 
 func set_oid():
 	await Multiplayer.noray_connected
-	oid_lbl.text = Noray.oid
+	noray_oid = Noray.oid
 
 func disable_buttons():
 	host.disabled = true
@@ -38,6 +77,9 @@ func _on_host_pressed():
 	disable_buttons()
 	Global.IS_ONLINE_MULTIPLAYER = true
 	Multiplayer.host()
+	in_game = true
+	room_code.editable = false
+	add_room_code_to_db(room_code.text, noray_oid)
 	
 	multiplayer.peer_connected.connect(
 		func(pid):
@@ -47,10 +89,38 @@ func _on_host_pressed():
 	
 	add_player_online(multiplayer.get_unique_id())
 
+func add_room_code_to_db(room_code: String, oid: String) -> void:
+	var url := "https://khavewafdyrnurcujojk.supabase.co/rest/v1/room-codes"
+	var headers = [
+		"apikey: " + Keys.SUPABASE_API_KEY,
+		"Authorization: Bearer " + Keys.SUPABASE_API_KEY,
+		"Content-Type: application/json"
+	]
+	var payload = {
+		"room_code": room_code,
+		"oid": oid
+	}
+	var json_body = JSON.stringify(payload)
+	http_request.request(url, headers, HTTPClient.METHOD_POST, json_body)
+
 func _on_join_pressed():
-	disable_buttons()
+	loading.visible = true
 	Global.IS_ONLINE_MULTIPLAYER = true
-	Multiplayer.join(oid_input.text)
+	fetch_oid_from_room_code(room_code.text)
+
+func fetch_oid_from_room_code(room_code: String):
+	var url := "https://khavewafdyrnurcujojk.supabase.co/rest/v1/room-codes" \
+		+ "?room_code=eq." + room_code \
+		+ "&order=created_at.desc" \
+		+ "&limit=1"
+
+	var headers = [
+		"apikey: " + Keys.SUPABASE_API_KEY,
+		"Authorization: Bearer " + Keys.SUPABASE_API_KEY
+	]
+	var err = $HTTPRequest.request(url, headers, HTTPClient.METHOD_GET)
+	if err != OK:
+		print("Request error: ", err)
 
 func add_player_online(pid):
 	var player = PLAYER.instantiate()
@@ -73,6 +143,8 @@ func set_player_positions_in_menu(player_name: String):
 
 func _on_local_pressed() -> void:
 	disable_buttons()
+	start.disabled = false
+	in_game = true
 	var player1 = PLAYER.instantiate()
 	player1.controls = load("res://assets/resources/player1_movement.tres")
 	var player2 = PLAYER.instantiate()
@@ -104,6 +176,3 @@ func start_game() -> void:
 func _on_transition_finished_start_game():
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_start_game"))
 	get_tree().change_scene_to_file("res://scenes/game/game.tscn")
-
-func _on_copy_oid_pressed() -> void:
-	DisplayServer.clipboard_set(Noray.oid)
