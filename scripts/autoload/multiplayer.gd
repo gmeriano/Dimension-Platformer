@@ -32,8 +32,6 @@ func host():
 	is_host = true
 
 func join(oid):
-	#tmp relay only for speed delete later
-	#Noray.connect_relay(external_oid)
 	Noray.connect_nat(oid)
 	external_oid = oid
 
