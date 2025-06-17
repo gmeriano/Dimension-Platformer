@@ -6,6 +6,7 @@ class_name LevelManager
 @onready var player_2_spawn: Marker2D = $"../Player2Spawn"
 
 var players: Array[Player] = []
+var cameras: Array[Camera2D] = []
 var spawn_positions: Array[Marker2D]
 var swapping = false
 var level_complete = false

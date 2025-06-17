@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=4 uid="uid://b3qjcyjdqs7ot"]
+[gd_scene load_steps=8 format=4 uid="uid://b3qjcyjdqs7ot"]
 
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_la58i"]
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="5_ko8cd"]
+[ext_resource type="PackedScene" uid="uid://de3e2bchuyhd5" path="res://scenes/objects/respawn_zone/respawn_zone.tscn" id="5_w1vr5"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_4tckc"]
 [ext_resource type="PackedScene" uid="uid://3xk4fdftjod6" path="res://scenes/objects/player_entered_switch_platform/player_entered_switch_platform.tscn" id="7_3nob1"]
 
@@ -431,3 +432,9 @@ position = Vector2(0, 32)
 
 [node name="Player2Spawn" type="Marker2D" parent="."]
 position = Vector2(0, 432)
+
+[node name="RespawnZone" parent="." instance=ExtResource("5_w1vr5")]
+position = Vector2(-279, 170)
+
+[node name="RespawnZone2" parent="." instance=ExtResource("5_w1vr5")]
+position = Vector2(-258, 569)

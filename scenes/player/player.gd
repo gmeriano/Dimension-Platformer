@@ -37,8 +37,6 @@ var bounce = false
 const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
 const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 
-var camera: Camera2D = null
-
 func _enter_tree():
 	if Global.IS_ONLINE_MULTIPLAYER:
 		set_multiplayer_authority(int(str(name)))
@@ -65,16 +63,15 @@ func _ready():
 	var shadow_color = color
 	shadow_color.a = 0.3
 	player_shadow.modulate = shadow_color
-	initialize_shadow_location()
+	update_shadow_location()
 	respawn_point = global_position
 
-func initialize_shadow_location() -> void:
+func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 0):
 		# times 2 bc we scaled sprite by 0.5, + 16 to match rect exactly
 		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
 	elif (current_dimension == 1):
-		original_dimension = 1
 		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 
 func _physics_process(delta: float) -> void:
@@ -95,10 +92,10 @@ func clamp_x_by_camera():
 	var new_x = global_position.x
 	# Clamp to left camera bound
 	if not is_within_camera_left(new_x):
-		new_x = camera.global_position.x - ((camera.get_viewport_rect().size.x / camera.zoom.x) / 2.0) + (collision_shape_2d.shape.get_rect().size.x / 2)
+		new_x = GameManager.get_camera_1().global_position.x - ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) + (collision_shape_2d.shape.get_rect().size.x / 2)
 	# Clamp to right camera bound
 	if not is_within_camera_right(new_x):
-		new_x = camera.global_position.x + ((camera.get_viewport_rect().size.x / camera.zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
+		new_x = GameManager.get_camera_1().global_position.x + ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
 	global_position.x = new_x
 
 func swap_dimension():
@@ -133,10 +130,9 @@ func _on_tween_finished():
 	player_shadow.visible = true
 	if current_dimension == 0:
 		current_dimension = 1
-		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
 	else:
 		current_dimension = 0
-		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
+	update_shadow_location()
 	unstick_player_if_necessary()
 	is_tweening = false
 	can_move = true
@@ -221,26 +217,17 @@ func handle_acceleration(inputAxis, delta):
 			# Right boundary hit, block movement right
 			target_velocity_x = min(0, target_velocity_x) 
 		velocity.x = target_velocity_x
-
-func set_camera(camera1: Camera2D):
-	camera = camera1
 	
 func is_within_camera_right(x_pos: float) -> bool:
-	if camera:
+	if GameManager.get_camera_1() && GameManager.get_camera_2():
 		var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
-		var viewport_size = camera.get_viewport_rect().size
-		var half_width = (viewport_size.x / camera.zoom.x) / 2.0
-		var camera_right_edge = camera.global_position.x + half_width
-		return x_pos + player_half_size <= camera_right_edge
+		return x_pos + player_half_size <= GameManager.get_camera_right_edge()
 	return true
 
 func is_within_camera_left(x_pos: float) -> bool:
-	if camera:
+	if GameManager.get_camera_1() && GameManager.get_camera_2():
 		var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
-		var viewport_size = camera.get_viewport_rect().size
-		var half_width = (viewport_size.x / camera.zoom.x) / 2.0
-		var camera_left_edge = camera.global_position.x - half_width
-		return x_pos - player_half_size >= camera_left_edge
+		return x_pos - player_half_size >= GameManager.get_camera_left_edge()
 	return true
 
 @rpc("any_peer", "call_local")
@@ -255,19 +242,19 @@ func on_respawn(respawn_position: Vector2) -> void:
 	global_position = respawn_position
 	velocity = Vector2.ZERO
 	current_dimension = original_dimension
-	initialize_shadow_location()
+	update_shadow_location()
 
 func should_respawn() -> bool:
 	if !can_move || is_tweening:
 		return false
 	if current_dimension == 0:
-		var top_camera: Camera2D = GameManager.get_player_1().camera
+		var top_camera: Camera2D = GameManager.get_camera_1()
 		var viewport_size := top_camera.get_viewport_rect().size
 		var half_height := (viewport_size.y / top_camera.zoom.y) / 2.0
 		var camera_bottom_y := top_camera.global_position.y + half_height + 32
 		return global_position.y > camera_bottom_y
 	else:
-		var bottom_camera: Camera2D = GameManager.get_player_2().camera
+		var bottom_camera: Camera2D = GameManager.get_camera_2()
 		var viewport_size := bottom_camera.get_viewport_rect().size
 		var half_height := (viewport_size.y / bottom_camera.zoom.y) / 2.0
 		var camera_bottom_y := bottom_camera.global_position.y + half_height + 32
