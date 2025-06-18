@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=4 uid="uid://cnr3o46epud0y"]
+[gd_scene load_steps=8 format=4 uid="uid://cnr3o46epud0y"]
 
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_u08y4"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="2_jnqp3"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="3_flc86"]
+[ext_resource type="PackedScene" uid="uid://cik7f1p4h4twl" path="res://scenes/objects/trampoline/trampoline.tscn" id="4_uuuk8"]
+[ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/objects/fireball_spawner/fireball_spawner.tscn" id="5_ucdd2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8hdn5"]
 texture = ExtResource("2_jnqp3")
@@ -428,3 +430,9 @@ position = Vector2(238, 4)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
 position = Vector2(3, 16)
+
+[node name="Trampoline" parent="." instance=ExtResource("4_uuuk8")]
+position = Vector2(-101, 24)
+
+[node name="FireballSpawner" parent="." instance=ExtResource("5_ucdd2")]
+position = Vector2(182, 433)

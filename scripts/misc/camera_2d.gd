@@ -6,21 +6,31 @@ extends Camera2D
 @export var zoom_out_speed = 3.0
 @export var zoom_in_speed = 5.0
 @export var dimension = 1  # 1 or 2
+@export var zoom_out_trigger_buffer = 0.25  # percentage of screen
+@export var zoom_in_trigger_buffer = 0.35  # percentage of screen (greater than zoom out)
 
 var player1: Player = GameManager.get_player_1()
 var player2: Player = GameManager.get_player_2()
 var previous_zoom = camera_zoom
 var zoom_target = camera_zoom
 var is_zooming_out = false
+var initial_position: Vector2
 
 func _ready() -> void:
 	zoom = Vector2(camera_zoom, camera_zoom)
 	previous_zoom = camera_zoom
+	initial_position = global_position
+	if dimension == 2:
+		initial_position.y += Global.DIMENSION_OFFSET
 
 func _process(delta: float) -> void:
 	if !player1.is_tweening and !player2.is_tweening:
 		set_x_position()
 		update_camera_zoom(delta)
+
+func reset() -> void:
+	global_position = initial_position
+	zoom = Vector2(camera_zoom, camera_zoom)
 
 func set_x_position() -> void:
 	var mid_x = (player1.global_position.x + player2.global_position.x) / 2
@@ -46,14 +56,15 @@ func update_camera_zoom(delta: float) -> void:
 
 	var distance_to_top = min(distance_to_top_player, distance_to_top_other)
 
-	# Zoom OUT immediately if needed
-	if distance_to_top < quarter_visible_height:
+	var zoom_out_threshold = half_visible_height * zoom_out_trigger_buffer
+	var zoom_in_threshold = half_visible_height * zoom_in_trigger_buffer
+
+	if distance_to_top < zoom_out_threshold:
 		is_zooming_out = true
-		var zoom_ratio = clamp(distance_to_top / quarter_visible_height, 0.2, 1.0)
+		var zoom_ratio = clamp(distance_to_top / zoom_out_threshold, 0.2, 1.0)
 		zoom_target = camera_zoom * zoom_ratio
 
-	# Zoom IN only after leaving zoom-out region
-	elif is_zooming_out and distance_to_top > quarter_visible_height:
+	elif is_zooming_out and distance_to_top > zoom_in_threshold:
 		is_zooming_out = false
 		zoom_target = camera_zoom
 

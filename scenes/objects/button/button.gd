@@ -8,6 +8,9 @@ var can_be_pressed = true
 
 signal button_pressed
 
+func _ready() -> void:
+	add_to_group("trigger_buttons")
+
 func _process(delta: float) -> void:
 	if player:
 		if can_be_pressed and InputManager.is_interact_pressed(player):

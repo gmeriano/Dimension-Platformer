@@ -26,7 +26,7 @@ func _physics_process(_delta: float) -> void:
 	
 	handle_inputs()
 	check_respawn()
-	if multiplayer.is_server():
+	if multiplayer.is_server() and !level_complete:
 		check_level_complete()
 
 func check_level_complete() -> void:
@@ -65,6 +65,8 @@ func _on_transition_finished_respawn():
 	for i in range(players.size()):
 		var player = players[i]
 		player.on_respawn.rpc(spawn_positions[i].global_position)
+	GameManager.get_camera_1().reset()
+	GameManager.get_camera_2().reset()
 	reset_platforms()
 
 func reset_platforms() -> void:
