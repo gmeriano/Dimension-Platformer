@@ -402,47 +402,52 @@ sources/0 = SubResource("TileSetAtlasSource_nv4xt")
 [node name="LevelManager" type="Node2D" parent="."]
 script = ExtResource("5_fa5sv")
 
-[node name="LevelCompleteZone" parent="." instance=ExtResource("6_jcjpi")]
-position = Vector2(747, -10)
-
-[node name="LevelCompleteZone2" parent="." instance=ExtResource("6_jcjpi")]
-position = Vector2(753, 384)
-
-[node name="PlayerEnteredSwitchPlatform" parent="." instance=ExtResource("7_wvdba")]
-position = Vector2(-39, 25)
-
-[node name="PlayerEnteredSwitchPlatform3" parent="." instance=ExtResource("7_wvdba")]
-position = Vector2(212, 23)
-
-[node name="PlayerEnteredSwitchPlatform5" parent="." instance=ExtResource("7_wvdba")]
-position = Vector2(440, 20)
-
-[node name="PlayerEnteredSwitchPlatform2" parent="." instance=ExtResource("7_wvdba")]
-position = Vector2(79, 421)
-current_dimension = 1
-
-[node name="PlayerEnteredSwitchPlatform4" parent="." instance=ExtResource("7_wvdba")]
-position = Vector2(330, 419)
-current_dimension = 1
-
-[node name="PlayerEnteredSwitchPlatform6" parent="." instance=ExtResource("7_wvdba")]
-position = Vector2(588, 420)
-current_dimension = 1
-
-[node name="Platform" parent="." instance=ExtResource("7_jrrsh")]
-position = Vector2(688, 420)
-
-[node name="Platform2" parent="." instance=ExtResource("7_jrrsh")]
-position = Vector2(687, 24)
-
-[node name="Player1Spawn" type="Marker2D" parent="."]
-position = Vector2(11, 12)
-
-[node name="Player2Spawn" type="Marker2D" parent="."]
-position = Vector2(129, 407)
-
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 texture_filter = 1
 position = Vector2(0, 40)
 tile_map_data = PackedByteArray("AABwABUAAAACAAQAAABvABUAAAABAAQAAABuABUAAAABAAQAAABtABUAAAABAAQAAABsABUAAAABAAQAAABrABUAAAABAAQAAABqABUAAAABAAQAAABpABUAAAABAAQAAABoABUAAAABAAQAAABnABUAAAABAAQAAABmABUAAAABAAQAAABlABUAAAABAAQAAABkABUAAAABAAQAAABjABUAAAABAAQAAABiABUAAAABAAQAAABhABUAAAABAAQAAABgABUAAAABAAQAAABfABUAAAABAAQAAABeABUAAAABAAQAAABdABUAAAABAAQAAABcABUAAAABAAQAAABbABUAAAABAAQAAABaABUAAAABAAQAAABZABUAAAABAAQAAABYABUAAAABAAQAAABXABUAAAABAAQAAABWABUAAAABAAQAAABVABUAAAABAAQAAABUABUAAAABAAQAAABTABUAAAABAAQAAABSABUAAAABAAQAAABRABUAAAABAAQAAABQABUAAAABAAQAAABPABUAAAABAAQAAABOABUAAAABAAQAAABNABUAAAABAAQAAABMABUAAAABAAQAAABLABUAAAABAAQAAABKABUAAAABAAQAAABJABUAAAABAAQAAABIABUAAAABAAQAAABHABUAAAABAAQAAABGABUAAAABAAQAAABFABUAAAABAAQAAABEABUAAAABAAQAAABDABUAAAABAAQAAABCABUAAAABAAQAAABBABUAAAABAAQAAABAABUAAAABAAQAAAA/ABUAAAABAAQAAAA+ABUAAAABAAQAAAA9ABUAAAABAAQAAAA8ABUAAAABAAQAAAA7ABUAAAABAAQAAAA6ABUAAAABAAQAAAA5ABUAAAABAAQAAAA4ABUAAAABAAQAAAA3ABUAAAABAAQAAAA2ABUAAAABAAQAAAA1ABUAAAABAAQAAAA0ABUAAAABAAQAAAAzABUAAAABAAQAAAAyABUAAAABAAQAAAAxABUAAAABAAQAAAAwABUAAAABAAQAAAAvABUAAAABAAQAAAAuABUAAAABAAQAAAAtABUAAAABAAQAAAAsABUAAAABAAQAAAArABUAAAABAAQAAAAqABUAAAABAAQAAAApABUAAAABAAQAAAAoABUAAAABAAQAAAAnABUAAAABAAQAAAAmABUAAAABAAQAAAAlABUAAAABAAQAAAAkABUAAAABAAQAAAAjABUAAAABAAQAAAAiABUAAAABAAQAAAAhABUAAAABAAQAAAAgABUAAAABAAQAAAAfABUAAAABAAQAAAAeABUAAAABAAQAAAAdABUAAAABAAQAAAAcABUAAAABAAQAAAAbABUAAAABAAQAAAAaABUAAAABAAQAAAAZABUAAAABAAQAAAAYABUAAAABAAQAAAAXABUAAAABAAQAAAAWABUAAAABAAQAAAAVABUAAAABAAQAAAAUABUAAAABAAQAAAATABUAAAABAAQAAAASABUAAAABAAQAAAARABUAAAABAAQAAAAQABUAAAABAAQAAAAPABUAAAABAAQAAAAOABUAAAABAAQAAAANABUAAAABAAQAAAAMABUAAAABAAQAAAALABUAAAABAAQAAAAKABUAAAABAAQAAAAJABUAAAABAAQAAAAIABUAAAABAAQAAAAHABUAAAABAAQAAAAGABUAAAABAAQAAAAFABUAAAABAAQAAAAEABUAAAABAAQAAAADABUAAAABAAQAAAACABUAAAABAAQAAAABABUAAAABAAQAAAAAABUAAAABAAQAAAD//xUAAAABAAQAAAD+/xUAAAABAAQAAAD9/xUAAAABAAQAAAD8/xUAAAABAAQAAAD7/xUAAAABAAQAAAD6/xUAAAAAAAQAAAA=")
 tile_set = SubResource("TileSet_xpd0r")
+
+[node name="Dimension1" type="Node2D" parent="."]
+
+[node name="LevelCompleteZone1" parent="Dimension1" instance=ExtResource("6_jcjpi")]
+position = Vector2(747, -10)
+
+[node name="PlayerEnteredSwitchPlatform" parent="Dimension1" instance=ExtResource("7_wvdba")]
+position = Vector2(-39, 25)
+
+[node name="PlayerEnteredSwitchPlatform3" parent="Dimension1" instance=ExtResource("7_wvdba")]
+position = Vector2(212, 23)
+
+[node name="PlayerEnteredSwitchPlatform5" parent="Dimension1" instance=ExtResource("7_wvdba")]
+position = Vector2(440, 20)
+
+[node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
+position = Vector2(11, 12)
+
+[node name="Platform1" parent="Dimension1" instance=ExtResource("7_jrrsh")]
+position = Vector2(687, 24)
+
+[node name="Dimension2" type="Node2D" parent="."]
+position = Vector2(0, 400)
+
+[node name="PlayerEnteredSwitchPlatform2" parent="Dimension2" instance=ExtResource("7_wvdba")]
+position = Vector2(79, 21)
+current_dimension = 2
+
+[node name="PlayerEnteredSwitchPlatform4" parent="Dimension2" instance=ExtResource("7_wvdba")]
+position = Vector2(330, 19)
+current_dimension = 2
+
+[node name="PlayerEnteredSwitchPlatform6" parent="Dimension2" instance=ExtResource("7_wvdba")]
+position = Vector2(588, 20)
+current_dimension = 2
+
+[node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
+position = Vector2(129, 7)
+
+[node name="Platform2" parent="Dimension2" instance=ExtResource("7_jrrsh")]
+position = Vector2(688, 20)
+
+[node name="LevelCompleteZone2" parent="Dimension2" instance=ExtResource("6_jcjpi")]
+position = Vector2(753, -16)

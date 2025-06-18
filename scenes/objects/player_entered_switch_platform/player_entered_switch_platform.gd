@@ -2,7 +2,7 @@ extends Node2D
 class_name PlayerEnteredSwitchPlatform
 
 @onready var switch_platform: SwitchPlatform = $SwitchPlatform
-@export var current_dimension: int = 0
+@export var current_dimension: int = 1
 
 func _ready() -> void:
 	add_to_group("player_entered_switch_platform")
@@ -22,9 +22,9 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:
 		var player: Player = body as Player
 		if switch_platform.player_on_platform:
+			switch_platform.player_on_platform = false
 			if !player.is_tweening && player.can_move:
-				switch_platform.player_on_platform = false
-			switch_platform.switch_dimension()
+				switch_platform.switch_dimension()
 				
 func update_color() -> void:
 	if switch_platform.player_on_platform:

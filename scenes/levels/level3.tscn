@@ -10,41 +10,46 @@
 [node name="LevelManager" type="Node2D" parent="."]
 script = ExtResource("4_07nc1")
 
-[node name="LevelCompleteZone" parent="." instance=ExtResource("5_sijq2")]
+[node name="Dimension1" type="Node2D" parent="."]
+
+[node name="LevelCompleteZone1" parent="Dimension1" instance=ExtResource("5_sijq2")]
 position = Vector2(728, -8)
 
-[node name="LevelCompleteZone2" parent="." instance=ExtResource("5_sijq2")]
-position = Vector2(729, 390)
-
-[node name="PlayerEnteredSwitchPlatform5" parent="." instance=ExtResource("6_e4n3s")]
+[node name="PlayerEnteredSwitchPlatform5" parent="Dimension1" instance=ExtResource("6_e4n3s")]
 position = Vector2(440, 20)
 
-[node name="PlayerEnteredSwitchPlatform2" parent="." instance=ExtResource("6_e4n3s")]
-position = Vector2(79, 421)
-current_dimension = 1
-
-[node name="PlayerEnteredSwitchPlatform4" parent="." instance=ExtResource("6_e4n3s")]
-position = Vector2(330, 419)
-current_dimension = 1
-
-[node name="PlayerEnteredSwitchPlatform6" parent="." instance=ExtResource("6_e4n3s")]
-position = Vector2(588, 420)
-current_dimension = 1
-
-[node name="Platform" parent="." instance=ExtResource("7_ds1ek")]
-position = Vector2(688, 420)
-
-[node name="Platform2" parent="." instance=ExtResource("7_ds1ek")]
+[node name="Platform2" parent="Dimension1" instance=ExtResource("7_ds1ek")]
 position = Vector2(687, 24)
 
-[node name="Platform3" parent="." instance=ExtResource("7_ds1ek")]
+[node name="Platform3" parent="Dimension1" instance=ExtResource("7_ds1ek")]
 position = Vector2(-40, 25)
 
-[node name="Platform4" parent="." instance=ExtResource("7_ds1ek")]
+[node name="Platform4" parent="Dimension1" instance=ExtResource("7_ds1ek")]
 position = Vector2(211, 22)
 
-[node name="Player1Spawn" type="Marker2D" parent="."]
+[node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
 position = Vector2(10, 0)
 
-[node name="Player2Spawn" type="Marker2D" parent="."]
-position = Vector2(128, 400)
+[node name="Dimension2" type="Node2D" parent="."]
+position = Vector2(0, 400)
+
+[node name="LevelCompleteZone2" parent="Dimension2" instance=ExtResource("5_sijq2")]
+position = Vector2(729, -10)
+
+[node name="PlayerEnteredSwitchPlatform2" parent="Dimension2" instance=ExtResource("6_e4n3s")]
+position = Vector2(79, 21)
+current_dimension = 2
+
+[node name="PlayerEnteredSwitchPlatform4" parent="Dimension2" instance=ExtResource("6_e4n3s")]
+position = Vector2(330, 19)
+current_dimension = 2
+
+[node name="Platform" parent="Dimension2" instance=ExtResource("7_ds1ek")]
+position = Vector2(688, 20)
+
+[node name="PlayerEnteredSwitchPlatform6" parent="Dimension2" instance=ExtResource("6_e4n3s")]
+position = Vector2(588, 20)
+current_dimension = 2
+
+[node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
+position = Vector2(128, 0)

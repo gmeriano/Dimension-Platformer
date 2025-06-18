@@ -22,23 +22,23 @@ var use_controller_for_p1 = true
 var use_controller_for_p2 = true
 
 var level_paths := [
-	"res://scenes/levels/level1.tscn",
-	"res://scenes/levels/easy_platform_level.tscn",
-	"res://scenes/levels/level2.tscn",
-	"res://scenes/levels/level3.tscn",
-	#"res://scenes/levels/level4.tscn",
-	"res://scenes/levels/button_platform_level.tscn",
-	"res://scenes/levels/fire_wall_level.tscn",
-	"res://scenes/levels/moving_platform_level.tscn",
-	"res://scenes/levels/pole_jump_level.tscn",
+	"res://scenes/levels/test_levels/TestCameraLevel.tscn", # 0
+	"res://scenes/levels/level1.tscn", # 0
+	"res://scenes/levels/easy_platform_level.tscn", # 1
+	"res://scenes/levels/level2.tscn", # 2
+	"res://scenes/levels/level3.tscn", # 2
+	"res://scenes/levels/button_platform_level.tscn", # 4
+	"res://scenes/levels/fire_wall_level.tscn", # 5
+	"res://scenes/levels/moving_platform_level.tscn", # 6
+	"res://scenes/levels/pole_jump_level.tscn", # 7
 ]
-var current_level_index = 6
+var current_level_index = 0
 
 func _ready() -> void:
 	player1 = GameManager.get_player_1()
 	player2 = GameManager.get_player_2()
-	dimensions["1"].camera.dimension = 0
-	dimensions["2"].camera.dimension = 1
+	dimensions["1"].camera.dimension = 1
+	dimensions["2"].camera.dimension = 2
 	GameManager.set_camera_1(dimensions["1"].camera)
 	GameManager.set_camera_2(dimensions["2"].camera)
 	load_level(load(level_paths[current_level_index]))
@@ -80,15 +80,17 @@ func load_level(level: PackedScene) -> void:
 	current_level_node = level_node
 
 	# Re-assign players
-	player1.global_position = current_level_node.get_node("Player1Spawn").global_position
+	player1.global_position = current_level_node.get_node("Dimension1").get_node("Player1Spawn").global_position
 	player1.respawn_point = player1.global_position
-	player1.current_dimension = 0
+	player1.current_dimension = 1
+	player1.original_dimension = 1
 	player1.update_shadow_location()
 	current_level_node.add_child(player1)
 	
-	player2.global_position = current_level_node.get_node("Player2Spawn").global_position
+	player2.global_position = current_level_node.get_node("Dimension2").get_node("Player2Spawn").global_position
 	player2.respawn_point = player2.global_position
-	player2.current_dimension = 1
+	player2.current_dimension = 2
+	player2.original_dimension = 2
 	player2.update_shadow_location()
 	current_level_node.add_child(player2)
 

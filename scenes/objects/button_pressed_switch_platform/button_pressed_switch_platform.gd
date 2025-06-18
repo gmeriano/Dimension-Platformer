@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var switch_platform: SwitchPlatform = $SwitchPlatform
 @onready var timer: Timer = $Timer
-@export var current_dimension: int = 0
+@export var current_dimension: int = 1
 
 func _ready():
 	switch_platform.current_dimension = current_dimension

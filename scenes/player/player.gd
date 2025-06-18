@@ -8,7 +8,7 @@ signal respawn
 
 @export var controls: Resource = null
 @export var device_id: int = 0  # Each player gets their own controller ID
-@export var current_dimension: int = 0
+@export var current_dimension: int = 1
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var color_rect: ColorRect = $ColorRect
@@ -23,6 +23,7 @@ var double_jump = true
 var jump_velocity = -300
 var speed = 100
 var friction = 600
+
 var air_resistance = 200
 var can_move = true
 var is_tweening = false
@@ -30,7 +31,7 @@ var use_controller = false
 var previous_jump_pressed_for_controller = false
 var respawn_point: Vector2
 
-var original_dimension = current_dimension
+var original_dimension = 1
 var tween: Tween = null
 var bounce = false
 
@@ -46,15 +47,15 @@ func _enter_tree():
 		elif is_multiplayer_authority() and !multiplayer.is_server():
 			color = Color.RED
 			GameManager.set_player_2(self)
-			current_dimension = 1
-			original_dimension = 1
+			current_dimension = 2
+			original_dimension = 2
 		elif !is_multiplayer_authority() and !multiplayer.is_server():
 			color = Color.GREEN
 			GameManager.set_player_1(self)
 		else:
 			GameManager.set_player_2(self)
-			current_dimension = 1
-			original_dimension = 1
+			current_dimension = 2
+			original_dimension = 2
 			color = Color.RED
 		controls = load("res://assets/resources/player1_movement.tres")
 
@@ -68,10 +69,10 @@ func _ready():
 
 func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
-	if (current_dimension == 0):
+	if (current_dimension == 1):
 		# times 2 bc we scaled sprite by 0.5, + 16 to match rect exactly
 		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
-	elif (current_dimension == 1):
+	elif (current_dimension == 2):
 		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 
 func _physics_process(delta: float) -> void:
@@ -99,7 +100,7 @@ func clamp_x_by_camera():
 	global_position.x = new_x
 
 func swap_dimension():
-	if current_dimension == 0:
+	if current_dimension == 1:
 		move_to(Vector2(global_position.x, global_position.y + Global.DIMENSION_OFFSET))
 	else:
 		move_to(Vector2(global_position.x, global_position.y - Global.DIMENSION_OFFSET))
@@ -128,10 +129,10 @@ func _on_tween_finished():
 	color_rect.color.a = 1
 	color_rect.rotation = 0
 	player_shadow.visible = true
-	if current_dimension == 0:
-		current_dimension = 1
+	if current_dimension == 1:
+		current_dimension = 2
 	else:
-		current_dimension = 0
+		current_dimension = 1
 	update_shadow_location()
 	unstick_player_if_necessary()
 	is_tweening = false
@@ -207,7 +208,11 @@ func apply_air_resistance(inputAxis, delta):
 func handle_acceleration(inputAxis, delta):
 	# can handle separate acceleration with if check for is_on_floor() in future
 	if inputAxis != 0:
-		var target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
+		var target_velocity_x: float
+		if is_on_floor():
+			target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
+		else:
+			target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta * 2)
 		var proposed_position_x = global_position.x + target_velocity_x * delta
 		
 		if !is_within_camera_left(proposed_position_x):
@@ -247,7 +252,7 @@ func on_respawn(respawn_position: Vector2) -> void:
 func should_respawn() -> bool:
 	if !can_move || is_tweening:
 		return false
-	if current_dimension == 0:
+	if current_dimension == 1:
 		var top_camera: Camera2D = GameManager.get_camera_1()
 		var viewport_size := top_camera.get_viewport_rect().size
 		var half_height := (viewport_size.y / top_camera.zoom.y) / 2.0

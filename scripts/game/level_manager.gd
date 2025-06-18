@@ -1,9 +1,11 @@
 extends Node2D
 class_name LevelManager
-@onready var level_complete_zone: Node2D = $"../LevelCompleteZone"
-@onready var level_complete_zone_2: Node2D = $"../LevelCompleteZone2"
-@onready var player_1_spawn: Marker2D = $"../Player1Spawn"
-@onready var player_2_spawn: Marker2D = $"../Player2Spawn"
+@onready var level_complete_zone_1: Node2D = $"../Dimension1/LevelCompleteZone1"
+@onready var level_complete_zone_2: Node2D = $"../Dimension2/LevelCompleteZone2"
+@onready var player_1_spawn: Marker2D = $"../Dimension1/Player1Spawn"
+@onready var player_2_spawn: Marker2D = $"../Dimension2/Player2Spawn"
+@onready var dimension_1: Node2D = $"../Dimension1"
+@onready var dimension_2: Node2D = $"../Dimension2"
 
 var players: Array[Player] = []
 var cameras: Array[Camera2D] = []
@@ -14,19 +16,21 @@ var level_complete = false
 signal respawn_players
 
 func _ready():
+	dimension_2.global_position.y = dimension_1.global_position.y + Global.DIMENSION_OFFSET
 	spawn_positions = [player_1_spawn, player_2_spawn]
 	players = [GameManager.get_player_1(), GameManager.get_player_2()]
 	for player in players:
 		player.connect("respawn", Callable(self, "respawn_all_players"))
 
 func _physics_process(_delta: float) -> void:
+	
 	handle_inputs()
 	check_respawn()
 	if multiplayer.is_server():
 		check_level_complete()
 
 func check_level_complete() -> void:
-	if level_complete_zone.complete == true and level_complete_zone_2.complete == true:
+	if level_complete_zone_1.complete == true and level_complete_zone_2.complete == true:
 		level_complete = true
 		GameManager.load_next_level.rpc()
 

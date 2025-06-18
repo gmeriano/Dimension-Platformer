@@ -1,48 +1,82 @@
 extends Camera2D
 
-var camera_zoom = 1.5
+@export var camera_zoom = 1.5
+@export var min_zoom = 0.5
+@export var max_zoom = 3.0
+@export var zoom_out_speed = 3.0
+@export var zoom_in_speed = 5.0
+@export var dimension = 1  # 1 or 2
+
 var player1: Player = GameManager.get_player_1()
 var player2: Player = GameManager.get_player_2()
-var dimension = 0
+var previous_zoom = camera_zoom
+var zoom_target = camera_zoom
+var is_zooming_out = false
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	zoom.x = camera_zoom
-	zoom.y = camera_zoom
+	zoom = Vector2(camera_zoom, camera_zoom)
+	previous_zoom = camera_zoom
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	set_x_position()
-	set_y_position()
-	
+	if !player1.is_tweening and !player2.is_tweening:
+		set_x_position()
+		update_camera_zoom(delta)
+
 func set_x_position() -> void:
-	if not player1.is_tweening and not player2.is_tweening:
-		var target_x = (player1.global_position.x + player2.global_position.x) / 2
-		global_position.x = target_x
+	var mid_x = (player1.global_position.x + player2.global_position.x) / 2
+	global_position.x = mid_x
 
-func set_y_position() -> void:
-	var player = null
-	if player1.current_dimension == dimension:
-		player = player1
-	else:
-		player = player2
+func get_active_player() -> Player:
+	return player1 if player1.current_dimension == dimension else player2
 
-	if player.is_tweening:
-		return
+func get_other_player() -> Player:
+	return player1 if player1.current_dimension != dimension else player2
 
-	var screen_half_height = get_viewport().get_visible_rect().size.y * 0.5
-	var camera_half_height = screen_half_height * zoom.y
+func update_camera_zoom(delta: float) -> void:
+	var player = get_active_player()
+	var other_player = get_other_player()
 
-	# Define margin from center (40% of half screen height)
-	var vertical_margin = camera_half_height * 0.2
+	var half_visible_height = (get_viewport_rect().size.y / zoom.y) / 2
+	var top_edge_y = global_position.y - half_visible_height
+	var quarter_visible_height = half_visible_height / 2
 
-	var camera_y = global_position.y
-	var player_y = player.global_position.y
+	var distance_to_top_player = player.global_position.y - top_edge_y
+	var other_position_y = other_player.global_position.y - Global.DIMENSION_OFFSET if dimension == 1 else other_player.global_position.y + Global.DIMENSION_OFFSET
+	var distance_to_top_other = other_position_y - top_edge_y
 
-	var top_bound = camera_y - vertical_margin
-	var bottom_bound = camera_y + vertical_margin
+	var distance_to_top = min(distance_to_top_player, distance_to_top_other)
 
-	if player_y < top_bound:
-		global_position.y = player_y + vertical_margin
-	elif player_y > bottom_bound:
-		global_position.y = player_y - vertical_margin
+	# Zoom OUT immediately if needed
+	if distance_to_top < quarter_visible_height:
+		is_zooming_out = true
+		var zoom_ratio = clamp(distance_to_top / quarter_visible_height, 0.2, 1.0)
+		zoom_target = camera_zoom * zoom_ratio
+
+	# Zoom IN only after leaving zoom-out region
+	elif is_zooming_out and distance_to_top > quarter_visible_height:
+		is_zooming_out = false
+		zoom_target = camera_zoom
+
+	# If in between, do nothing (dead zone)
+	elif not is_zooming_out:
+		zoom_target = zoom_target
+
+	zoom_target = clamp(zoom_target, min_zoom, camera_zoom)
+
+	# Only update if zoom is meaningfully different
+	if abs(zoom.y - zoom_target) > 0.01:
+		var zoom_speed = zoom_out_speed if zoom_target < zoom.y else zoom_in_speed
+		var new_zoom = lerp(zoom.y, zoom_target, ease_func(delta * zoom_speed))
+
+		# Re-anchor to bottom-left to preserve screen position
+		var viewport_size = get_viewport_rect().size
+		var zoom_diff = new_zoom - previous_zoom
+		if abs(zoom_diff) > 0.001:
+			var anchor_offset = Vector2(viewport_size.x, viewport_size.y) * 0.5 * zoom_diff
+			global_position += anchor_offset
+
+		zoom = Vector2(new_zoom, new_zoom)
+		previous_zoom = new_zoom
+
+func ease_func(t: float) -> float:
+	return t * t * (3.0 - 2.0 * t)  # Smoothstep easing

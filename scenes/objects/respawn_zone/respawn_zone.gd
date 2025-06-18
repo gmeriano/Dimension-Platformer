@@ -3,7 +3,7 @@ extends Node2D
 @onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
 @onready var area_2d: Area2D = $Area2D
 
-@export var width = 1000
+@export var width = 10000
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

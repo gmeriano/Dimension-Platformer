@@ -37,4 +37,3 @@ script = ExtResource("2_t3hje")
 
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer2/SubViewport"]
 script = ExtResource("3_ovq0l")
-dimension = 2

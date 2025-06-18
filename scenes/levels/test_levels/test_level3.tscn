@@ -332,7 +332,6 @@ controls = ExtResource("3_ejr2k")
 [node name="Player2" parent="." instance=ExtResource("2_j5ral")]
 position = Vector2(2, 398)
 controls = ExtResource("4_aeiab")
-current_dimension = 1
 
 [node name="SwitchPlatform" parent="." instance=ExtResource("5_up6lm")]
 position = Vector2(257, -1)

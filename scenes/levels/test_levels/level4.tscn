@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://borxr8ts2hxyv"]
+
+[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_0q1fk"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="2_w3jrb"]
+[ext_resource type="PackedScene" uid="uid://3xk4fdftjod6" path="res://scenes/objects/player_entered_switch_platform/player_entered_switch_platform.tscn" id="3_r32j5"]
+[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="4_yqhb6"]
+
+[node name="Level4" type="Node2D"]
+
+[node name="LevelManager" type="Node2D" parent="."]
+script = ExtResource("1_0q1fk")
+
+[node name="LevelCompleteZone" parent="." instance=ExtResource("2_w3jrb")]
+position = Vector2(739, -71)
+
+[node name="LevelCompleteZone2" parent="." instance=ExtResource("2_w3jrb")]
+position = Vector2(746, 390)
+
+[node name="PlayerEnteredSwitchPlatform5" parent="." instance=ExtResource("3_r32j5")]
+position = Vector2(437, -37)
+
+[node name="PlayerEnteredSwitchPlatform2" parent="." instance=ExtResource("3_r32j5")]
+position = Vector2(96, 406)
+
+[node name="PlayerEnteredSwitchPlatform4" parent="." instance=ExtResource("3_r32j5")]
+position = Vector2(325, 406)
+
+[node name="PlayerEnteredSwitchPlatform6" parent="." instance=ExtResource("3_r32j5")]
+position = Vector2(582, 436)
+
+[node name="Platform" parent="." instance=ExtResource("4_yqhb6")]
+position = Vector2(690, 434)
+
+[node name="Platform2" parent="." instance=ExtResource("4_yqhb6")]
+position = Vector2(682, -30)
+
+[node name="Platform3" parent="." instance=ExtResource("4_yqhb6")]
+position = Vector2(-35, -42)
+
+[node name="Platform4" parent="." instance=ExtResource("4_yqhb6")]
+position = Vector2(197, -42)
+
+[node name="Player1Spawn" type="Marker2D" parent="."]
+position = Vector2(18, -70)
+
+[node name="Player2Spawn" type="Marker2D" parent="."]
+position = Vector2(141, 379)

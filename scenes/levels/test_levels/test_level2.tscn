@@ -331,7 +331,6 @@ controls = ExtResource("3_27tsq")
 [node name="Player2" parent="." instance=ExtResource("2_ti4kd")]
 position = Vector2(2, 398)
 controls = ExtResource("4_ah8y3")
-current_dimension = 1
 
 [node name="LevelManager" type="Node2D" parent="."]
 script = ExtResource("5_blqyb")
