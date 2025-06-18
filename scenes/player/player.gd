@@ -33,7 +33,6 @@ var respawn_point: Vector2
 
 var original_dimension = 1
 var tween: Tween = null
-var bounce = false
 
 const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
 const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
@@ -180,10 +179,6 @@ func handle_gravity(delta):
 		frames_since_last_on_ground = 0
 
 func handle_jump():
-	if bounce:
-		velocity.y = jump_velocity*3
-		bounce = false
-		return
 	if is_on_floor() or frames_since_last_on_ground < coyote_time_frames:
 		double_jump = true
 		if InputManager.is_jump_just_pressed(self):

@@ -452,7 +452,7 @@ position = Vector2(-148.25, -84)
 shape = SubResource("RectangleShape2D_no67j")
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(358, 23)
+position = Vector2(-330, 29)
 
 [node name="FireballSpawner6" parent="Dimension1" instance=ExtResource("7_esi6c")]
 position = Vector2(543, 40)
@@ -493,7 +493,7 @@ position = Vector2(-149, -83)
 shape = SubResource("RectangleShape2D_no67j")
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(401, 23)
+position = Vector2(-329, 29)
 
 [node name="FireballShootArea1" type="Area2D" parent="Dimension2" node_paths=PackedStringArray("spawner")]
 position = Vector2(499, 4)
