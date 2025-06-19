@@ -17,6 +17,9 @@ func get_player_1() -> Player:
 func get_player_2() -> Player:
 	return player2
 
+func get_players() -> Array[Player]:
+	return [player1, player2]
+
 func is_player_1_set() -> bool:
 	return player1 != null
 

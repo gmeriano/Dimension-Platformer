@@ -16,21 +16,24 @@ const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 var connected_joypads = Input.get_connected_joypads()
 	
 func setup_player_inputs(player1: Player, player2: Player) -> void:
-	if use_controller_for_p1 and 0 in connected_joypads:
-		player1.device_id = connected_joypads[0]
-		player1.controller_id = 1
-		player1.use_controller = true
-		assign_controller_to_player(connected_joypads[0], 1)
-	if use_controller_for_p2 and 1 in connected_joypads and !Global.IS_ONLINE_MULTIPLAYER:
-		player2.device_id = connected_joypads[1]
-		player2.controller_id = 2
-		player2.use_controller = true
-		assign_controller_to_player(connected_joypads[1], 2)
-	elif !player1.use_controller and 0 in connected_joypads and !Global.IS_ONLINE_MULTIPLAYER:
-		player2.device_id = connected_joypads[0]
-		player2.controller_id = 1
-		player2.use_controller = true
-		assign_controller_to_player(connected_joypads[0], 2)
+	if !Global.IS_ONLINE_MULTIPLAYER or player1.is_multiplayer_authority():
+		if use_controller_for_p1 and connected_joypads.has(0):
+			player1.device_id = connected_joypads[0]
+			player1.controller_id = 1
+			player1.use_controller = true
+			assign_controller_to_player(connected_joypads[0], 1)
+	
+	if !Global.IS_ONLINE_MULTIPLAYER or player2.is_multiplayer_authority():
+		if use_controller_for_p2 and !use_controller_for_p1 and connected_joypads.has(0):
+			player2.device_id = connected_joypads[0]
+			player2.controller_id = 2
+			player2.use_controller = true
+			assign_controller_to_player(connected_joypads[0], 2)
+		elif use_controller_for_p2 and connected_joypads.has(1):
+			player2.device_id = connected_joypads[1]
+			player2.controller_id = 2
+			player2.use_controller = true
+			assign_controller_to_player(connected_joypads[1], 2)
 
 func assign_controller_to_player(device_id: int, player_num: int) -> void:
 	var actions = {
@@ -70,6 +73,7 @@ func is_jump_just_pressed(player) -> bool:
 func is_jump_just_released(player) -> bool:
 	if !read_player_input(player):
 		return false
+	if player.use_controller:
 		return Input.is_action_just_released("p%d_jump" % player.controller_id)
 	else:
 		return Input.is_action_just_released(player.controls.jump)

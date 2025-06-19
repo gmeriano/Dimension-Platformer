@@ -1,9 +1,6 @@
 extends CharacterBody2D
 class_name Player
 
-const SPEED = 100.0
-const JUMP_VELOCITY = -200.0
-
 signal respawn
 
 @export var controls: Resource = null
@@ -21,10 +18,10 @@ var frames_since_last_on_ground = 0
 var coyote_time_frames = 10
 var double_jump = true
 var jump_velocity = -300
-var speed = 100
-var friction = 600
 
-var air_resistance = 200
+var speed = 125
+var friction = 600
+var air_resistance = 500
 var can_move = true
 var is_tweening = false
 var use_controller = false
@@ -34,8 +31,15 @@ var respawn_point: Vector2
 var original_dimension = 1
 var tween: Tween = null
 
-const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: Cross/A)
-const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
+@export var wall_jump_push_off_x = 350.0 # Horizontal force away from the wall
+@export var wall_jump_vertical_boost = -300.0 # Vertical force upwards
+@export var wall_slide_gravity_multiplier = 0.5 # Slows down fall speed when sliding
+@export var wall_jump_coyote_time_frames = 5 # Frames after leaving wall you can still wall jump
+var frames_since_last_on_wall = 0
+var wall_direction = 0 # -1 for left wall, 1 for right wall, 0 for no wall
+
+const JUMP_BUTTON = 0		# JOY_BUTTON_0 (bottom button: Cross/A)
+const MOVE_AXIS = 0			# JOY_AXIS_LEFT_X (left stick horizontal)
 
 func _enter_tree():
 	if Global.IS_ONLINE_MULTIPLAYER:
@@ -67,8 +71,8 @@ func _ready():
 	respawn_point = global_position
 
 func is_on_ground() -> bool:
-	return is_on_floor()  # If using Godot's KinematicBody2D method
-	
+	return is_on_floor()
+
 func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 1):
@@ -82,14 +86,41 @@ func _physics_process(delta: float) -> void:
 		return
 	if can_move:
 		handle_gravity(delta)
+		# --- NEW: Handle Wall Sliding before Jump ---
+		handle_wall_slide(delta)
 		handle_jump()
 		var inputAxis = InputManager.get_input_axis(self)
 		if inputAxis != 0:
 			handle_acceleration(inputAxis, delta)
+		# Apply friction/air resistance *after* accelerating
 		apply_friction(inputAxis, delta)
 		apply_air_resistance(inputAxis, delta)
 		move_and_slide()
 		clamp_x_by_camera()
+
+# --- NEW FUNCTION: Wall Detection ---
+func is_on_wall_right() -> bool:
+	return is_on_wall_only() and get_last_slide_collision().get_normal().x < 0
+
+func is_on_wall_left() -> bool:
+	return is_on_wall_only() and get_last_slide_collision().get_normal().x > 0
+
+# --- NEW FUNCTION: Handle Wall Slide ---
+func handle_wall_slide(delta: float) -> void:
+	if is_on_wall_left():
+		wall_direction = -1
+		frames_since_last_on_wall = 0
+		if velocity.y > 0: # Only slow down if falling
+			velocity.y = min(velocity.y, gravity * wall_slide_gravity_multiplier)
+	elif is_on_wall_right():
+		wall_direction = 1
+		frames_since_last_on_wall = 0
+		if velocity.y > 0: # Only slow down if falling
+			velocity.y = min(velocity.y, gravity * wall_slide_gravity_multiplier)
+	else:
+		frames_since_last_on_wall += 1
+		if frames_since_last_on_wall > wall_jump_coyote_time_frames:
+			wall_direction = 0 # Reset wall direction if no longer on wall after coyote time
 
 func clamp_x_by_camera():
 	var new_x = global_position.x
@@ -106,17 +137,17 @@ func swap_dimension():
 		move_to(Vector2(global_position.x, global_position.y + Global.DIMENSION_OFFSET))
 	else:
 		move_to(Vector2(global_position.x, global_position.y - Global.DIMENSION_OFFSET))
-	
+
 func move_to(target_position: Vector2, duration: float = 1.0):
 	multiplayer_synchronizer.replication_interval = 5.0
 	can_move = false
 	is_tweening = true
 	color_rect.color.a = 0.2
 	player_shadow.visible = false
-	
+
 	if tween and tween.is_valid():
 		tween.kill()
-		
+
 	tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(self, "global_position", target_position, duration)\
@@ -182,44 +213,73 @@ func handle_gravity(delta):
 		frames_since_last_on_ground = 0
 
 func handle_jump():
+	var jump_pressed = InputManager.is_jump_just_pressed(self)
+
 	if is_on_floor() or frames_since_last_on_ground < coyote_time_frames:
 		double_jump = true
-		if InputManager.is_jump_just_pressed(self):
+		if jump_pressed:
 			velocity.y = jump_velocity
+			wall_direction = 0
+			frames_since_last_on_wall = wall_jump_coyote_time_frames + 1 # Disable wall jump briefly
+	elif double_jump and wall_direction != 0 and frames_since_last_on_wall < wall_jump_coyote_time_frames:
+		if jump_pressed:
+			velocity.y = wall_jump_vertical_boost
+			velocity.x = -wall_direction * wall_jump_push_off_x
+			wall_direction = 0
+			frames_since_last_on_wall = wall_jump_coyote_time_frames + 1 # Disable wall jump briefly
 	else:
-		if InputManager.is_jump_just_released(self) and velocity.y < 0:
-			velocity.y /= 2
-		if InputManager.is_jump_just_pressed(self) and double_jump:
+		if jump_pressed and double_jump:
 			velocity.y = jump_velocity * 0.8
 			double_jump = false
-	if use_controller:
-		previous_jump_pressed_for_controller = Input.is_joy_button_pressed(device_id, JUMP_BUTTON)
+	if InputManager.is_jump_just_released(self) and velocity.y < 0:
+		print("released")
+		velocity.y = velocity.y / 2
 
 func apply_friction(inputAxis, delta):
+	# Only apply friction if not accelerating and on floor, AND not actively wall sliding
 	if inputAxis == 0 and is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
-		
+
 func apply_air_resistance(inputAxis, delta):
-	if inputAxis == 0 and not is_on_floor():
+	# Only apply air resistance if not accelerating and not on floor, AND not actively wall sliding
+	if inputAxis == 0 and not is_on_floor() and wall_direction == 0:
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
-		
+
 func handle_acceleration(inputAxis, delta):
-	# can handle separate acceleration with if check for is_on_floor() in future
-	if inputAxis != 0:
-		var target_velocity_x: float
-		if is_on_floor():
-			target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta)
+	if inputAxis == 0:
+		return
+	
+	var acceleration = air_resistance
+	var direction_switch_boost = 15
+	
+	var current_direction = sign(velocity.x)
+	var input_direction = sign(inputAxis)
+
+	var boost_multiplier = 1.0
+	if current_direction != 0 and input_direction != 0 and input_direction != current_direction:
+		boost_multiplier = direction_switch_boost
+
+	if is_on_floor():
+		acceleration = air_resistance
+	else:
+		if wall_direction != 0:
+			acceleration = air_resistance * 0.5
 		else:
-			target_velocity_x = move_toward(velocity.x, speed * inputAxis, air_resistance * delta * 2)
-		var proposed_position_x = global_position.x + target_velocity_x * delta
-		
-		if !is_within_camera_left(proposed_position_x):
-			# Left boundary hit, block movement left
-			target_velocity_x = max(0, target_velocity_x) 
-		elif !is_within_camera_right(proposed_position_x):
-			# Right boundary hit, block movement right
-			target_velocity_x = min(0, target_velocity_x) 
-		velocity.x = target_velocity_x
+			acceleration = air_resistance * 2.0
+
+
+	var target_speed = speed * inputAxis
+	var acceleration_amount = acceleration * delta * boost_multiplier
+	var new_velocity_x = move_toward(velocity.x, target_speed, acceleration_amount)
+
+	# Prevent moving outside camera bounds
+	var proposed_position_x = global_position.x + new_velocity_x * delta
+	if !is_within_camera_left(proposed_position_x):
+		new_velocity_x = max(0, new_velocity_x)
+	elif !is_within_camera_right(proposed_position_x):
+		new_velocity_x = min(0, new_velocity_x)
+
+	velocity.x = new_velocity_x
 	
 func is_within_camera_right(x_pos: float) -> bool:
 	if GameManager.get_camera_1() && GameManager.get_camera_2():
@@ -246,6 +306,9 @@ func on_respawn(respawn_position: Vector2) -> void:
 	velocity = Vector2.ZERO
 	current_dimension = original_dimension
 	update_shadow_location()
+	# Reset wall state on respawn
+	wall_direction = 0
+	frames_since_last_on_wall = wall_jump_coyote_time_frames + 1
 
 func should_respawn() -> bool:
 	if !can_move || is_tweening:

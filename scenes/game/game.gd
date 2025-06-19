@@ -22,7 +22,7 @@ var use_controller_for_p1 = true
 var use_controller_for_p2 = true
 
 var level_paths := [
-	"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
+	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
 	"res://scenes/levels/level1.tscn", # 0
 	"res://scenes/levels/easy_platform_level.tscn", # 1
 	"res://scenes/levels/level2.tscn", # 2
@@ -32,7 +32,7 @@ var level_paths := [
 	"res://scenes/levels/moving_platform_level.tscn", # 6
 	"res://scenes/levels/pole_jump_level.tscn", # 7
 ]
-var current_level_index = 5
+var current_level_index = 0
 
 func _ready() -> void:
 	player1 = GameManager.get_player_1()
