@@ -7,7 +7,6 @@ const JUMP_VELOCITY = -200.0
 signal respawn
 
 @export var controls: Resource = null
-@export var device_id: int = 0  # Each player gets their own controller ID
 @export var current_dimension: int = 1
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
@@ -15,10 +14,11 @@ signal respawn
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
 @export var color: Color
-
+var device_id: int = 0
+var controller_id: int = 0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var frames_since_last_on_ground = 0
-var coyote_time_frames = 5
+var coyote_time_frames = 10
 var double_jump = true
 var jump_velocity = -300
 var speed = 100
@@ -66,6 +66,9 @@ func _ready():
 	update_shadow_location()
 	respawn_point = global_position
 
+func is_on_ground() -> bool:
+	return is_on_floor()  # If using Godot's KinematicBody2D method
+	
 func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 1):
