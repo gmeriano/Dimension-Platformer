@@ -47,6 +47,8 @@ func load_next_level() -> void:
 
 func _on_fade_to_normal_finished_can_move_true():
 	GameManager.set_can_move(true)
+	player1.state_machine.transition(PlayerIdleState.state_name)
+	player2.state_machine.transition(PlayerIdleState.state_name)
 
 func set_can_move(can_move: bool) -> void:
 	if can_move == false:
@@ -56,6 +58,8 @@ func set_can_move(can_move: bool) -> void:
 		player2.can_move = false
 		player1.velocity = Vector2.ZERO
 		player2.velocity = Vector2.ZERO
+		player1.state_machine.transition(PlayerRespawnState.state_name)
+		player2.state_machine.transition(PlayerRespawnState.state_name)
 	else:
 		player1.multiplayer_synchronizer.replication_interval = 0.0
 		player2.multiplayer_synchronizer.replication_interval = 0.0

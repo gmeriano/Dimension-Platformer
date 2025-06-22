@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		var player = body as Player
-		if !player.is_tweening && player.can_move:
+		if player.state_machine.current_state.get_state_name() != PlayerRespawnState.state_name and player.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name:
 			switch_platform.player_on_platform = true
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
@@ -23,7 +23,8 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 		var player: Player = body as Player
 		if switch_platform.player_on_platform:
 			switch_platform.player_on_platform = false
-			if !player.is_tweening && player.can_move:
+			if player.state_machine.current_state.get_state_name() != PlayerRespawnState.state_name and player.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name:
+				print(player.state_machine.current_state.get_state_name() + " Swapping")
 				switch_platform.switch_dimension()
 				
 func update_color() -> void:

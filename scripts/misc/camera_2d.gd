@@ -23,7 +23,8 @@ func reset() -> void:
 	zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
 
 func set_x_position() -> void:
-	global_position.x = (player1.global_position.x + player2.global_position.x) * 0.5
+	if (player1.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name or player2.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name):
+		global_position.x = (player1.global_position.x + player2.global_position.x) * 0.5
 
 func get_active_player() -> Player:
 	return player1 if player1.current_dimension == dimension else player2

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dalyetdhjh33m"]
+[gd_scene load_steps=6 format=3 uid="uid://dalyetdhjh33m"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8a6k0"]
 [ext_resource type="Texture2D" uid="uid://1lifn7h5b57d" path="res://assets/sprites/square.png" id="2_oqytx"]
+[ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_h5lw5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7eey0"]
 radius = 8.0
@@ -35,3 +36,6 @@ offset_top = -16.0
 offset_right = 8.0
 color = Color(0.0901961, 0.4, 1, 1)
 metadata/_edit_use_anchors_ = true
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_h5lw5")

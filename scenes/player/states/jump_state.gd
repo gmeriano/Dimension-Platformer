@@ -1,0 +1,32 @@
+class_name PlayerJumpState extends PlayerState
+
+static var state_name = "PlayerJumpState"
+const JUMP_VELOCITY: float = -300
+const MAX_SPEED: float = 350.0
+
+func get_state_name() -> String:
+	return state_name
+
+func enter() -> void:
+	player.velocity.y = JUMP_VELOCITY
+
+func physics_process(_delta: float) -> void:
+	player.handle_acceleration(player.input_axis, _delta)
+	handle_transitions()
+
+func handle_transitions() -> void:
+	if player.jump_input and player.double_jump:
+		state_machine.transition(PlayerDoubleJumpState.state_name)
+		return
+	if player.is_on_wall_left() or player.is_on_wall_right():
+		state_machine.transition(PlayerWallSlideState.state_name)
+		return
+	if player.velocity.y > 0:
+		state_machine.transition(PlayerFallState.state_name)
+		return
+	if player.is_on_ground():
+		if player.input_axis == 0:
+			state_machine.transition(PlayerIdleState.state_name)
+			return
+		else:
+			state_machine.transition(PlayerMovementState.state_name)

@@ -50,7 +50,8 @@ func handle_inputs() -> void:
 @rpc("any_peer", "call_local")
 func dimension_swap():
 	for player in players:
-		player.swap_dimension()
+		player.state_machine.transition(PlayerDimensionSwapState.state_name)
+		#player.swap_dimension()
 
 @rpc("any_peer", "call_local")
 func respawn_all_players():

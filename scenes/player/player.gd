@@ -9,6 +9,7 @@ signal respawn
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var color_rect: ColorRect = $ColorRect
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
+@onready var state_machine: StateMachine = $StateMachine
 
 @export var color: Color
 var device_id: int = 0
@@ -19,7 +20,7 @@ var coyote_time_frames = 10
 var double_jump = true
 var jump_velocity = -300
 
-var speed = 125
+var speed = 150
 var friction = 600
 var air_resistance = 500
 var can_move = true
@@ -27,15 +28,13 @@ var is_tweening = false
 var use_controller = false
 var previous_jump_pressed_for_controller = false
 var respawn_point: Vector2
+var input_axis: float
+var jump_input: bool
+var prev_state: State
 
 var original_dimension = 1
 var tween: Tween = null
 
-@export var wall_jump_push_off_x = 350.0 # Horizontal force away from the wall
-@export var wall_jump_vertical_boost = -300.0 # Vertical force upwards
-@export var wall_slide_gravity_multiplier = 0.5 # Slows down fall speed when sliding
-@export var wall_jump_coyote_time_frames = 5 # Frames after leaving wall you can still wall jump
-var frames_since_last_on_wall = 0
 var wall_direction = 0 # -1 for left wall, 1 for right wall, 0 for no wall
 
 const JUMP_BUTTON = 0		# JOY_BUTTON_0 (bottom button: Cross/A)
@@ -69,6 +68,19 @@ func _ready():
 	player_shadow.modulate = shadow_color
 	update_shadow_location()
 	respawn_point = global_position
+	var states: Array[State] = [
+		PlayerIdleState.new(self),
+		PlayerMovementState.new(self),
+		PlayerJumpState.new(self),
+		PlayerDoubleJumpState.new(self),
+		PlayerFallState.new(self),
+		PlayerDimensionSwapState.new(self),
+		PlayerWallSlideState.new(self),
+		PlayerWallJumpState.new(self),
+		PlayerRespawnState.new(self),
+	]
+	prev_state = states[0]
+	state_machine.start_machine(states)
 
 func is_on_ground() -> bool:
 	return is_on_floor()
@@ -86,91 +98,29 @@ func _physics_process(delta: float) -> void:
 		return
 	if can_move:
 		handle_gravity(delta)
-		# --- NEW: Handle Wall Sliding before Jump ---
-		handle_wall_slide(delta)
-		handle_jump()
-		var inputAxis = InputManager.get_input_axis(self)
-		if inputAxis != 0:
-			handle_acceleration(inputAxis, delta)
-		# Apply friction/air resistance *after* accelerating
-		apply_friction(inputAxis, delta)
-		apply_air_resistance(inputAxis, delta)
+		jump_input = InputManager.is_jump_just_pressed(self)
+		input_axis = InputManager.get_input_axis(self)
+		apply_air_resistance(input_axis, delta)
 		move_and_slide()
 		clamp_x_by_camera()
 
-# --- NEW FUNCTION: Wall Detection ---
 func is_on_wall_right() -> bool:
 	return is_on_wall_only() and get_last_slide_collision().get_normal().x < 0
 
 func is_on_wall_left() -> bool:
 	return is_on_wall_only() and get_last_slide_collision().get_normal().x > 0
 
-# --- NEW FUNCTION: Handle Wall Slide ---
-func handle_wall_slide(delta: float) -> void:
+func handle_wall_slide(delta: float, gravity_multiplier: float) -> void:
 	if is_on_wall_left():
 		wall_direction = -1
-		frames_since_last_on_wall = 0
-		if velocity.y > 0: # Only slow down if falling
-			velocity.y = min(velocity.y, gravity * wall_slide_gravity_multiplier)
+		if velocity.y > 0:
+			velocity.y = min(velocity.y, gravity * gravity_multiplier)
 	elif is_on_wall_right():
 		wall_direction = 1
-		frames_since_last_on_wall = 0
-		if velocity.y > 0: # Only slow down if falling
-			velocity.y = min(velocity.y, gravity * wall_slide_gravity_multiplier)
+		if velocity.y > 0:
+			velocity.y = min(velocity.y, gravity * gravity_multiplier)
 	else:
-		frames_since_last_on_wall += 1
-		if frames_since_last_on_wall > wall_jump_coyote_time_frames:
-			wall_direction = 0 # Reset wall direction if no longer on wall after coyote time
-
-func clamp_x_by_camera():
-	var new_x = global_position.x
-	# Clamp to left camera bound
-	if not is_within_camera_left(new_x):
-		new_x = GameManager.get_camera_1().global_position.x - ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) + (collision_shape_2d.shape.get_rect().size.x / 2)
-	# Clamp to right camera bound
-	if not is_within_camera_right(new_x):
-		new_x = GameManager.get_camera_1().global_position.x + ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
-	global_position.x = new_x
-
-func swap_dimension():
-	if current_dimension == 1:
-		move_to(Vector2(global_position.x, global_position.y + Global.DIMENSION_OFFSET))
-	else:
-		move_to(Vector2(global_position.x, global_position.y - Global.DIMENSION_OFFSET))
-
-func move_to(target_position: Vector2, duration: float = 1.0):
-	multiplayer_synchronizer.replication_interval = 5.0
-	can_move = false
-	is_tweening = true
-	color_rect.color.a = 0.2
-	player_shadow.visible = false
-
-	if tween and tween.is_valid():
-		tween.kill()
-
-	tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(self, "global_position", target_position, duration)\
-		.set_trans(Tween.TRANS_SINE)\
-		.set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(self, "rotation", TAU, duration)\
-		.set_trans(Tween.TRANS_LINEAR)\
-		.set_ease(Tween.EASE_IN_OUT)
-	tween.connect("finished", Callable(self, "_on_tween_finished"))
-
-func _on_tween_finished():
-	color_rect.color.a = 1
-	color_rect.rotation = 0
-	player_shadow.visible = true
-	if current_dimension == 1:
-		current_dimension = 2
-	else:
-		current_dimension = 1
-	update_shadow_location()
-	unstick_player_if_necessary()
-	is_tweening = false
-	can_move = true
-	multiplayer_synchronizer.replication_interval = 0.0
+		wall_direction = 0
 
 # Try small diagonal and cardinal movements to escape the collision
 func unstick_player_if_necessary():
@@ -212,49 +162,22 @@ func handle_gravity(delta):
 	else:
 		frames_since_last_on_ground = 0
 
-func handle_jump():
-	var jump_pressed = InputManager.is_jump_just_pressed(self)
-
-	if is_on_floor() or frames_since_last_on_ground < coyote_time_frames:
-		double_jump = true
-		if jump_pressed:
-			velocity.y = jump_velocity
-			wall_direction = 0
-			frames_since_last_on_wall = wall_jump_coyote_time_frames + 1 # Disable wall jump briefly
-	elif double_jump and wall_direction != 0 and frames_since_last_on_wall < wall_jump_coyote_time_frames:
-		if jump_pressed:
-			velocity.y = wall_jump_vertical_boost
-			velocity.x = -wall_direction * wall_jump_push_off_x
-			wall_direction = 0
-			frames_since_last_on_wall = wall_jump_coyote_time_frames + 1 # Disable wall jump briefly
-	else:
-		if jump_pressed and double_jump:
-			velocity.y = jump_velocity * 0.8
-			double_jump = false
-	if InputManager.is_jump_just_released(self) and velocity.y < 0:
-		print("released")
-		velocity.y = velocity.y / 2
-
-func apply_friction(inputAxis, delta):
+func apply_friction(input_axis, delta):
 	# Only apply friction if not accelerating and on floor, AND not actively wall sliding
-	if inputAxis == 0 and is_on_floor():
+	if input_axis == 0 and is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 
-func apply_air_resistance(inputAxis, delta):
-	# Only apply air resistance if not accelerating and not on floor, AND not actively wall sliding
-	if inputAxis == 0 and not is_on_floor() and wall_direction == 0:
+func apply_air_resistance(input_axis, delta):
+	if input_axis == 0 and not is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
 
-func handle_acceleration(inputAxis, delta):
-	if inputAxis == 0:
+func handle_acceleration(input_axis, delta):
+	if input_axis == 0:
 		return
-	
 	var acceleration = air_resistance
-	var direction_switch_boost = 15
-	
+	var direction_switch_boost = 10
 	var current_direction = sign(velocity.x)
-	var input_direction = sign(inputAxis)
-
+	var input_direction = sign(input_axis)
 	var boost_multiplier = 1.0
 	if current_direction != 0 and input_direction != 0 and input_direction != current_direction:
 		boost_multiplier = direction_switch_boost
@@ -267,20 +190,25 @@ func handle_acceleration(inputAxis, delta):
 		else:
 			acceleration = air_resistance * 2.0
 
-
-	var target_speed = speed * inputAxis
+	var target_speed = speed * input_axis
 	var acceleration_amount = acceleration * delta * boost_multiplier
 	var new_velocity_x = move_toward(velocity.x, target_speed, acceleration_amount)
 
-	# Prevent moving outside camera bounds
 	var proposed_position_x = global_position.x + new_velocity_x * delta
 	if !is_within_camera_left(proposed_position_x):
 		new_velocity_x = max(0, new_velocity_x)
 	elif !is_within_camera_right(proposed_position_x):
 		new_velocity_x = min(0, new_velocity_x)
-
 	velocity.x = new_velocity_x
-	
+
+func clamp_x_by_camera():
+	var new_x = global_position.x
+	if not is_within_camera_left(new_x):
+		new_x = GameManager.get_camera_1().global_position.x - ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) + (collision_shape_2d.shape.get_rect().size.x / 2)
+	if not is_within_camera_right(new_x):
+		new_x = GameManager.get_camera_1().global_position.x + ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
+	global_position.x = new_x
+
 func is_within_camera_right(x_pos: float) -> bool:
 	if GameManager.get_camera_1() && GameManager.get_camera_2():
 		var player_half_size = collision_shape_2d.shape.get_rect().size.x / 2
@@ -295,23 +223,14 @@ func is_within_camera_left(x_pos: float) -> bool:
 
 @rpc("any_peer", "call_local")
 func on_respawn(respawn_position: Vector2) -> void:
-	if tween and tween.is_valid():
-		tween.kill()
-		color_rect.color.a = 1
-		rotation = 0
-		is_tweening = false
-		
-	color_rect.visible = true
 	global_position = respawn_position
 	velocity = Vector2.ZERO
 	current_dimension = original_dimension
 	update_shadow_location()
-	# Reset wall state on respawn
 	wall_direction = 0
-	frames_since_last_on_wall = wall_jump_coyote_time_frames + 1
 
 func should_respawn() -> bool:
-	if !can_move || is_tweening:
+	if state_machine.current_state.get_state_name() == PlayerDimensionSwapState.state_name:
 		return false
 	if current_dimension == 1:
 		var top_camera: Camera2D = GameManager.get_camera_1()
@@ -331,5 +250,4 @@ func send_respawn_signal() -> void:
 	emit_signal("respawn")
 
 func on_hit() -> void:
-	print("on hit respawn")
 	send_respawn_signal.rpc()
