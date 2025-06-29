@@ -19,7 +19,9 @@ func _physics_process(delta: float) -> void:
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is Player and !player_bouncing:
-		register_hit(body)
+		var player: Player = body as Player
+		if player.is_state_interactable():
+			register_hit(player)
 
 func register_hit(player: Player) -> void:
 	if Global.IS_ONLINE_MULTIPLAYER:

@@ -20,7 +20,7 @@ var coyote_time_frames = 10
 var double_jump = true
 var jump_velocity = -300
 
-var speed = 150
+var speed = 125
 var friction = 600
 var air_resistance = 500
 var can_move = true
@@ -97,10 +97,11 @@ func _physics_process(delta: float) -> void:
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
 	if can_move:
-		handle_gravity(delta)
 		jump_input = InputManager.is_jump_just_pressed(self)
 		input_axis = InputManager.get_input_axis(self)
-		apply_air_resistance(input_axis, delta)
+		if is_state_interactable():
+			handle_gravity(delta)
+			apply_air_resistance(input_axis, delta)
 		move_and_slide()
 		clamp_x_by_camera()
 
@@ -230,7 +231,7 @@ func on_respawn(respawn_position: Vector2) -> void:
 	wall_direction = 0
 
 func should_respawn() -> bool:
-	if state_machine.current_state.get_state_name() == PlayerDimensionSwapState.state_name:
+	if !is_state_interactable():
 		return false
 	if current_dimension == 1:
 		var top_camera: Camera2D = GameManager.get_camera_1()
@@ -251,3 +252,6 @@ func send_respawn_signal() -> void:
 
 func on_hit() -> void:
 	send_respawn_signal.rpc()
+
+func is_state_interactable() -> bool:
+	return state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name and !state_machine.current_state.get_state_name() == PlayerRespawnState.state_name

@@ -24,7 +24,6 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 		if switch_platform.player_on_platform:
 			switch_platform.player_on_platform = false
 			if player.state_machine.current_state.get_state_name() != PlayerRespawnState.state_name and player.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name:
-				print(player.state_machine.current_state.get_state_name() + " Swapping")
 				switch_platform.switch_dimension()
 				
 func update_color() -> void:
