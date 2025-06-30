@@ -11,9 +11,10 @@ func get_state_name() -> String:
 	return state_name
 
 func enter() -> void:
+	player.jump_input_buffered = false
 	if player.is_on_wall_left():
-		wall_direction = -1
-	elif player.is_on_wall_right():
 		wall_direction = 1
-	player.velocity.x = -wall_direction * HORIZONTAL_BOOST
+	elif player.is_on_wall_right():
+		wall_direction = -1
+	player.velocity.x = wall_direction * HORIZONTAL_BOOST
 	state_machine.transition(PlayerJumpState.state_name)

@@ -20,7 +20,8 @@ func transition(new_state_name: String) -> void:
 	if new_state == null:
 		push_error("Cannot transition to an empty state.")
 	elif new_state_name != current_state.get_state_name():
-		#print("Transition: " + current_state.get_state_name() + " -> " + new_state_name)
+		if new_state_name == PlayerWallJumpState.state_name:
+			print("Transition: " + current_state.get_state_name() + " -> " + new_state_name)
 		current_state.exit()
 		current_state = new_state
 		current_state.enter()

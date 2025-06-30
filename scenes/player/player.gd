@@ -31,6 +31,13 @@ var respawn_point: Vector2
 var input_axis: float
 var jump_input: bool
 var prev_state: State
+var wall_coyote_time = 0.15  # 150 ms grace period
+var wall_coyote_timer = 0.0
+var was_on_wall = false
+var last_wall_direction = 0  # -1 for left, 1 for right, 0 for none
+var jump_buffer_time := 0.15
+var jump_buffer_timer := 0.0
+var jump_input_buffered := false
 
 var original_dimension = 1
 var tween: Tween = null
@@ -98,12 +105,31 @@ func _physics_process(delta: float) -> void:
 		return
 	if can_move:
 		jump_input = InputManager.is_jump_just_pressed(self)
+		if jump_input:
+			jump_input_buffered = true
+			jump_buffer_timer = jump_buffer_time
+		if jump_input_buffered:
+			jump_buffer_timer -= delta
+			if jump_buffer_timer <= 0:
+				jump_input_buffered = false
 		input_axis = InputManager.get_input_axis(self)
 		if is_state_interactable():
 			handle_gravity(delta)
 			apply_air_resistance(input_axis, delta)
+			update_wall_coyote_timer(delta)
 		move_and_slide()
 		clamp_x_by_camera()
+
+func update_wall_coyote_timer(delta: float) -> void:
+	var touching_left := is_on_wall_left()
+	var touching_right := is_on_wall_right()
+	var touching_wall := touching_left or touching_right
+
+	if touching_wall:
+		last_wall_direction = -1 if touching_left else 1
+		wall_coyote_timer = wall_coyote_time
+	else:
+		wall_coyote_timer = max(0.0, wall_coyote_timer - delta)
 
 func is_on_wall_right() -> bool:
 	return is_on_wall_only() and get_last_slide_collision().get_normal().x < 0
