@@ -16,17 +16,7 @@ func enter() -> void:
 
 
 func exit() -> void:
-	tween.disconnect("finished", Callable(self, "handle_transitions"))
-	player.color_rect.color.a = 1
-	player.color_rect.rotation = 0
-	player.player_shadow.visible = true
-	if player.current_dimension == 1:
-		player.current_dimension = 2
-	else:
-		player.current_dimension = 1
-	player.update_shadow_location()
-	player.unstick_player_if_necessary()
-	player.multiplayer_synchronizer.replication_interval = 0.0
+	pass
 
 func move_to(target_position: Vector2, duration: float = 1.0):
 	player.multiplayer_synchronizer.replication_interval = 5.0
@@ -46,4 +36,17 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 	tween.connect("finished", Callable(self, "handle_transitions"))
 
 func handle_transitions() -> void:
-	state_machine.transition(prev_state.get_state_name())
+	tween.disconnect("finished", Callable(self, "handle_transitions"))
+	player.color_rect.color.a = 1
+	player.color_rect.rotation = 0
+	player.player_shadow.visible = true
+	if player.current_dimension == 1:
+		player.current_dimension = 2
+	else:
+		player.current_dimension = 1
+	player.update_shadow_location()
+	player.multiplayer_synchronizer.replication_interval = 0.0
+	if player.unstick_player_if_necessary():
+		state_machine.transition(PlayerRespawnState.state_name)
+	else:
+		state_machine.transition(prev_state.get_state_name())

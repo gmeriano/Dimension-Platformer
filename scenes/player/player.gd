@@ -124,7 +124,7 @@ func handle_wall_slide(delta: float, gravity_multiplier: float) -> void:
 		wall_direction = 0
 
 # Try small diagonal and cardinal movements to escape the collision
-func unstick_player_if_necessary():
+func unstick_player_if_necessary() -> bool:
 	var offset_distance = collision_shape_2d.shape.get_rect().size.x
 	var directions = [
 		Vector2(0, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0),
@@ -139,22 +139,24 @@ func unstick_player_if_necessary():
 			var test_transform := global_transform.translated(offset)
 			if not test_move(test_transform, Vector2.ZERO):
 				global_position += offset
-				return
+				return false
 		# second pass (bigger step)
 		for dir in directions:
 			var offset = dir.normalized() * (offset_distance + 2)
 			var test_transform := global_transform.translated(offset)
 			if not test_move(test_transform, Vector2.ZERO):
 				global_position += offset
-				return
+				return false
 		# final pass (largest step)
 		for dir in directions:
 			var offset = dir.normalized() * (offset_distance + 3)
 			var test_transform := global_transform.translated(offset)
 			if not test_move(test_transform, Vector2.ZERO):
 				global_position += offset
-				return
+				return false
 		send_respawn_signal.rpc()
+		return true
+	return false
 
 func handle_gravity(delta):
 	if not is_on_floor():
