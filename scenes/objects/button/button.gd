@@ -1,5 +1,7 @@
 extends Node2D
+class_name GameButton
 
+@export var button_pressed_signal: String = "button_pressed"
 @onready var cooldown_timer: Timer = $Timer
 @onready var color_rect: ColorRect = $ColorRect
 var player: Player = null
@@ -20,7 +22,7 @@ func _process(delta: float) -> void:
 func on_button_pressed() -> void:
 	cooldown_timer.start()
 	can_be_pressed = false
-	emit_signal("button_pressed")
+	emit_signal(button_pressed_signal)
 	var tween = create_tween()
 	color_rect.modulate = Color(1, 1, 1, 0.5)
 	tween.tween_property(color_rect, "modulate:a", 1.0, cooldown_timer.wait_time)

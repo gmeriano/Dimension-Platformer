@@ -81,8 +81,7 @@ func is_jump_just_released(player) -> bool:
 func is_dimension_swap_pressed(player) -> bool:
 	if !read_player_input(player):
 		return false
-	if not player.is_tweening:
-		return Input.is_action_just_pressed("dimension_swap")
+	return Input.is_action_just_pressed("dimension_swap")
 	return false
 
 func is_interact_pressed(player) -> bool:

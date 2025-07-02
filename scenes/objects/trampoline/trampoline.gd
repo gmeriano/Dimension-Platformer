@@ -1,8 +1,8 @@
 extends Node2D
 class_name Trampoline
 
-@export var bounce_multiplier = 1.5  # Tune this to adjust how much force is applied
-@export var max_bounce_force = 2000.0
+@export var bounce_multiplier = 1.01  # Tune this to adjust how much force is applied
+@export var max_bounce_force = 800.0
 @export var min_bounce_force = 400.0
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

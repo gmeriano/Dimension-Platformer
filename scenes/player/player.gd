@@ -5,32 +5,25 @@ signal respawn
 
 @export var controls: Resource = null
 @export var current_dimension: int = 1
+
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var color_rect: ColorRect = $ColorRect
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var state_machine: StateMachine = $StateMachine
 
-@export var color: Color
-var device_id: int = 0
-var controller_id: int = 0
+var color: Color
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var original_dimension = 1
+var tween: Tween = null
+var respawn_point: Vector2
+var prev_state: String
+
+# Jump vars
 var frames_since_last_on_ground = 0
 var coyote_time_frames = 10
 var double_jump = true
 var jump_velocity = -300
-
-var speed = 125
-var friction = 600
-var air_resistance = 500
-var can_move = true
-var is_tweening = false
-var use_controller = false
-var previous_jump_pressed_for_controller = false
-var respawn_point: Vector2
-var input_axis: float
-var jump_input: bool
-var prev_state: State
 var wall_coyote_time = 0.15  # 150 ms grace period
 var wall_coyote_timer = 0.0
 var was_on_wall = false
@@ -38,12 +31,21 @@ var last_wall_direction = 0  # -1 for left, 1 for right, 0 for none
 var jump_buffer_time := 0.15
 var jump_buffer_timer := 0.0
 var jump_input_buffered := false
-
-var original_dimension = 1
-var tween: Tween = null
-
 var wall_direction = 0 # -1 for left wall, 1 for right wall, 0 for no wall
 
+# Movement vars
+var speed = 125
+var friction = 600
+var air_resistance = 500
+
+# Input vars
+var input_axis: float
+var jump_input: bool
+
+# Controller vars
+var device_id: int = 0
+var controller_id: int = 0
+var use_controller = false
 const JUMP_BUTTON = 0		# JOY_BUTTON_0 (bottom button: Cross/A)
 const MOVE_AXIS = 0			# JOY_AXIS_LEFT_X (left stick horizontal)
 
@@ -86,7 +88,7 @@ func _ready():
 		PlayerWallJumpState.new(self),
 		PlayerRespawnState.new(self),
 	]
-	prev_state = states[0]
+	prev_state = states[0].get_state_name()
 	state_machine.start_machine(states)
 
 func is_on_ground() -> bool:
@@ -103,23 +105,32 @@ func update_shadow_location() -> void:
 func _physics_process(delta: float) -> void:
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
-	if can_move:
-		jump_input = InputManager.is_jump_just_pressed(self)
-		if jump_input:
-			jump_input_buffered = true
-			jump_buffer_timer = jump_buffer_time
-		if jump_input_buffered:
-			jump_buffer_timer -= delta
-			if jump_buffer_timer <= 0:
-				jump_input_buffered = false
-		input_axis = InputManager.get_input_axis(self)
-		if is_state_interactable():
-			handle_gravity(delta)
-			apply_air_resistance(input_axis, delta)
-			update_wall_coyote_timer(delta)
-		move_and_slide()
-		clamp_x_by_camera()
+		
+	# Jump input processing
+	jump_input = InputManager.is_jump_just_pressed(self)
+	if jump_input:
+		jump_input_buffered = true
+		jump_buffer_timer = jump_buffer_time
+	if jump_input_buffered:
+		jump_buffer_timer -= delta
+		if jump_buffer_timer <= 0:
+			jump_input_buffered = false
+	
+	# Movement input processing
+	input_axis = InputManager.get_input_axis(self)
+	
+	# General physics processing
+	if is_state_interactable():
+		handle_gravity(delta)
+		apply_air_resistance(input_axis, delta)
+		update_wall_coyote_timer(delta)
+	
+	# Apply movement
+	move_and_slide()
+	clamp_x_by_camera()
 
+
+# Jump helper functions
 func update_wall_coyote_timer(delta: float) -> void:
 	var touching_left := is_on_wall_left()
 	var touching_right := is_on_wall_right()

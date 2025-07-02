@@ -8,10 +8,13 @@ class_name MovingPlatform
 var platform_starting_position: Vector2
 var starting_direction: float
 var can_move = false
+var despawn: bool = false
 var start_time = 0
 var first_tick = false
 
 func _ready() -> void:
+	if despawn:
+		add_to_group("despawn")
 	add_to_group("moving_platform")
 	platform_starting_position = platform.global_position
 	starting_direction = direction

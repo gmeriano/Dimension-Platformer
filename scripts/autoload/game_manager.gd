@@ -40,31 +40,33 @@ func get_camera_2() -> Camera2D:
 
 @rpc("any_peer", "call_local")
 func load_next_level() -> void:
-	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 1000)
-	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 1000)
+	print("LOADING LEVEL")
+	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
 
 func _on_fade_to_normal_finished_can_move_true():
-	GameManager.set_can_move(true)
+	GameManager.set_players_state_idle()
+
+func set_players_state_respawn() -> void:
+	if player1.tween:
+		player1.tween.kill()
+		print("tween 1")
+	if player2.tween:
+		player2.tween.kill()
+		print("tween 2")
+	player1.multiplayer_synchronizer.replication_interval = 10.0
+	player2.multiplayer_synchronizer.replication_interval = 10.0
+	player1.velocity = Vector2.ZERO
+	player2.velocity = Vector2.ZERO
+	player1.state_machine.transition(PlayerRespawnState.state_name)
+	player2.state_machine.transition(PlayerRespawnState.state_name)
+
+func set_players_state_idle() -> void:
+	player1.multiplayer_synchronizer.replication_interval = 0.0
+	player2.multiplayer_synchronizer.replication_interval = 0.0
 	player1.state_machine.transition(PlayerIdleState.state_name)
 	player2.state_machine.transition(PlayerIdleState.state_name)
-
-func set_can_move(can_move: bool) -> void:
-	if can_move == false:
-		player1.multiplayer_synchronizer.replication_interval = 10.0
-		player2.multiplayer_synchronizer.replication_interval = 10.0
-		player1.can_move = false
-		player2.can_move = false
-		player1.velocity = Vector2.ZERO
-		player2.velocity = Vector2.ZERO
-		player1.state_machine.transition(PlayerRespawnState.state_name)
-		player2.state_machine.transition(PlayerRespawnState.state_name)
-	else:
-		player1.multiplayer_synchronizer.replication_interval = 0.0
-		player2.multiplayer_synchronizer.replication_interval = 0.0
-		player1.can_move = true
-		player2.can_move = true
 
 func get_camera_right_edge() -> float:
 	var viewport_size = camera1.get_viewport_rect().size

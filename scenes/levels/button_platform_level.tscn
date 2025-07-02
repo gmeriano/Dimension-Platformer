@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="7_ocqm0"]
 [ext_resource type="PackedScene" uid="uid://rfsx5rigaqks" path="res://scenes/objects/button_pressed_switch_platform/button_pressed_switch_platform.tscn" id="8_jsvsv"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mkjiw"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ck0r6"]
 texture = ExtResource("1_fvgci")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
@@ -395,7 +395,7 @@ physics_layer_0/collision_layer = 1
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/0 = SubResource("TileSetAtlasSource_mkjiw")
+sources/0 = SubResource("TileSetAtlasSource_ck0r6")
 
 [node name="ButtonPlatformLevel" type="Node2D"]
 

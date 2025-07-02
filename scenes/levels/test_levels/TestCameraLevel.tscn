@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://cnr3o46epud0y"]
+[gd_scene load_steps=9 format=4 uid="uid://cnr3o46epud0y"]
 
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_u08y4"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="2_jnqp3"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="3_flc86"]
 [ext_resource type="PackedScene" uid="uid://cik7f1p4h4twl" path="res://scenes/objects/trampoline/trampoline.tscn" id="4_uuuk8"]
 [ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/objects/fireball_spawner/fireball_spawner.tscn" id="5_ucdd2"]
+[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="6_db6yd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8hdn5"]
 texture = ExtResource("2_jnqp3")
@@ -411,7 +412,7 @@ tile_map_data = PackedByteArray("AAD//wAAAAABAAAAAAAAAAAAAAABAAAAAAABAAAAAAABAAA
 tile_set = SubResource("TileSet_x33km")
 
 [node name="LevelCompleteZone1" parent="Dimension1" instance=ExtResource("3_flc86")]
-position = Vector2(240, 3)
+position = Vector2(-67, -27)
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
 position = Vector2(67, -26)
@@ -426,7 +427,7 @@ tile_map_data = PackedByteArray("AAD//wAAAAABAAAAAAAAAAAAAAABAAAAAAABAAAAAAABAAA
 tile_set = SubResource("TileSet_x33km")
 
 [node name="LevelCompleteZone2" parent="Dimension2" instance=ExtResource("3_flc86")]
-position = Vector2(238, 4)
+position = Vector2(64, -41)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
 position = Vector2(3, 16)
@@ -438,3 +439,12 @@ position = Vector2(-101, 24)
 position = Vector2(182, 433)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Platform" parent="." instance=ExtResource("6_db6yd")]
+position = Vector2(-238, 203)
+
+[node name="Platform2" parent="." instance=ExtResource("6_db6yd")]
+position = Vector2(-198, 378)
+
+[node name="Platform3" parent="." instance=ExtResource("6_db6yd")]
+position = Vector2(-246, 303)

@@ -168,7 +168,7 @@ func start_game() -> void:
 	if GameManager.is_player_1_set() && GameManager.is_player_2_set():
 		remove_child(GameManager.get_player_1())
 		remove_child(GameManager.get_player_2())
-		GameManager.set_can_move(false)
+		GameManager.set_players_state_respawn()
 		TransitionScreen.transition()
 		TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_start_game"))
 		TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))

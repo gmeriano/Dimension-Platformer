@@ -1,7 +1,7 @@
 class_name PlayerDimensionSwapState extends PlayerState
 
 static var state_name = "PlayerDimensionSwapState"
-var prev_state: State
+var prev_state: String
 var tween: Tween
 
 func get_state_name() -> String:
@@ -13,10 +13,6 @@ func enter() -> void:
 		move_to(Vector2(player.global_position.x, player.global_position.y + Global.DIMENSION_OFFSET))
 	else:
 		move_to(Vector2(player.global_position.x, player.global_position.y - Global.DIMENSION_OFFSET))
-
-
-func exit() -> void:
-	pass
 
 func move_to(target_position: Vector2, duration: float = 1.0):
 	player.multiplayer_synchronizer.replication_interval = 5.0
@@ -49,4 +45,4 @@ func handle_transitions() -> void:
 	if player.unstick_player_if_necessary():
 		state_machine.transition(PlayerRespawnState.state_name)
 	else:
-		state_machine.transition(prev_state.get_state_name())
+		state_machine.transition(prev_state)

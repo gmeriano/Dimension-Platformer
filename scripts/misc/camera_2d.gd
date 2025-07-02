@@ -15,12 +15,12 @@ func _ready() -> void:
 		initial_position.y += Global.DIMENSION_OFFSET
 
 func _process(delta: float) -> void:
-	if !player1.is_tweening and !player2.is_tweening:
+	if !player1.state_machine.current_state.get_state_name() == PlayerDimensionSwapState.state_name and !player2.state_machine.current_state.get_state_name() == PlayerDimensionSwapState.state_name:
 		set_x_position()
 
 func reset() -> void:
 	global_position = initial_position
-	zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
+	#zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
 
 func set_x_position() -> void:
 	if (player1.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name or player2.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name):

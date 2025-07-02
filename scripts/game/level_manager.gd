@@ -31,13 +31,15 @@ func _physics_process(_delta: float) -> void:
 
 func check_level_complete() -> void:
 	if level_complete_zone_1.complete == true and level_complete_zone_2.complete == true:
-		level_complete = true
-		GameManager.load_next_level.rpc()
+		if players[0].is_state_interactable() and players[1].is_state_interactable():
+			print("LEVEL COMPLETE")
+			level_complete = true
+			GameManager.load_next_level.rpc()
 
 func check_respawn():
 	for player in players:
 		if player.is_multiplayer_authority():
-			if player.can_move && player.should_respawn():
+			if player.should_respawn():
 				respawn_all_players.rpc()
 				break
 
@@ -55,7 +57,7 @@ func dimension_swap():
 
 @rpc("any_peer", "call_local")
 func respawn_all_players():
-	GameManager.set_can_move(false)
+	GameManager.set_players_state_respawn()
 	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
 	TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))
@@ -77,6 +79,8 @@ func reset_platforms() -> void:
 func despawn_objects() -> void:
 	for fireball in get_tree().get_nodes_in_group("fireballs"):
 		fireball.queue_free()
+	for object in get_tree().get_nodes_in_group("despawn"):
+		object.queue_free()
 	
 func reset_player_entered_switch_platforms() -> void:
 	for node in get_tree().get_nodes_in_group("player_entered_switch_platform"):

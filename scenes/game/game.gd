@@ -22,15 +22,17 @@ var use_controller_for_p1 = true
 var use_controller_for_p2 = true
 
 var level_paths := [
-	"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
+	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
 	"res://scenes/levels/level1.tscn", # 0
 	"res://scenes/levels/easy_platform_level.tscn", # 1
-	"res://scenes/levels/level2.tscn", # 2
-	"res://scenes/levels/level3.tscn", # 3
-	"res://scenes/levels/button_platform_level.tscn", # 4
-	"res://scenes/levels/fire_wall_level.tscn", # 5
-	"res://scenes/levels/moving_platform_level.tscn", # 6
-	"res://scenes/levels/pole_jump_level.tscn", # 7
+	"res://scenes/levels/pole_jump_level.tscn", # 2
+	"res://scenes/levels/intro_level_1.tscn", # 3
+	"res://scenes/levels/level2.tscn", # 4
+	"res://scenes/levels/level3.tscn", # 5
+	"res://scenes/levels/button_platform_level.tscn", # 6
+	"res://scenes/levels/fire_wall_level.tscn", # 7
+	"res://scenes/levels/trampoline_level.tscn", # 8
+	"res://scenes/levels/moving_platform_level.tscn", # 9
 ]
 var current_level_index = 0
 
@@ -53,7 +55,6 @@ func get_next_level_path() -> String:
 	return level_paths[current_level_index]
 
 func load_next_level() -> void:
-	GameManager.set_can_move(false)
 	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 
