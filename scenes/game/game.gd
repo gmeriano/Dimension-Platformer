@@ -83,6 +83,7 @@ func load_level(level: PackedScene) -> void:
 		current_level_node.queue_free()
 
 	GameManager.set_camera_zoom_default()
+	GameManager.set_camera_limit_default()
 	var level_node: Node2D = level.instantiate()
 	dimensions["1"].viewport.add_child(level_node)
 	dimensions["1"].viewport.move_child(level_node, 0)

@@ -10,6 +10,8 @@ func _ready() -> void:
 	button.button_pressed.connect(_on_button_pressed)
 	GameManager.camera1.zoom = Vector2(1.1, 1.1)
 	GameManager.camera2.zoom = Vector2(1.1, 1.1)
+	GameManager.camera1.limit_left = -200
+	GameManager.camera2.limit_left = -200
 
 func _on_button_pressed() -> void:
 	var moving_platform = MovingPlatformScene.instantiate()
