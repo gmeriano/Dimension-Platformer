@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="2_2gpqr"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="3_lv8ip"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_flm5u"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jc7is"]
 texture = ExtResource("2_2gpqr")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
@@ -393,7 +393,7 @@ physics_layer_0/collision_layer = 3
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/0 = SubResource("TileSetAtlasSource_flm5u")
+sources/0 = SubResource("TileSetAtlasSource_jc7is")
 
 [node name="TemplateLevel" type="Node2D"]
 

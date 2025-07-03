@@ -30,9 +30,10 @@ var level_paths := [
 	"res://scenes/levels/level2.tscn", # 4
 	"res://scenes/levels/level3.tscn", # 5
 	"res://scenes/levels/button_platform_level.tscn", # 6
-	"res://scenes/levels/fire_wall_level.tscn", # 7
-	"res://scenes/levels/trampoline_level.tscn", # 8
-	"res://scenes/levels/moving_platform_level.tscn", # 9
+	"res://scenes/levels/fire_switch_level.tscn", # 7
+	"res://scenes/levels/fire_wall_level.tscn", # 8
+	"res://scenes/levels/trampoline_level.tscn", # 9
+	"res://scenes/levels/moving_platform_level.tscn", # 10
 ]
 var current_level_index = 0
 
@@ -65,6 +66,14 @@ func _on_transition_finished_load_next_level() -> void:
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
 	load_level(load(level_paths[current_level_index]))
 
+func reload_current_level() -> void:
+	TransitionScreen.transition()
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_reload_current_level"))
+
+func _on_transition_finished_reload_current_level() -> void:
+	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_reload_current_level"))
+	load_level(load(level_paths[current_level_index]))
+
 func load_level(level: PackedScene) -> void:
 	# Remove previous level if it exists
 	if current_level_node and current_level_node.get_parent():
@@ -73,6 +82,7 @@ func load_level(level: PackedScene) -> void:
 		current_level_node.get_parent().remove_child(current_level_node)
 		current_level_node.queue_free()
 
+	GameManager.set_camera_zoom_default()
 	var level_node: Node2D = level.instantiate()
 	dimensions["1"].viewport.add_child(level_node)
 	dimensions["1"].viewport.move_child(level_node, 0)
@@ -93,6 +103,7 @@ func load_level(level: PackedScene) -> void:
 	player2.current_dimension = 2
 	player2.original_dimension = 2
 	player2.update_shadow_location()
+	GameManager.set_players_state_idle()
 	current_level_node.add_child(player2)
 
 	players = [player1, player2]

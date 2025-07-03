@@ -40,10 +40,15 @@ func get_camera_2() -> Camera2D:
 
 @rpc("any_peer", "call_local")
 func load_next_level() -> void:
-	print("LOADING LEVEL")
 	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
+
+@rpc("any_peer", "call_local")
+func reload_current_level() -> void:
+	set_players_state_respawn()
+	var game_node = get_tree().get_root().get_node("Game")
+	game_node.reload_current_level()
 
 func _on_fade_to_normal_finished_can_move_true():
 	GameManager.set_players_state_idle()
@@ -77,3 +82,7 @@ func get_camera_left_edge() -> float:
 	var viewport_size = camera1.get_viewport_rect().size
 	var half_width = (viewport_size.x / camera1.zoom.x) / 2.0
 	return camera1.global_position.x - half_width
+
+func set_camera_zoom_default() -> void:
+	camera1.zoom = Vector2(1.5, 1.5)
+	camera2.zoom = Vector2(1.5, 1.5)

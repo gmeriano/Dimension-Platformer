@@ -1,4 +1,5 @@
 extends Node2D
+class_name Fireball
 
 @export var speed: float = 225.0
 var direction: Vector2 = Vector2.LEFT
@@ -45,3 +46,8 @@ func _on_top_jumpbox_body_entered(body: Node2D) -> void:
 
 func _on_timer_timeout() -> void:
 	player_bouncing = false
+
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	if area is FireballDespawnLine:
+		queue_free()

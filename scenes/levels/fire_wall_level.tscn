@@ -1,11 +1,11 @@
 [gd_scene load_steps=12 format=4 uid="uid://bre2p53b6ueao"]
 
+[ext_resource type="Script" path="res://scenes/levels/fire_wall_level.gd" id="1_4f1ex"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_tv5bj"]
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="5_64kfv"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_sim7r"]
 [ext_resource type="Script" path="res://scripts/fireball_shoot_area.gd" id="6_yyf3p"]
 [ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/objects/fireball_spawner/fireball_spawner.tscn" id="7_esi6c"]
-[ext_resource type="PackedScene" uid="uid://rfsx5rigaqks" path="res://scenes/objects/button_pressed_switch_platform/button_pressed_switch_platform.tscn" id="7_wmhxn"]
 [ext_resource type="Script" path="res://scripts/misc/area_2d.gd" id="8_2fiyt"]
 [ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="8_ns5ob"]
 
@@ -394,7 +394,7 @@ texture_region_size = Vector2i(8, 8)
 
 [sub_resource type="TileSet" id="TileSet_yambf"]
 tile_size = Vector2i(8, 8)
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 3
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
@@ -404,6 +404,7 @@ sources/0 = SubResource("TileSetAtlasSource_mkjiw")
 size = Vector2(42.5, 242)
 
 [node name="FireWallLevel" type="Node2D"]
+script = ExtResource("1_4f1ex")
 
 [node name="LevelManager" type="Node2D" parent="."]
 position = Vector2(-52, 53)
@@ -452,7 +453,7 @@ position = Vector2(-148.25, -84)
 shape = SubResource("RectangleShape2D_no67j")
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(-330, 29)
+position = Vector2(-330, 30)
 
 [node name="FireballSpawner6" parent="Dimension1" instance=ExtResource("7_esi6c")]
 position = Vector2(543, 40)
@@ -463,6 +464,9 @@ fireball_speed = 100.0
 position = Vector2(543, -24)
 shoot_as_group = false
 fireball_speed = 100.0
+
+[node name="Button" parent="Dimension1" instance=ExtResource("8_ns5ob")]
+position = Vector2(720, -140)
 
 [node name="Dimension2" type="Node2D" parent="."]
 position = Vector2(0, 400)
@@ -493,7 +497,7 @@ position = Vector2(-149, -83)
 shape = SubResource("RectangleShape2D_no67j")
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(-329, 29)
+position = Vector2(-326, 25)
 
 [node name="FireballShootArea1" type="Area2D" parent="Dimension2" node_paths=PackedStringArray("spawner")]
 position = Vector2(499, 4)
@@ -531,13 +535,8 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(-149, -83)
 shape = SubResource("RectangleShape2D_no67j")
 
-[node name="Button" parent="Dimension2" instance=ExtResource("8_ns5ob")]
-position = Vector2(720, -540)
-
-[node name="ButtonPressedSwitchPlatform" parent="Dimension2" instance=ExtResource("7_wmhxn")]
-position = Vector2(603, 439)
-current_dimension = 2
-timer_wait_time = 1.0
+[node name="MovingPlatformSpawn" type="Marker2D" parent="Dimension2"]
+position = Vector2(681, 39)
 
 [connection signal="body_entered" from="Dimension1/Area2D" to="Dimension1/Area2D" method="_on_body_entered"]
 [connection signal="body_entered" from="Dimension2/Area2D2" to="Dimension2/Area2D2" method="_on_body_entered"]

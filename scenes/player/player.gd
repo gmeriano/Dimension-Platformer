@@ -17,7 +17,6 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var original_dimension = 1
 var tween: Tween = null
 var respawn_point: Vector2
-var prev_state: String
 
 # Jump vars
 var frames_since_last_on_ground = 0
@@ -41,6 +40,7 @@ var air_resistance = 500
 # Input vars
 var input_axis: float
 var jump_input: bool
+var jump_cut_input: bool
 
 # Controller vars
 var device_id: int = 0
@@ -48,6 +48,14 @@ var controller_id: int = 0
 var use_controller = false
 const JUMP_BUTTON = 0		# JOY_BUTTON_0 (bottom button: Cross/A)
 const MOVE_AXIS = 0			# JOY_AXIS_LEFT_X (left stick horizontal)
+
+# State Machine vars
+var prev_state: String
+var jump_states: Array[String] = [
+	PlayerJumpState.state_name,
+	PlayerDoubleJumpState.state_name,
+	PlayerWallJumpState.state_name,
+]
 
 func _enter_tree():
 	if Global.IS_ONLINE_MULTIPLAYER:
@@ -115,6 +123,7 @@ func _physics_process(delta: float) -> void:
 		jump_buffer_timer -= delta
 		if jump_buffer_timer <= 0:
 			jump_input_buffered = false
+	jump_cut_input = InputManager.is_jump_just_released(self)
 	
 	# Movement input processing
 	input_axis = InputManager.get_input_axis(self)

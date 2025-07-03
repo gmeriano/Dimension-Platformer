@@ -8,15 +8,13 @@ class_name FireballSpawner
 @export var direction: Vector2 = Vector2.LEFT
 @export var shoot_as_group = true
 @export var fireball_speed = 225.0
+@export var dimension = 1
 
 var can_fire: bool = true
 
 func _ready():
 	add_to_group("fireball_spawners")
 
-func _process(delta: float):
-	if Input.is_action_just_pressed("switch_scene"):
-		shoot_fireball()
 func shoot_fireball():
 	if can_fire:
 		can_fire = false

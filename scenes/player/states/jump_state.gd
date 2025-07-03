@@ -11,6 +11,8 @@ func enter() -> void:
 	player.velocity.y = JUMP_VELOCITY
 
 func physics_process(_delta: float) -> void:
+	if player.jump_cut_input and player.velocity.y < 0:
+		player.velocity.y /= 2
 	player.handle_acceleration(player.input_axis, _delta)
 	handle_transitions()
 
