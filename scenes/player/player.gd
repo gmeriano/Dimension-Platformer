@@ -302,4 +302,4 @@ func on_hit() -> void:
 	send_respawn_signal.rpc()
 
 func is_state_interactable() -> bool:
-	return state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name and !state_machine.current_state.get_state_name() == PlayerRespawnState.state_name
+	return state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name and state_machine.current_state.get_state_name() != PlayerRespawnState.state_name

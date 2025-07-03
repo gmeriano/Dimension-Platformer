@@ -4,7 +4,6 @@ class_name MovingPlatform
 @onready var platform: CharacterBody2D = $Platform
 @export var speed: float = 30.0
 @export var direction = -1 
-@onready var level_manager: LevelManager = $"../LevelManager"
 var platform_starting_position: Vector2
 var starting_direction: float
 var can_move = false

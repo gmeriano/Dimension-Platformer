@@ -7,7 +7,6 @@ class_name PlayerEnteredSwitchPlatform
 func _ready() -> void:
 	add_to_group("player_entered_switch_platform")
 	switch_platform.current_dimension = current_dimension
-	switch_platform.original_dimension = current_dimension
 
 func _process(delta: float) -> void:
 	update_color()

@@ -41,14 +41,17 @@ func get_camera_2() -> Camera2D:
 @rpc("any_peer", "call_local")
 func load_next_level() -> void:
 	# need this to move the player off the LevelComplete area to not trigger twice
-	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 1000)
-	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 1000)
+	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100000)
+	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100000)
 	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
 
 @rpc("any_peer", "call_local")
 func reload_current_level() -> void:
+	# need this to move the player off the LevelComplete area to not trigger twice
+	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100000)
+	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100000)
 	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.reload_current_level()
