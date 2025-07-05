@@ -419,7 +419,7 @@ tile_set = SubResource("TileSet_j8gp0")
 position = Vector2(1298, 7)
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(6, 22)
+position = Vector2(826, 23)
 
 [node name="FireballSpawner" parent="Dimension1" instance=ExtResource("4_gsvik")]
 position = Vector2(769, 39)
@@ -457,7 +457,7 @@ tile_set = SubResource("TileSet_j8gp0")
 position = Vector2(1293, 7)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(3, 19)
+position = Vector2(842, 24)
 
 [node name="FireballSpawner6" parent="Dimension2" instance=ExtResource("4_gsvik")]
 position = Vector2(769, 39)

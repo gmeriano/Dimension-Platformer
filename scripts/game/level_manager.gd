@@ -47,6 +47,8 @@ func handle_inputs() -> void:
 		swapping = true
 		dimension_swap.rpc()
 		await reset_swapping_delay()
+	if Input.is_action_just_pressed("switch_scene"):
+		GameManager.load_next_level()
 
 @rpc("any_peer", "call_local")
 func dimension_swap():

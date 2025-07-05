@@ -414,7 +414,7 @@ tile_set = SubResource("TileSet_408kk")
 position = Vector2(1593, -5)
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(3, 14)
+position = Vector2(869, 14)
 
 [node name="PlayerEnteredSwitchPlatform2" parent="Dimension1" instance=ExtResource("4_jbxue")]
 position = Vector2(1161, 38)
@@ -441,7 +441,7 @@ tile_set = SubResource("TileSet_408kk")
 position = Vector2(1589, -3)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(3, 16)
+position = Vector2(877, 19)
 
 [node name="Platform5" parent="Dimension2" instance=ExtResource("5_np50u")]
 position = Vector2(1544, 36)

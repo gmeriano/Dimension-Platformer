@@ -8,7 +8,7 @@ extends Node2D
 func _ready():
 	timer.wait_time = timer_wait_time
 	switch_platform.current_dimension = current_dimension
-	switch_platform.original_dimension = current_dimension
+	#switch_platform.original_dimension = current_dimension
 	for button in get_tree().get_nodes_in_group("trigger_buttons"):
 		button.connect("button_pressed", Callable(self, "on_any_button_pressed"))
 

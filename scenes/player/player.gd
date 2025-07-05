@@ -81,7 +81,7 @@ func _enter_tree():
 func _ready():
 	color_rect.color = color
 	var shadow_color = color
-	shadow_color.a = 0.3
+	shadow_color.a = 0.6
 	player_shadow.modulate = shadow_color
 	update_shadow_location()
 	respawn_point = global_position
