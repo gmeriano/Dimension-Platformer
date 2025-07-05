@@ -23,6 +23,7 @@ var use_controller_for_p2 = true
 
 var level_paths := [
 	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
+	"res://scenes/levels/game_levels/intro_level.tscn",
 	"res://scenes/levels/level1.tscn", # 0
 	"res://scenes/levels/easy_platform_level.tscn", # 1
 	"res://scenes/levels/pole_jump_level.tscn", # 2
