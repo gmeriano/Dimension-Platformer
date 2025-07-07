@@ -16,7 +16,7 @@ var color: Color
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var original_dimension = 1
 var tween: Tween = null
-var respawn_point: Vector2
+var respawn_point: Vector2 = Vector2.ZERO
 
 # Jump vars
 var frames_since_last_on_ground = 0
@@ -84,7 +84,6 @@ func _ready():
 	shadow_color.a = 0.6
 	player_shadow.modulate = shadow_color
 	update_shadow_location()
-	respawn_point = global_position
 	var states: Array[State] = [
 		PlayerIdleState.new(self),
 		PlayerMovementState.new(self),
@@ -133,10 +132,11 @@ func _physics_process(delta: float) -> void:
 		handle_gravity(delta)
 		apply_air_resistance(input_axis, delta)
 		update_wall_coyote_timer(delta)
-	
+		#clamp_x_by_camera()
+
 	# Apply movement
 	move_and_slide()
-	clamp_x_by_camera()
+
 
 
 # Jump helper functions
@@ -253,8 +253,10 @@ func handle_acceleration(input_axis, delta):
 func clamp_x_by_camera():
 	var new_x = global_position.x
 	if not is_within_camera_left(new_x):
+		print("HI")
 		new_x = GameManager.get_camera_1().global_position.x - ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) + (collision_shape_2d.shape.get_rect().size.x / 2)
 	if not is_within_camera_right(new_x):
+		print("HELLO")
 		new_x = GameManager.get_camera_1().global_position.x + ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
 	global_position.x = new_x
 
@@ -272,6 +274,7 @@ func is_within_camera_left(x_pos: float) -> bool:
 
 @rpc("any_peer", "call_local")
 func on_respawn(respawn_position: Vector2) -> void:
+	print("RESPAWN: ", respawn_position)
 	global_position = respawn_position
 	velocity = Vector2.ZERO
 	current_dimension = original_dimension

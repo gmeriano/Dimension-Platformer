@@ -15,7 +15,6 @@ var current_level_node: Node2D = null
 }
 var player1: Player = null
 var player2: Player = null
-var players = null
 var connected_joypads = Input.get_connected_joypads()  # e.g. [0, 1]
 
 var use_controller_for_p1 = true
@@ -84,7 +83,7 @@ func load_level(level: PackedScene) -> void:
 		current_level_node.queue_free()
 
 	GameManager.set_camera_zoom_default()
-	GameManager.set_camera_limit_default()
+	#GameManager.set_camera_limit_default()
 	var level_node: Node2D = level.instantiate()
 	dimensions["1"].viewport.add_child(level_node)
 	dimensions["1"].viewport.move_child(level_node, 0)
@@ -93,21 +92,24 @@ func load_level(level: PackedScene) -> void:
 	current_level_node = level_node
 
 	# Re-assign players
-	player1.global_position = current_level_node.get_node("Dimension1").get_node("Player1Spawn").global_position
-	player1.respawn_point = player1.global_position
+	if player1.respawn_point == Vector2.ZERO:	
+		player1.respawn_point = current_level_node.get_node("Dimension1").get_node("Player1Spawn").global_position
+	if player2.respawn_point == Vector2.ZERO:
+		player2.respawn_point = current_level_node.get_node("Dimension2").get_node("Player2Spawn").global_position
+
+	player1.global_position = player1.respawn_point if player1.respawn_point.x < player2.respawn_point.x else player2.respawn_point - Vector2(0, Global.DIMENSION_OFFSET)
 	player1.current_dimension = 1
 	player1.original_dimension = 1
 	player1.update_shadow_location()
 	current_level_node.add_child(player1)
 	
-	player2.global_position = current_level_node.get_node("Dimension2").get_node("Player2Spawn").global_position
-	player2.respawn_point = player2.global_position
+	player2.global_position = player1.respawn_point + Vector2(0, Global.DIMENSION_OFFSET) if player1.respawn_point.x < player2.respawn_point.x else player2.respawn_point
 	player2.current_dimension = 2
 	player2.original_dimension = 2
 	player2.update_shadow_location()
-	GameManager.set_players_state_idle()
 	current_level_node.add_child(player2)
-
-	players = [player1, player2]
+	
+	GameManager.focus_camera_on_players()
+	GameManager.set_players_state_idle()
 
 	InputManager.setup_player_inputs(player1, player2)

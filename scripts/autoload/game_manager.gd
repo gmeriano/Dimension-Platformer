@@ -93,6 +93,12 @@ func set_camera_zoom_default() -> void:
 	camera1.zoom = Vector2(1.5, 1.5)
 	camera2.zoom = Vector2(1.5, 1.5)
 
+func focus_camera_on_players() -> void:
+	camera1.global_position.x = (player1.global_position.x + player2.global_position.x) / 2.0
+	camera2.global_position.x = (player1.global_position.x + player2.global_position.x) / 2.0
+	camera1.reset_smoothing()
+	camera2.reset_smoothing()
+
 func set_camera_limit_default() -> void:
 	camera1.limit_left = -400
 	camera2.limit_left = -400

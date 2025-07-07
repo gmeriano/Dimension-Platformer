@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwfmr1ifenmm3"]
+
+[ext_resource type="Script" path="res://scenes/game/update_respawn_area.gd" id="1_c2cyb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ry57"]
+size = Vector2(35, 262)
+
+[node name="UpdateRespawnArea" type="Area2D"]
+collision_mask = 4
+script = ExtResource("1_c2cyb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, -132)
+shape = SubResource("RectangleShape2D_2ry57")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(1, -30)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
