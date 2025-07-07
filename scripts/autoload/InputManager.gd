@@ -55,6 +55,10 @@ func get_input_axis(player: Player) -> float:
 		var axis_value = Input.get_joy_axis(player.device_id, MOVE_AXIS)
 		if abs(axis_value) < DEADZONE:
 			return 0.0
+		if axis_value > 0.8:
+			return 1.0
+		elif axis_value < -0.8:
+			return -1.0
 		return axis_value
 	else:
 		return Input.get_axis(player.controls.move_left, player.controls.move_right)	

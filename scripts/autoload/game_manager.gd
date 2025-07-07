@@ -62,10 +62,8 @@ func _on_fade_to_normal_finished_can_move_true():
 func set_players_state_respawn() -> void:
 	if player1.tween:
 		player1.tween.kill()
-		print("tween 1")
 	if player2.tween:
 		player2.tween.kill()
-		print("tween 2")
 	player1.multiplayer_synchronizer.replication_interval = 10.0
 	player2.multiplayer_synchronizer.replication_interval = 10.0
 	player1.velocity = Vector2.ZERO
