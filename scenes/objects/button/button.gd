@@ -5,6 +5,7 @@ class_name GameButton
 @onready var cooldown_timer: Timer = $Timer
 @onready var color_rect: ColorRect = $ColorRect
 var player: Player = null
+var last_pressed_time := -INF
 
 var can_be_pressed = true
 
@@ -20,12 +21,17 @@ func _process(delta: float) -> void:
 
 @rpc("any_peer", "call_local")
 func on_button_pressed() -> void:
+	last_pressed_time = Time.get_ticks_msec() / 1000.0  # seconds
 	cooldown_timer.start()
 	can_be_pressed = false
 	emit_signal(button_pressed_signal)
 	var tween = create_tween()
 	color_rect.modulate = Color(1, 1, 1, 0.5)
 	tween.tween_property(color_rect, "modulate:a", 1.0, cooldown_timer.wait_time)
+
+func was_just_pressed() -> bool:
+	var now := Time.get_ticks_msec() / 1000.0
+	return now - last_pressed_time < 0.1
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
