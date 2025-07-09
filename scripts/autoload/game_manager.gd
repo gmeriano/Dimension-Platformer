@@ -43,6 +43,9 @@ func load_next_level() -> void:
 	# need this to move the player off the LevelComplete area to not trigger twice
 	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100000)
 	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100000)
+	# set respawn point to zero so that the game knows to update respawn point to next level location
+	player1.respawn_point = Vector2.ZERO
+	player2.respawn_point = Vector2.ZERO
 	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
@@ -55,6 +58,10 @@ func reload_current_level() -> void:
 	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.reload_current_level()
+
+func update_player_respawn_points() -> void:
+	player1.respawn_point = player1.possible_respawn_point
+	player2.respawn_point = player2.possible_respawn_point
 
 func _on_fade_to_normal_finished_can_move_true():
 	GameManager.set_players_state_idle()
@@ -88,8 +95,8 @@ func get_camera_left_edge() -> float:
 	return camera1.global_position.x - half_width
 
 func set_camera_zoom_default() -> void:
-	camera1.zoom = Vector2(1.5, 1.5)
-	camera2.zoom = Vector2(1.5, 1.5)
+	camera1.zoom = Vector2(1.0, 1.0)
+	camera2.zoom = Vector2(1.0, 1.0)
 
 func focus_camera_on_players() -> void:
 	camera1.global_position.x = (player1.global_position.x + player2.global_position.x) / 2.0

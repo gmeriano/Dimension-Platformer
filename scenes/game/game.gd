@@ -22,7 +22,8 @@ var use_controller_for_p2 = true
 
 var level_paths := [
 	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
-	"res://scenes/levels/game_levels/intro_level.tscn",
+	#"res://scenes/levels/game_levels/intro_level.tscn",
+	"res://scenes/levels/game_levels/intro_swapping_level.tscn",
 	"res://scenes/levels/level1.tscn", # 0
 	"res://scenes/levels/easy_platform_level.tscn", # 1
 	"res://scenes/levels/pole_jump_level.tscn", # 2
@@ -97,15 +98,16 @@ func load_level(level: PackedScene) -> void:
 	if player2.respawn_point == Vector2.ZERO:
 		player2.respawn_point = current_level_node.get_node("Dimension2").get_node("Player2Spawn").global_position
 
-	player1.global_position = player1.respawn_point if player1.respawn_point.x < player2.respawn_point.x else player2.respawn_point - Vector2(0, Global.DIMENSION_OFFSET)
-	player1.current_dimension = 1
-	player1.original_dimension = 1
+	player1.global_position = player1.respawn_point
+	player2.global_position = player2.respawn_point
+
+	player1.current_dimension = 1 if player1.global_position.y < player2.global_position.y else 2
+	player1.original_dimension = player1.current_dimension
 	player1.update_shadow_location()
 	current_level_node.add_child(player1)
 	
-	player2.global_position = player1.respawn_point + Vector2(0, Global.DIMENSION_OFFSET) if player1.respawn_point.x < player2.respawn_point.x else player2.respawn_point
-	player2.current_dimension = 2
-	player2.original_dimension = 2
+	player2.current_dimension = 1 if player2.global_position.y < player1.global_position.y else 2
+	player2.original_dimension = player2.current_dimension
 	player2.update_shadow_location()
 	current_level_node.add_child(player2)
 	

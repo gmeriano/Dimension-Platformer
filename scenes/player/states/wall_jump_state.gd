@@ -11,7 +11,6 @@ func get_state_name() -> String:
 	return state_name
 
 func enter() -> void:
-	print("WALL JUMP")
 	player.jump_input_buffered = false
 	if player.is_on_wall_left():
 		wall_direction = 1

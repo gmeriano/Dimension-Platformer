@@ -27,7 +27,7 @@ func _update_camera_logic(delta: float) -> void:
 	var camera_pos = get_screen_center_position()
 
 	if edge_threshold == 0:
-		edge_threshold = get_viewport_rect().size.x * 0.25
+		edge_threshold = get_viewport_rect().size.x * 0.33
 
 	if player1.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name \
 	and player2.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name:

@@ -7,6 +7,8 @@ class_name LevelManager
 @onready var dimension_1: Node2D = $"../Dimension1"
 @onready var dimension_2: Node2D = $"../Dimension2"
 
+@export var allow_swapping: bool = true
+
 var players: Array[Player] = []
 var cameras: Array[Camera2D] = []
 var spawn_positions: Array[Marker2D]
@@ -43,10 +45,12 @@ func check_respawn():
 				break
 
 func handle_inputs() -> void:
-	if !swapping and (InputManager.is_dimension_swap_pressed(players[0]) or InputManager.is_dimension_swap_pressed(players[1])):
-		swapping = true
-		dimension_swap.rpc()
-		await reset_swapping_delay()
+	if allow_swapping:
+		if !swapping and (InputManager.is_dimension_swap_pressed(players[0]) or InputManager.is_dimension_swap_pressed(players[1])):
+			swapping = true
+			dimension_swap.rpc()
+			await reset_swapping_delay()
+
 	if Input.is_action_just_pressed("switch_scene"):
 		GameManager.load_next_level()
 

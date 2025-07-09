@@ -16,7 +16,11 @@ var color: Color
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var original_dimension = 1
 var tween: Tween = null
+
+# Respawn vars
 var respawn_point: Vector2 = Vector2.ZERO
+var possible_respawn_point: Vector2 = Vector2.ZERO
+var update_respawn: bool = false
 
 # Jump vars
 var frames_since_last_on_ground = 0

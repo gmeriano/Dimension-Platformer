@@ -14,6 +14,17 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
+		print("ETNERED")
 		var player = body as Player
-		if player.respawn_point.x < marker_2d.global_position.x:
-			player.respawn_point = marker_2d.global_position
+		player.update_respawn = true
+		player.possible_respawn_point = marker_2d.global_position
+		if GameManager.get_player_1().update_respawn == true and GameManager.get_player_2().update_respawn == true:
+			GameManager.update_player_respawn_points()
+
+
+func _on_body_exited(body: Node2D) -> void:
+	if body is Player:
+		print("EXIT")
+		var player = body as Player
+		player.update_respawn = false
+		player.possible_respawn_point = Vector2.ZERO
