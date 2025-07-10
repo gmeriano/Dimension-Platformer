@@ -39,3 +39,13 @@ metadata/_edit_use_anchors_ = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("3_h5lw5")
+
+[node name="RightRayCast" type="RayCast2D" parent="."]
+position = Vector2(6, -2)
+rotation = -1.5708
+target_position = Vector2(0, 4)
+
+[node name="LeftRayCast" type="RayCast2D" parent="."]
+position = Vector2(-6, -2)
+rotation = 1.5708
+target_position = Vector2(0, 4)

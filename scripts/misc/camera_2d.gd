@@ -34,13 +34,12 @@ func _update_camera_logic(delta: float) -> void:
 		set_x_position(delta)
 
 func reset() -> void:
-	global_position = initial_position
-	# zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
+	global_position = initial_position.round()
 
 func set_x_position(delta: float) -> void:
 	var viewport_width = get_viewport_rect().size.x / zoom.x
 	var half_width = viewport_width * 0.5
-	var camera_pos_x = global_position.x  # Use actual camera position (not screen center)
+	var camera_pos_x = global_position.x
 	
 	var left_edge = camera_pos_x - half_width + edge_threshold
 	var right_edge = camera_pos_x + half_width - edge_threshold
@@ -52,7 +51,6 @@ func set_x_position(delta: float) -> void:
 	if p1_x < left_edge or p1_x > right_edge or p2_x < left_edge or p2_x > right_edge:
 		var mid_x = (p1_x + p2_x) * 0.5
 
-		# Move toward midpoint smoothly
 		global_position.x = lerp(global_position.x, mid_x, 1.0 * delta)
 
 func get_active_player() -> Player:

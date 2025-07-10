@@ -10,12 +10,8 @@ func physics_process(delta: float) -> void:
 	handle_transitions()
 
 func handle_transitions() -> void:
-	# Wall jump (only if pushing into wall)
-	if player.jump_input_buffered and player.wall_coyote_timer > 0:
-		if player.last_wall_direction == -1 and player.input_axis > 0:
-			state_machine.transition(PlayerWallJumpState.state_name)
-			return
-		elif player.last_wall_direction == 1 and player.input_axis < 0:
+	if player.jump_input_buffered or player.jump_input:
+		if player.last_wall_direction != player.last_wall_jump_direction and player.last_wall_direction != Vector2.ZERO and player.input_axis != 0 and player.input_axis != player.last_wall_direction.x:
 			state_machine.transition(PlayerWallJumpState.state_name)
 			return
 

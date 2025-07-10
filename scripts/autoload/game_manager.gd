@@ -60,8 +60,10 @@ func reload_current_level() -> void:
 	game_node.reload_current_level()
 
 func update_player_respawn_points() -> void:
-	player1.respawn_point = player1.possible_respawn_point
-	player2.respawn_point = player2.possible_respawn_point
+	player1.respawn_point = player1.possible_respawn_point.marker_2d.global_position
+	player2.respawn_point = player2.possible_respawn_point.marker_2d.global_position
+	player1.possible_respawn_point.queue_free()
+	player2.possible_respawn_point.queue_free()
 
 func _on_fade_to_normal_finished_can_move_true():
 	GameManager.set_players_state_idle()
@@ -99,8 +101,8 @@ func set_camera_zoom_default() -> void:
 	camera2.zoom = Vector2(1.0, 1.0)
 
 func focus_camera_on_players() -> void:
-	camera1.global_position.x = (player1.global_position.x + player2.global_position.x) / 2.0
-	camera2.global_position.x = (player1.global_position.x + player2.global_position.x) / 2.0
+	camera1.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
+	camera2.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
 	camera1.reset_smoothing()
 	camera2.reset_smoothing()
 

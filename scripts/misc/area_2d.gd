@@ -1,4 +1,5 @@
 extends Area2D
+# Shoots all fireball spawner on enter
 
 @onready var spawners := get_tree().get_nodes_in_group("fireball_spawners")
 

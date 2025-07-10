@@ -1,5 +1,7 @@
 extends Area2D
 class_name Area2d3
+# Shoots spawner fireball on enter
+
 @onready var spawners := get_tree().get_nodes_in_group("fireball_spawners")
 @export var spawner: FireballSpawner
 # Called when the node enters the scene tree for the first time.

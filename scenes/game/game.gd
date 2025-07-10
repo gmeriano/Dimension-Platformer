@@ -22,7 +22,7 @@ var use_controller_for_p2 = true
 
 var level_paths := [
 	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
-	#"res://scenes/levels/game_levels/intro_level.tscn",
+	"res://scenes/levels/game_levels/intro_level.tscn",
 	"res://scenes/levels/game_levels/intro_swapping_level.tscn",
 	"res://scenes/levels/level1.tscn", # 0
 	"res://scenes/levels/easy_platform_level.tscn", # 1
@@ -98,8 +98,8 @@ func load_level(level: PackedScene) -> void:
 	if player2.respawn_point == Vector2.ZERO:
 		player2.respawn_point = current_level_node.get_node("Dimension2").get_node("Player2Spawn").global_position
 
-	player1.global_position = player1.respawn_point
-	player2.global_position = player2.respawn_point
+	player1.global_position = player1.respawn_point.round()
+	player2.global_position = player2.respawn_point.round()
 
 	player1.current_dimension = 1 if player1.global_position.y < player2.global_position.y else 2
 	player1.original_dimension = player1.current_dimension
