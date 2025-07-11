@@ -87,6 +87,7 @@ func _enter_tree():
 		controls = load("res://assets/resources/player1_movement.tres")
 
 func _ready():
+	print("nasha commit")
 	color_rect.color = color
 	var shadow_color = color
 	shadow_color.a = 0.6
