@@ -50,7 +50,6 @@ func set_x_position(delta: float) -> void:
 	# Only move camera if necessary
 	if p1_x < left_edge or p1_x > right_edge or p2_x < left_edge or p2_x > right_edge:
 		var mid_x = (p1_x + p2_x) * 0.5
-
 		global_position.x = lerp(global_position.x, mid_x, 1.0 * delta)
 
 func get_active_player() -> Player:

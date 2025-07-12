@@ -11,11 +11,13 @@ signal respawn
 @onready var color_rect: ColorRect = $ColorRect
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var state_machine: StateMachine = $StateMachine
+@onready var player_sprite: Sprite2D = $PlayerSprite
 
 var color: Color
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var original_dimension = 1
 var tween: Tween = null
+var sprite_texture: Texture2D = preload("res://assets/sprites/player/BLACK-CAT.png")
 
 # Respawn vars
 var respawn_point: Vector2 = Vector2.ZERO
@@ -88,6 +90,7 @@ func _enter_tree():
 
 func _ready():
 	color_rect.color = color
+	player_sprite.texture = sprite_texture
 	var shadow_color = color
 	shadow_color.a = 0.6
 	player_shadow.modulate = shadow_color

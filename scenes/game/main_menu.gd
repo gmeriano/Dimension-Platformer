@@ -151,6 +151,8 @@ func _on_local_pressed() -> void:
 	player2.controls = load("res://assets/resources/player2_movement.tres")
 	player1.color = Color.GREEN
 	player2.color = Color.RED
+	player1.sprite_texture = load("res://assets/sprites/player/BLACK-CAT.png")
+	player2.sprite_texture = load("res://assets/sprites/player/WHITE-CAT.png")
 	player1.global_position = player_1_spawn.global_position
 	player2.global_position = player_2_spawn.global_position
 	player2.current_dimension = 1
