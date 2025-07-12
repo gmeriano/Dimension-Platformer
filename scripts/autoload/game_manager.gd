@@ -101,8 +101,10 @@ func set_camera_zoom_default() -> void:
 	camera2.zoom = Vector2(1.0, 1.0)
 
 func focus_camera_on_players() -> void:
-	camera1.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
-	camera2.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
+	#camera1.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
+	#camera2.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
+	camera1.global_position.x = 576
+	camera2.global_position.x = 576
 	camera1.reset_smoothing()
 	camera2.reset_smoothing()
 

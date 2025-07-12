@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://brt1jwpmx47to"]
+[gd_scene load_steps=13 format=4 uid="uid://brt1jwpmx47to"]
 
 [ext_resource type="Script" path="res://scenes/levels/game_levels/intro_level.gd" id="1_a58my"]
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_c80c1"]
@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="3_l2ckd"]
 [ext_resource type="PackedScene" uid="uid://bwfmr1ifenmm3" path="res://scenes/game/update_respawn_area.tscn" id="5_jiosw"]
 [ext_resource type="PackedScene" uid="uid://446mij02hd3y" path="res://scenes/objects/fireball/fireball.tscn" id="6_2q3kh"]
+[ext_resource type="Script" path="res://scripts/misc/parallax.gd" id="7_25fkp"]
+[ext_resource type="Texture2D" uid="uid://jla7mf2pf7ea" path="res://assets/sprites/background/1.png" id="7_30rmp"]
+[ext_resource type="Texture2D" uid="uid://cq7pwk68xgs2h" path="res://assets/sprites/background/2.png" id="8_e7322"]
+[ext_resource type="Texture2D" uid="uid://ieim3rqnexlf" path="res://assets/sprites/background/3.png" id="9_boc85"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dopkh"]
 texture = ExtResource("2_47qfw")
@@ -403,7 +407,6 @@ script = ExtResource("1_a58my")
 
 [node name="LevelManager" type="Node2D" parent="."]
 script = ExtResource("1_c80c1")
-allow_swapping = false
 
 [node name="Dimension1" type="Node2D" parent="."]
 
@@ -435,6 +438,35 @@ position = Vector2(3284, -90)
 speed = 0.0
 bounce_multiplier = 0.0
 
+[node name="Parallax" type="Node2D" parent="Dimension1"]
+script = ExtResource("7_25fkp")
+
+[node name="Parallax2D" type="Parallax2D" parent="Dimension1/Parallax"]
+scroll_scale = Vector2(0.1, 1)
+repeat_size = Vector2(576, 0)
+repeat_times = 3
+
+[node name="Ocean" type="Sprite2D" parent="Dimension1/Parallax/Parallax2D"]
+z_index = -4096
+texture = ExtResource("7_30rmp")
+
+[node name="Parallax2D2" type="Parallax2D" parent="Dimension1/Parallax"]
+scroll_scale = Vector2(0.6, 1)
+repeat_size = Vector2(576, 0)
+repeat_times = 6
+
+[node name="Mist" type="Sprite2D" parent="Dimension1/Parallax/Parallax2D2"]
+z_index = -4096
+texture = ExtResource("8_e7322")
+
+[node name="Parallax2D3" type="Parallax2D" parent="Dimension1/Parallax"]
+repeat_size = Vector2(576, 0)
+repeat_times = 6
+
+[node name="Clouds" type="Sprite2D" parent="Dimension1/Parallax/Parallax2D3"]
+z_index = -4096
+texture = ExtResource("9_boc85")
+
 [node name="Dimension2" type="Node2D" parent="."]
 position = Vector2(0, 400)
 
@@ -465,3 +497,33 @@ bounce_multiplier = 0.0
 position = Vector2(3285, -90)
 speed = 0.0
 bounce_multiplier = 0.0
+
+[node name="Parallax" type="Node2D" parent="Dimension2"]
+script = ExtResource("7_25fkp")
+dimension = 2
+
+[node name="Parallax2D" type="Parallax2D" parent="Dimension2/Parallax"]
+scroll_scale = Vector2(0.1, 1)
+repeat_size = Vector2(576, 0)
+repeat_times = 3
+
+[node name="Ocean" type="Sprite2D" parent="Dimension2/Parallax/Parallax2D"]
+z_index = -4096
+texture = ExtResource("7_30rmp")
+
+[node name="Parallax2D2" type="Parallax2D" parent="Dimension2/Parallax"]
+scroll_scale = Vector2(0.6, 1)
+repeat_size = Vector2(576, 0)
+repeat_times = 6
+
+[node name="Mist" type="Sprite2D" parent="Dimension2/Parallax/Parallax2D2"]
+z_index = -4096
+texture = ExtResource("8_e7322")
+
+[node name="Parallax2D3" type="Parallax2D" parent="Dimension2/Parallax"]
+repeat_size = Vector2(576, 0)
+repeat_times = 6
+
+[node name="Clouds" type="Sprite2D" parent="Dimension2/Parallax/Parallax2D3"]
+z_index = -4096
+texture = ExtResource("9_boc85")

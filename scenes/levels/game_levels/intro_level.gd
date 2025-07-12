@@ -5,6 +5,8 @@ extends Node2D
 func _ready() -> void:
 	GameManager.get_camera_1().zoom = Vector2(1.0, 1.0)
 	GameManager.get_camera_2().zoom = Vector2(1.0, 1.0)
+	GameManager.get_camera_1().global_position = Vector2(get_viewport_rect().size.x / 2.0, 1.0)
+	GameManager.get_camera_2().global_position = Vector2(get_viewport_rect().size.x / 2.0, 1.0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
