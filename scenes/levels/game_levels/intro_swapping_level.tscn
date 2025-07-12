@@ -417,7 +417,7 @@ tile_set = SubResource("TileSet_q8xfh")
 position = Vector2(5559, -72)
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(60, -72)
+position = Vector2(60, -50)
 
 [node name="UpdateRespawnArea" parent="Dimension1" instance=ExtResource("4_l44st")]
 position = Vector2(1391, -37)
@@ -468,7 +468,7 @@ tile_set = SubResource("TileSet_q8xfh")
 position = Vector2(5568, -83)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(60, -77)
+position = Vector2(60, -50)
 
 [node name="UpdateRespawnArea" parent="Dimension2" instance=ExtResource("4_l44st")]
 position = Vector2(1386, -38)

@@ -419,7 +419,7 @@ tile_set = SubResource("TileSet_ppfpx")
 position = Vector2(32, -208)
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(3266, -73)
+position = Vector2(130, -50)
 
 [node name="Trampoline" parent="Dimension1" instance=ExtResource("4_33ixc")]
 position = Vector2(352, -55)
@@ -451,6 +451,9 @@ position = Vector2(1373, -38)
 [node name="UpdateRespawnArea4" parent="Dimension1" instance=ExtResource("7_kqbxw")]
 position = Vector2(2674, -37)
 
+[node name="UpdateRespawnArea5" parent="Dimension1" instance=ExtResource("7_kqbxw")]
+position = Vector2(4703, -45)
+
 [node name="MovingPlatformSpawn" type="Marker2D" parent="Dimension1"]
 position = Vector2(4424, -81)
 
@@ -467,7 +470,7 @@ tile_set = SubResource("TileSet_ppfpx")
 position = Vector2(33, -209)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(3302, -71)
+position = Vector2(130, -50)
 
 [node name="Trampoline2" parent="Dimension2" instance=ExtResource("4_33ixc")]
 position = Vector2(352, -55)
@@ -527,6 +530,9 @@ position = Vector2(1374, -36)
 
 [node name="UpdateRespawnArea3" parent="Dimension2" instance=ExtResource("7_kqbxw")]
 position = Vector2(2675, -40)
+
+[node name="UpdateRespawnArea4" parent="Dimension2" instance=ExtResource("7_kqbxw")]
+position = Vector2(4701, -42)
 
 [node name="Button" parent="Dimension2" instance=ExtResource("9_5uw6l")]
 position = Vector2(4361, -138)
