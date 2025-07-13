@@ -450,7 +450,7 @@ secondary_background_repeat = 6
 foreground_texture = ExtResource("10_dcxjv")
 foreground_speed = 1.0
 foreground_repeat = 6
-image_size = Vector2(1152, 0)
+image_size = Vector2(1024, 0)
 
 [node name="Dimension2" type="Node2D" parent="."]
 position = Vector2(0, 400)
