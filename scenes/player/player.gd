@@ -12,6 +12,7 @@ signal respawn
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var state_machine: StateMachine = $StateMachine
 @onready var player_sprite: Sprite2D = $PlayerSprite
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 var color: Color
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -89,6 +90,7 @@ func _enter_tree():
 		controls = load("res://assets/resources/player1_movement.tres")
 
 func _ready():
+	animated_sprite_2d.play("default")
 	color_rect.color = color
 	player_sprite.texture = sprite_texture
 	var shadow_color = color

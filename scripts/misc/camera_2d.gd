@@ -9,12 +9,12 @@ var player2: Player = GameManager.get_player_2()
 
 var initial_position: Vector2
 
-const CAMERA_LERP_SPEED := 100.0  # Pixels per second
+const CAMERA_LERP_SPEED := 300.0  # Pixels per second
 
 func _ready() -> void:
 	zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
-	initial_position = position.round()
-	position_smoothing_enabled = false  # Disable built-in smoothing
+	initial_position = position
+	#position_smoothing_enabled = false  # Disable built-in smoothing
 	
 	limit_left = 0
 	if dimension == 1:
@@ -36,7 +36,7 @@ func _update_camera_logic(delta: float) -> void:
 		set_x_position(delta)
 
 func reset() -> void:
-	position = initial_position.round()
+	position = initial_position
 
 func set_x_position(delta: float) -> void:
 	var viewport_width = get_viewport_rect().size.x / zoom.x
@@ -54,10 +54,10 @@ func set_x_position(delta: float) -> void:
 
 		# Smooth toward midpoint
 		position.x = move_toward(position.x, mid_x, CAMERA_LERP_SPEED * delta)
-
+		print("POS: ", position.x)
 		# Snap if close enough
-		if abs(position.x - mid_x) < 1.0:
-			position.x = round(mid_x)
+		#if abs(position.x - mid_x) < 1.0:
+			#position.x = round(mid_x)
 
 	# Final pixel alignment
 	#position.x = round(position.x)
