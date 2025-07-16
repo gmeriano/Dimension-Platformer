@@ -437,7 +437,6 @@ position = Vector2(305, -31)
 position = Vector2(0, 600)
 
 [node name="ParallaxBackground" parent="Dimension2" instance=ExtResource("2_ox57t")]
-visible = false
 position = Vector2(128, -36)
 dimension = 2
 background_texture = ExtResource("3_gaqqp")

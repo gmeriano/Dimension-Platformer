@@ -9,7 +9,8 @@ var player2: Player = GameManager.get_player_2()
 
 var initial_position: Vector2
 
-const CAMERA_LERP_SPEED := 100.0  # Pixels per second
+const CAMERA_LERP_SPEED := 50.0  # Pixels per second
+var prev = 0.0
 
 func _ready() -> void:
 	global_position.x = get_viewport_rect().size.x + get_viewport_rect().size.x / 2.0
@@ -56,15 +57,11 @@ func set_x_position(delta: float) -> void:
 	# Only move toward the one violating the boundary
 	if p1_outside != p2_outside:
 		var target_x = p1_x if p1_outside else p2_x
+		prev = position.x
 		position.x = move_toward(position.x, target_x, CAMERA_LERP_SPEED * delta)
 		position.x = round(position.x)  # <--- important
 
-		var dist = abs(target_x - position.x)
-		var step = CAMERA_LERP_SPEED * delta
-		#if step >= dist:
-			#position.x = target_x
-		#else:
-			#position.x += dir * step
+		print("CAM: ", position.x - prev)
 		#var direction = sign(target_x - position.x)
 		#var move_amount = CAMERA_LERP_SPEED * delta
 		#var distance_to_target = abs(target_x - position.x)

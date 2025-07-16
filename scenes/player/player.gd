@@ -44,7 +44,7 @@ var jump_input_buffered := false
 
 
 # Movement vars
-var speed = 60
+var speed = 120
 
 var friction = 2000
 var air_resistance = 500
@@ -53,6 +53,8 @@ var air_resistance = 500
 var input_axis: float
 var jump_input: bool
 var jump_cut_input: bool
+
+var prev = 0.0
 
 # Controller vars
 var device_id: int = 0
@@ -154,8 +156,12 @@ func _physics_process(delta: float) -> void:
 		#clamp_x_by_camera()
 
 	# Apply movement
-	global_position = global_position.round()
+	prev = global_position
+	#global_position = global_position.round()
 	move_and_slide()
+	global_position = global_position.round() 
+	if current_dimension == 1:
+		print("PLAYER: ", global_position - prev)
 
 func get_wall_direction() -> void:
 	if right_ray_cast.is_colliding():
