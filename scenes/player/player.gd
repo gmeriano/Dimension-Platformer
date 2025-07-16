@@ -44,7 +44,7 @@ var jump_input_buffered := false
 
 
 # Movement vars
-var speed = 125
+var speed = 400
 var friction = 2000
 var air_resistance = 500
 

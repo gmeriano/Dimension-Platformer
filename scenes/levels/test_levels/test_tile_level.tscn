@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://b5a5i1s6di0mv"]
+[gd_scene load_steps=10 format=4 uid="uid://c7ffl75xgfk0g"]
 
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_f2l0j"]
 [ext_resource type="PackedScene" uid="uid://dmo66gpk6g61i" path="res://scenes/background/parallax_background.tscn" id="2_ox57t"]
