@@ -154,6 +154,7 @@ func _physics_process(delta: float) -> void:
 		#clamp_x_by_camera()
 
 	# Apply movement
+	global_position = global_position.round()
 	move_and_slide()
 
 func get_wall_direction() -> void:

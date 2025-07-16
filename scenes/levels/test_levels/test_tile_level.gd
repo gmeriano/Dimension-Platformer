@@ -8,6 +8,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print("P1: ", GameManager.get_player_1().global_position)
-	print("P2: ", GameManager.get_player_2().global_position)
+	#print("P1: ", GameManager.get_player_1().global_position)
+	#print("P2: ", GameManager.get_player_2().global_position)
 	pass

@@ -12,7 +12,6 @@ class_name GameBackgroundParallaxNode
 @export var foreground_speed: float
 @export var foreground_repeat: int
 @export var image_size: Vector2
-@export var filter: bool
 
 @onready var parallax_2d: Parallax2D = $Parallax2D
 @onready var background: Sprite2D = $Parallax2D/background
@@ -24,17 +23,12 @@ class_name GameBackgroundParallaxNode
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#TODO get rid of filter 
-	if filter:
-		texture_filter = TEXTURE_FILTER_NEAREST
-	else:
-		texture_filter = TEXTURE_FILTER_LINEAR
-	if dimension == 1:
-		global_position = GameManager.camera1.get_screen_center_position()
-	elif dimension == 2:
-		var pos = GameManager.camera1.get_screen_center_position()
-		pos.y += Global.DIMENSION_OFFSET
-		global_position = pos
+	#if dimension == 1:
+		#global_position = GameManager.camera1.get_screen_center_position()
+	#if dimension == 2:
+		#var pos = GameManager.camera1.get_screen_center_position()
+		#global_position.y += Global.DIMENSION_OFFSET
+		#global_position = pos
 	print("POS: ", global_position)
 	parallax_2d.scroll_scale.x = background_speed
 	parallax_2d.repeat_size = image_size

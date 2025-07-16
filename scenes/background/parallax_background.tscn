@@ -13,6 +13,7 @@ z_index = -4096
 script = ExtResource("1_2jubu")
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.1, 1)
 script = ExtResource("2_rbglp")
 
 [node name="background" type="Sprite2D" parent="Parallax2D"]
@@ -20,6 +21,7 @@ texture = ExtResource("3_bcp65")
 script = ExtResource("3_b8t71")
 
 [node name="Parallax2D2" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.3, 1)
 script = ExtResource("2_rbglp")
 layer = 1
 
@@ -30,7 +32,7 @@ layer = 1
 
 [node name="Parallax2D4" type="Parallax2D" parent="."]
 z_index = -4096
-scroll_scale = Vector2(0.7, 1)
+scroll_scale = Vector2(0.4, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 6
 
@@ -38,6 +40,7 @@ repeat_times = 6
 texture = ExtResource("4_dwvp4")
 
 [node name="Parallax2D3" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.6, 1)
 script = ExtResource("2_rbglp")
 layer = 2
 

@@ -415,13 +415,12 @@ background_texture = ExtResource("3_gaqqp")
 background_speed = 0.1
 background_repeat = 3
 secondary_background_texture = ExtResource("4_rwaws")
-secondary_background_speed = 0.6
+secondary_background_speed = 0.3
 secondary_background_repeat = 3
 foreground_texture = ExtResource("5_7gkyw")
-foreground_speed = 1.0
+foreground_speed = 0.6
 foreground_repeat = 3
 image_size = Vector2(256, 0)
-filter = true
 
 [node name="TileMapLayer1" type="TileMapLayer" parent="Dimension1"]
 texture_filter = 1
@@ -432,25 +431,25 @@ tile_set = SubResource("TileSet_xyl7u")
 position = Vector2(621, -388)
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(44, -46)
+position = Vector2(305, -31)
 
 [node name="Dimension2" type="Node2D" parent="."]
 position = Vector2(0, 600)
 
 [node name="ParallaxBackground" parent="Dimension2" instance=ExtResource("2_ox57t")]
+visible = false
 position = Vector2(128, -36)
 dimension = 2
 background_texture = ExtResource("3_gaqqp")
-background_speed = 0.1
+background_speed = 1.0
 background_repeat = 3
 secondary_background_texture = ExtResource("4_rwaws")
-secondary_background_speed = 0.6
+secondary_background_speed = 0.3
 secondary_background_repeat = 3
 foreground_texture = ExtResource("5_7gkyw")
-foreground_speed = 1.0
+foreground_speed = 0.6
 foreground_repeat = 3
 image_size = Vector2(256, 0)
-filter = true
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="Dimension2"]
 texture_filter = 1
@@ -461,7 +460,7 @@ tile_set = SubResource("TileSet_xyl7u")
 position = Vector2(305, -350)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(17, -72)
+position = Vector2(309, -26)
 
 [node name="Platform" parent="." instance=ExtResource("9_qni7h")]
 position = Vector2(12, -50)
