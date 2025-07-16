@@ -14,7 +14,7 @@ const CAMERA_LERP_SPEED := 300.0  # Pixels per second
 func _ready() -> void:
 	zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
 	initial_position = position
-	#position_smoothing_enabled = false  # Disable built-in smoothing
+	position_smoothing_enabled = false  # Disable built-in smoothing
 	
 	limit_left = 0
 	if dimension == 1:
