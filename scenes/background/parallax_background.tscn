@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://scenes/background/background_parallax_layer.gd" id="2_rbglp"]
 [ext_resource type="Script" path="res://scenes/background/parallax_sprite.gd" id="3_b8t71"]
 [ext_resource type="Texture2D" uid="uid://ciniaf3lmy1p5" path="res://assets/sprites/background/bg.png" id="3_bcp65"]
-[ext_resource type="Texture2D" uid="uid://bi8bf5yra7y45" path="res://assets/sprites/background/stars.png" id="4_dwvp4"]
 [ext_resource type="Texture2D" uid="uid://i5nqxs8u4gtw" path="res://assets/sprites/background/swoosh.png" id="5_xxi0j"]
+[ext_resource type="Texture2D" uid="uid://br0tqrtilemi5" path="res://assets/sprites/background/stars_resized.png" id="6_mdkqw"]
 [ext_resource type="Texture2D" uid="uid://cccg6i8hsjwmf" path="res://assets/sprites/background/clouds.png" id="7_gookl"]
 
 [node name="ParallaxBackground" type="Node2D"]
@@ -17,6 +17,7 @@ scroll_scale = Vector2(0.1, 1)
 script = ExtResource("2_rbglp")
 
 [node name="background" type="Sprite2D" parent="Parallax2D"]
+scale = Vector2(2, 2)
 texture = ExtResource("3_bcp65")
 script = ExtResource("3_b8t71")
 
@@ -26,6 +27,7 @@ script = ExtResource("2_rbglp")
 layer = 1
 
 [node name="secondary_background" type="Sprite2D" parent="Parallax2D2"]
+scale = Vector2(2, 2)
 texture = ExtResource("5_xxi0j")
 script = ExtResource("3_b8t71")
 layer = 1
@@ -37,7 +39,8 @@ repeat_size = Vector2(1024, 0)
 repeat_times = 6
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D4"]
-texture = ExtResource("4_dwvp4")
+scale = Vector2(2, 2)
+texture = ExtResource("6_mdkqw")
 
 [node name="Parallax2D3" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.6, 1)
@@ -45,6 +48,7 @@ script = ExtResource("2_rbglp")
 layer = 2
 
 [node name="foreground" type="Sprite2D" parent="Parallax2D3"]
+scale = Vector2(2, 2)
 texture = ExtResource("7_gookl")
 script = ExtResource("3_b8t71")
 layer = 2

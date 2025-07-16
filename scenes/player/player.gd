@@ -44,7 +44,7 @@ var jump_input_buffered := false
 
 
 # Movement vars
-var speed = 120
+var speed = 60
 
 var friction = 2000
 var air_resistance = 500
@@ -94,12 +94,12 @@ func _enter_tree():
 
 func _ready():
 	#TODO get rid of this and tmp animated sprite
-	if color == Color.GREEN:
-		player_sprite.visible = false
-		animated_sprite_2d.visible = true
-	animated_sprite_2d.play("default")
+	#if color == Color.GREEN:
+		#player_sprite.visible = false
+		#animated_sprite_2d.visible = true
+	#animated_sprite_2d.play("default")
 	color_rect.color = color
-	player_sprite.texture = sprite_texture
+	#player_sprite.texture = sprite_texture
 	var shadow_color = color
 	shadow_color.a = 0.6
 	player_shadow.modulate = shadow_color

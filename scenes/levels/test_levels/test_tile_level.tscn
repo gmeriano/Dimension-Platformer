@@ -1,11 +1,14 @@
-[gd_scene load_steps=12 format=4 uid="uid://c7ffl75xgfk0g"]
+[gd_scene load_steps=15 format=4 uid="uid://c63lfdephtcwf"]
 
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_f2l0j"]
 [ext_resource type="Script" path="res://scenes/levels/test_levels/test_tile_level.gd" id="1_qfgjl"]
 [ext_resource type="PackedScene" uid="uid://dmo66gpk6g61i" path="res://scenes/background/parallax_background.tscn" id="2_ox57t"]
 [ext_resource type="Texture2D" uid="uid://ciniaf3lmy1p5" path="res://assets/sprites/background/bg.png" id="3_gaqqp"]
+[ext_resource type="Texture2D" uid="uid://cmom5d2ca1873" path="res://assets/sprites/background/bg_resized.png" id="4_cepte"]
 [ext_resource type="Texture2D" uid="uid://i5nqxs8u4gtw" path="res://assets/sprites/background/swoosh.png" id="4_rwaws"]
+[ext_resource type="Texture2D" uid="uid://dkluy6raknpcv" path="res://assets/sprites/background/swoosh_resized.png" id="5_0xg0n"]
 [ext_resource type="Texture2D" uid="uid://cccg6i8hsjwmf" path="res://assets/sprites/background/clouds.png" id="5_7gkyw"]
+[ext_resource type="Texture2D" uid="uid://bia17nkot56g2" path="res://assets/sprites/background/clouds_resized.png" id="6_cgcs6"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="6_wnu0c"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="7_17psm"]
 [ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="9_qni7h"]
@@ -410,17 +413,17 @@ script = ExtResource("1_f2l0j")
 [node name="Dimension1" type="Node2D" parent="."]
 
 [node name="ParallaxBackground" parent="Dimension1" instance=ExtResource("2_ox57t")]
-position = Vector2(128, -36)
-background_texture = ExtResource("3_gaqqp")
+position = Vector2(320, -90)
+background_texture = ExtResource("4_cepte")
 background_speed = 0.1
 background_repeat = 3
-secondary_background_texture = ExtResource("4_rwaws")
+secondary_background_texture = ExtResource("5_0xg0n")
 secondary_background_speed = 0.3
 secondary_background_repeat = 3
-foreground_texture = ExtResource("5_7gkyw")
+foreground_texture = ExtResource("6_cgcs6")
 foreground_speed = 0.6
 foreground_repeat = 3
-image_size = Vector2(256, 0)
+image_size = Vector2(640, 0)
 
 [node name="TileMapLayer1" type="TileMapLayer" parent="Dimension1"]
 texture_filter = 1
@@ -437,7 +440,7 @@ position = Vector2(305, -31)
 position = Vector2(0, 600)
 
 [node name="ParallaxBackground" parent="Dimension2" instance=ExtResource("2_ox57t")]
-position = Vector2(128, -36)
+position = Vector2(320, -90)
 dimension = 2
 background_texture = ExtResource("3_gaqqp")
 background_speed = 1.0
@@ -448,7 +451,7 @@ secondary_background_repeat = 3
 foreground_texture = ExtResource("5_7gkyw")
 foreground_speed = 0.6
 foreground_repeat = 3
-image_size = Vector2(256, 0)
+image_size = Vector2(640, 0)
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="Dimension2"]
 texture_filter = 1
