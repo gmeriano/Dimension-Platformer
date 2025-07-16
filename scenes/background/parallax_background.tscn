@@ -1,22 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://dmo66gpk6g61i"]
+[gd_scene load_steps=8 format=3 uid="uid://dmo66gpk6g61i"]
 
 [ext_resource type="Script" path="res://scenes/background/parallax_background.gd" id="1_2jubu"]
 [ext_resource type="Script" path="res://scenes/background/background_parallax_layer.gd" id="2_rbglp"]
 [ext_resource type="Script" path="res://scenes/background/parallax_sprite.gd" id="3_b8t71"]
-[ext_resource type="Shader" path="res://scenes/player/smoothpixel.gdshader" id="3_y15lv"]
+[ext_resource type="Texture2D" uid="uid://ciniaf3lmy1p5" path="res://assets/sprites/background/bg.png" id="3_bcp65"]
 [ext_resource type="Texture2D" uid="uid://bi8bf5yra7y45" path="res://assets/sprites/background/stars.png" id="4_dwvp4"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_khye0"]
-shader = ExtResource("3_y15lv")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ih6u3"]
-shader = ExtResource("3_y15lv")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_f0ehw"]
-shader = ExtResource("3_y15lv")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k6bwn"]
-shader = ExtResource("3_y15lv")
+[ext_resource type="Texture2D" uid="uid://i5nqxs8u4gtw" path="res://assets/sprites/background/swoosh.png" id="5_xxi0j"]
+[ext_resource type="Texture2D" uid="uid://cccg6i8hsjwmf" path="res://assets/sprites/background/clouds.png" id="7_gookl"]
 
 [node name="ParallaxBackground" type="Node2D"]
 z_index = -4096
@@ -26,8 +16,8 @@ script = ExtResource("1_2jubu")
 script = ExtResource("2_rbglp")
 
 [node name="background" type="Sprite2D" parent="Parallax2D"]
-material = SubResource("ShaderMaterial_khye0")
 scale = Vector2(7.5, 7.5)
+texture = ExtResource("3_bcp65")
 script = ExtResource("3_b8t71")
 
 [node name="Parallax2D2" type="Parallax2D" parent="."]
@@ -35,8 +25,8 @@ script = ExtResource("2_rbglp")
 layer = 1
 
 [node name="secondary_background" type="Sprite2D" parent="Parallax2D2"]
-material = SubResource("ShaderMaterial_ih6u3")
 scale = Vector2(7.5, 7.5)
+texture = ExtResource("5_xxi0j")
 script = ExtResource("3_b8t71")
 layer = 1
 
@@ -47,7 +37,6 @@ repeat_size = Vector2(1024, 0)
 repeat_times = 6
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D4"]
-material = SubResource("ShaderMaterial_f0ehw")
 scale = Vector2(7.5, 7.5)
 texture = ExtResource("4_dwvp4")
 
@@ -56,7 +45,7 @@ script = ExtResource("2_rbglp")
 layer = 2
 
 [node name="foreground" type="Sprite2D" parent="Parallax2D3"]
-material = SubResource("ShaderMaterial_k6bwn")
 scale = Vector2(7.5, 7.5)
+texture = ExtResource("7_gookl")
 script = ExtResource("3_b8t71")
 layer = 2

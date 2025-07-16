@@ -90,6 +90,10 @@ func _enter_tree():
 		controls = load("res://assets/resources/player1_movement.tres")
 
 func _ready():
+	#TODO get rid of this and tmp animated sprite
+	if color == Color.GREEN:
+		player_sprite.visible = false
+		animated_sprite_2d.visible = true
 	animated_sprite_2d.play("default")
 	color_rect.color = color
 	player_sprite.texture = sprite_texture
