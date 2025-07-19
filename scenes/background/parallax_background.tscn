@@ -38,7 +38,7 @@ scroll_scale = Vector2(0.4, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 6
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D4"]
+[node name="special" type="Sprite2D" parent="Parallax2D4"]
 scale = Vector2(2, 2)
 texture = ExtResource("6_mdkqw")
 
