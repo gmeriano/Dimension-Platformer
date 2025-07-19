@@ -41,6 +41,7 @@ func get_camera_2() -> Camera2D:
 @rpc("any_peer", "call_local")
 func load_next_level() -> void:
 	# need this to move the player off the LevelComplete area to not trigger twice
+	# TODO: this is a hacky way to do this, need to find a better solution
 	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100000)
 	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100000)
 	# set respawn point to zero so that the game knows to update respawn point to next level location
@@ -53,6 +54,7 @@ func load_next_level() -> void:
 @rpc("any_peer", "call_local")
 func reload_current_level() -> void:
 	# need this to move the player off the LevelComplete area to not trigger twice
+	# TODO: this is a hacky way to do this, need to find a better solution
 	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100000)
 	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100000)
 	set_players_state_respawn()

@@ -39,7 +39,7 @@ position_smoothing_speed = 10.0
 script = ExtResource("3_ovq0l")
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
-custom_minimum_size = Vector2(5, 5)
+custom_minimum_size = Vector2(8, 8)
 layout_mode = 2
 
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="VBoxContainer"]

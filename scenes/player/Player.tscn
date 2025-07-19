@@ -6,8 +6,8 @@
 [ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_h5lw5"]
 [ext_resource type="Texture2D" uid="uid://3yugmseusdfy" path="res://assets/sprites/knight.png" id="5_j4xsf"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_7eey0"]
-radius = 43.0116
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plbmt"]
+size = Vector2(53.5714, 89.2857)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v68sj"]
 properties/0/path = NodePath(".:position")
@@ -143,8 +143,10 @@ collision_layer = 4
 script = ExtResource("1_8a6k0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(5, -10)
-shape = SubResource("CircleShape2D_7eey0")
+position = Vector2(17.5, -7.49999)
+rotation = 1.5708
+scale = Vector2(1.4, 1.4)
+shape = SubResource("RectangleShape2D_plbmt")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -16)

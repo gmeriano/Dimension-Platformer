@@ -11,8 +11,8 @@ func enter() -> void:
 	player.double_jump = true
 	player.last_wall_jump_direction = Vector2.ZERO
 
-func physics_process(_delta: float) -> void:
-	player.handle_acceleration(player.input_axis, _delta)
+func physics_process(delta: float) -> void:
+	player.handle_acceleration(delta)
 	handle_transitions()
 
 func handle_transitions() -> void:

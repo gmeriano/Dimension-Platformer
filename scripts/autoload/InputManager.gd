@@ -1,16 +1,16 @@
 extends Node
 
-@export var use_controller_for_p1 = true
-@export var use_controller_for_p2 = true
+@export var use_controller_for_p1: bool = true
+@export var use_controller_for_p2: bool = true
 
-const DEADZONE = 0.2
+const DEADZONE: float = 0.2
 
-const JUMP_BUTTON = 0        # JOY_BUTTON_0 (bottom button: X/A)
-const SWAP_BUTTON = 1        # JOY_BUTTON_1 (right button: Circle/B)
-const INTERACT_BUTTON = 2    # JOY_BUTTON_2 (left button: Square/Y)
-const MOVE_AXIS = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
+const JUMP_BUTTON: int = 0        # JOY_BUTTON_0 (bottom button: X/A)
+const SWAP_BUTTON: int = 1        # JOY_BUTTON_1 (right button: Circle/B)
+const INTERACT_BUTTON: int = 2    # JOY_BUTTON_2 (left button: Square/Y)
+const MOVE_AXIS: int = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 
-var connected_joypads = Input.get_connected_joypads()
+var connected_joypads: Array[int] = Input.get_connected_joypads()
 	
 func setup_player_inputs(player1: Player, player2: Player) -> void:
 	if !Global.IS_ONLINE_MULTIPLAYER or player1.is_multiplayer_authority():
@@ -33,7 +33,7 @@ func setup_player_inputs(player1: Player, player2: Player) -> void:
 			assign_controller_to_player(connected_joypads[1], 2)
 
 func assign_controller_to_player(device_id: int, player_num: int) -> void:
-	var actions = {
+	var actions: Dictionary = {
 		"jump": JUMP_BUTTON,
 		"interact": INTERACT_BUTTON,
 		"dimension_swap": SWAP_BUTTON
@@ -52,7 +52,7 @@ func get_input_axis(player: Player) -> float:
 	if !read_player_input(player):
 		return false
 	if player.use_controller:
-		var axis_value = Input.get_joy_axis(player.device_id, MOVE_AXIS)
+		var axis_value: float = Input.get_joy_axis(player.device_id, MOVE_AXIS)
 		if abs(axis_value) < DEADZONE:
 			return 0.0
 		if axis_value > 0.8:
@@ -83,7 +83,6 @@ func is_dimension_swap_pressed(player) -> bool:
 	if !read_player_input(player):
 		return false
 	return Input.is_action_just_pressed("dimension_swap")
-	return false
 
 func is_interact_pressed(player) -> bool:
 	if !read_player_input(player):

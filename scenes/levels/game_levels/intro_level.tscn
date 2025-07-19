@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_c80c1"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="2_47qfw"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="3_l2ckd"]
-[ext_resource type="PackedScene" path="res://scenes/game/update_respawn_area.tscn" id="5_jiosw"]
+[ext_resource type="PackedScene" uid="uid://bwfmr1ifenmm3" path="res://scenes/game/update_respawn_area.tscn" id="5_jiosw"]
 [ext_resource type="PackedScene" uid="uid://446mij02hd3y" path="res://scenes/objects/fireball/fireball.tscn" id="6_2q3kh"]
 [ext_resource type="PackedScene" uid="uid://dmo66gpk6g61i" path="res://scenes/background/parallax_background.tscn" id="7_odadq"]
 [ext_resource type="Texture2D" uid="uid://ciniaf3lmy1p5" path="res://assets/sprites/background/bg.png" id="8_42n5a"]

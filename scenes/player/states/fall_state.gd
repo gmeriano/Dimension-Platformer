@@ -6,7 +6,7 @@ func get_state_name() -> String:
 	return state_name
 
 func physics_process(delta: float) -> void:
-	player.handle_acceleration(player.input_axis, delta)
+	player.handle_acceleration(delta)
 	handle_transitions()
 
 func handle_transitions() -> void:

@@ -10,7 +10,7 @@ func enter() -> void:
 	player.last_wall_jump_direction = Vector2.ZERO
 
 func physics_process(delta: float) -> void:
-	player.apply_friction(player.input_axis, delta)
+	player.apply_friction(delta)
 	handle_transitions()
 
 func handle_transitions() -> void:

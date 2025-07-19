@@ -1,26 +1,20 @@
 extends Node2D
 
 var current_level_node: Node2D = null
-@onready var dimensions = {
-	"1": {
-		idx = 1,
-		viewport = $VBoxContainer/SubViewportContainer/SubViewport,
-		camera = $VBoxContainer/SubViewportContainer/SubViewport/Camera2D,
-	},
-	"2": {
-		idx = 2,
-		viewport = $VBoxContainer/SubViewportContainer2/SubViewport,
-		camera = $VBoxContainer/SubViewportContainer2/SubViewport/Camera2D,
-	}
-}
+
+@onready var viewport1: SubViewport =  $VBoxContainer/SubViewportContainer/SubViewport
+@onready var viewport2: SubViewport = $VBoxContainer/SubViewportContainer2/SubViewport
+@onready var camera1: Camera2D = $VBoxContainer/SubViewportContainer/SubViewport/Camera2D
+@onready var camera2: Camera2D = $VBoxContainer/SubViewportContainer2/SubViewport/Camera2D
+
 var player1: Player = null
 var player2: Player = null
 var connected_joypads = Input.get_connected_joypads()  # e.g. [0, 1]
 
-var use_controller_for_p1 = true
-var use_controller_for_p2 = true
+var use_controller_for_p1: bool = true
+var use_controller_for_p2: bool = true
 
-var level_paths := [
+var level_paths: Array[String] = [
 	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
 	"res://scenes/levels/test_levels/test_tile_level.tscn",
 	#"res://scenes/levels/game_levels/intro_level.tscn",
@@ -38,20 +32,20 @@ var level_paths := [
 	"res://scenes/levels/trampoline_level.tscn", # 9
 	"res://scenes/levels/moving_platform_level.tscn", # 10
 ]
-var current_level_index = 0
+var current_level_index: int = 0
 
 func _ready() -> void:
 	player1 = GameManager.get_player_1()
 	player2 = GameManager.get_player_2()
-	dimensions["1"].camera.dimension = 1
-	dimensions["2"].camera.dimension = 2
-	GameManager.set_camera_1(dimensions["1"].camera)
-	GameManager.set_camera_2(dimensions["2"].camera)
+	camera1.dimension = 1
+	camera2.dimension = 2
+	GameManager.set_camera_1(camera1)
+	GameManager.set_camera_2(camera2)
 	load_level(load(level_paths[current_level_index]))
 	InputManager.setup_player_inputs(player1, player2)
-	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
+	camera2.global_position.y += Global.DIMENSION_OFFSET
 	
-	var joypads = Input.get_connected_joypads()
+	var joypads: Array[int] = Input.get_connected_joypads()
 	print("Connected joypads: ", joypads)
 
 func get_next_level_path() -> String:
@@ -88,9 +82,9 @@ func load_level(level: PackedScene) -> void:
 	GameManager.set_camera_zoom_default()
 
 	var level_node: Node2D = level.instantiate()
-	dimensions["1"].viewport.add_child(level_node)
-	dimensions["1"].viewport.move_child(level_node, 0)
-	dimensions["2"].viewport.world_2d = dimensions["1"].viewport.world_2d
+	viewport1.add_child(level_node)
+	viewport1.move_child(level_node, 0)
+	viewport2.world_2d = viewport1.world_2d
 
 	current_level_node = level_node
 
