@@ -15,9 +15,10 @@ var use_controller_for_p1: bool = true
 var use_controller_for_p2: bool = true
 
 var level_paths: Array[String] = [
+	#"res://scenes/levels/templates/TemplateLevel.tscn", # TEST (0)
 	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
-	"res://scenes/levels/test_levels/test_tile_level.tscn",
-	#"res://scenes/levels/game_levels/intro_level.tscn",
+	#"res://scenes/levels/test_levels/test_tile_level.tscn",
+	"res://scenes/levels/game_levels/intro_level.tscn",
 	"res://scenes/levels/game_levels/intro_swapping_level.tscn",
 	"res://scenes/levels/game_levels/intro_trampoline_level.tscn",
 	"res://scenes/levels/level1.tscn", # 0
@@ -35,6 +36,7 @@ var level_paths: Array[String] = [
 var current_level_index: int = 0
 
 func _ready() -> void:
+	Engine.max_fps = 60
 	player1 = GameManager.get_player_1()
 	player2 = GameManager.get_player_2()
 	camera1.dimension = 1

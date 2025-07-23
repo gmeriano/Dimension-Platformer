@@ -9,7 +9,7 @@ var player2: Player = GameManager.get_player_2()
 
 var initial_position: Vector2
 
-const CAMERA_LERP_SPEED := 50.0  # Pixels per second
+const CAMERA_LERP_SPEED := 120.0  # Pixels per second
 var prev = 0.0
 
 func _ready() -> void:
@@ -18,7 +18,7 @@ func _ready() -> void:
 	initial_position = position
 	#position_smoothing_enabled = false  # Disable built-in smoothing
 	
-	limit_left = 0
+	#limit_left = 0
 	if dimension == 1:
 		limit_bottom = 0
 	if dimension == 2:
@@ -51,17 +51,23 @@ func set_x_position(delta: float) -> void:
 	var p1_x = player1.global_position.x
 	var p2_x = player2.global_position.x
 
-	var p1_outside = p1_x < left_edge or p1_x > right_edge
-	var p2_outside = p2_x < left_edge or p2_x > right_edge
+	var p1_outside_left = p1_x < left_edge 
+	var p1_outside_right = p1_x > right_edge
+	var p2_outside_left = p2_x < left_edge 
+	var p2_outside_right = p2_x > right_edge
+	var p1_outside = p1_outside_left or p1_outside_right
+	var p2_outside = p2_outside_left or p2_outside_right
 
 	# Only move toward the one violating the boundary
-	if p1_outside != p2_outside:
+	if p1_outside != p2_outside or (p1_outside_left and p2_outside_left) or (p1_outside_right and p2_outside_right):
+		#print("P1: ", p1_outside, " P2: ", p2_outside)
 		var target_x = p1_x if p1_outside else p2_x
 		prev = position.x
 		position.x = move_toward(position.x, target_x, CAMERA_LERP_SPEED * delta)
 		position.x = round(position.x)  # <--- important
+		#print("CAM: ", position.x)
 
-		print("CAM: ", position.x - prev)
+		#print("CAM: ", position.x - prev)
 		#var direction = sign(target_x - position.x)
 		#var move_amount = CAMERA_LERP_SPEED * delta
 		#var distance_to_target = abs(target_x - position.x)

@@ -6,8 +6,9 @@
 [ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_h5lw5"]
 [ext_resource type="Texture2D" uid="uid://3yugmseusdfy" path="res://assets/sprites/knight.png" id="5_j4xsf"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_plbmt"]
-size = Vector2(53.5714, 89.2857)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rsxto"]
+radius = 26.7856
+height = 96.4282
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v68sj"]
 properties/0/path = NodePath(".:position")
@@ -143,13 +144,13 @@ collision_layer = 4
 script = ExtResource("1_8a6k0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(17.5, -7.49999)
+position = Vector2(10, -5)
 rotation = 1.5708
 scale = Vector2(1.4, 1.4)
-shape = SubResource("RectangleShape2D_plbmt")
+shape = SubResource("CapsuleShape2D_rsxto")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(5, -15)
 scale = Vector2(4, 4)
 texture = ExtResource("2_yeuum")
 
@@ -172,12 +173,12 @@ metadata/_edit_use_anchors_ = true
 script = ExtResource("3_h5lw5")
 
 [node name="RightRayCast" type="RayCast2D" parent="."]
-position = Vector2(6, -2)
+position = Vector2(75, 5.72205e-06)
 rotation = -1.5708
 target_position = Vector2(0, 10)
 
 [node name="LeftRayCast" type="RayCast2D" parent="."]
-position = Vector2(-6, -2)
+position = Vector2(-55, 3.8147e-06)
 rotation = 1.5708
 target_position = Vector2(0, 10)
 

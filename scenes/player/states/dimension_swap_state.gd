@@ -18,7 +18,7 @@ func enter() -> void:
 
 func move_to(target_position: Vector2, duration: float = 1.0):
 	player.multiplayer_synchronizer.replication_interval = 5.0
-	player.color_rect.color.a = 0.2
+	#player.color_rect.color.a = 0.2
 	player.player_shadow.visible = false
 	
 	if tween and tween.is_valid():
@@ -35,8 +35,8 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 
 func handle_transitions() -> void:
 	tween.disconnect("finished", Callable(self, "handle_transitions"))
-	player.color_rect.color.a = 1
-	player.color_rect.rotation = 0
+	#player.color_rect.color.a = 1
+	#player.color_rect.rotation = 0
 	player.player_shadow.visible = true
 	if player.current_dimension == 1:
 		player.current_dimension = 2

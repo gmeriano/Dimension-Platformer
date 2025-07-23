@@ -41,7 +41,7 @@ var jump_input_buffered : bool = false
 
 
 # Movement vars
-var speed: int = 60
+var speed: int = 120
 var friction: int = 2000
 var air_resistance: int = 500
 
@@ -109,7 +109,14 @@ func update_shadow_location() -> void:
 	elif (current_dimension == 2):
 		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 
+func _process(_delta: float) -> void:
+	player_sprite.position = player_sprite.position.round()
+
+var prev_pos = Vector2.ZERO
 func _physics_process(delta: float) -> void:
+	#if current_dimension == 1:
+		#print("PLAY: ", global_position - prev_pos)
+	prev_pos = global_position
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
 		
@@ -135,8 +142,9 @@ func _physics_process(delta: float) -> void:
 		get_wall_direction()
 		#clamp_x_by_camera()
 
-	move_and_slide()
 	global_position = global_position.round() 
+	move_and_slide()
+	#global_position = global_position.round() 
 
 func get_wall_direction() -> void:
 	if right_ray_cast.is_colliding():
