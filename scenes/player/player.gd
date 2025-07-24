@@ -109,14 +109,7 @@ func update_shadow_location() -> void:
 	elif (current_dimension == 2):
 		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 
-func _process(_delta: float) -> void:
-	pass#player_sprite.position = player_sprite.position.round()
-
-var prev_pos = Vector2.ZERO
 func _physics_process(delta: float) -> void:
-	#if current_dimension == 1:
-		#print("PLAY: ", global_position - prev_pos)
-	prev_pos = global_position
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
 		
@@ -142,9 +135,7 @@ func _physics_process(delta: float) -> void:
 		get_wall_direction()
 		clamp_x_by_camera()
 
-	#global_position = global_position.round() 
 	move_and_slide()
-	#global_position = global_position.round() 
 
 func get_wall_direction() -> void:
 	if right_ray_cast.is_colliding():
@@ -223,26 +214,13 @@ func handle_acceleration(delta):
 
 	var target_speed: float = speed * input_axis
 	var acceleration_amount: float = acceleration * boost_multiplier
-	var new_velocity_x: float = move_toward(velocity.x, target_speed, acceleration_amount * delta)
-
-	var proposed_position_x: float = global_position.x + new_velocity_x
-	print("CURRENT X: ", global_position.x)
-	print("PROPOSED POSITION X: ", proposed_position_x)
-	#if !is_within_camera_left(proposed_position_x):
-		#print("CAMERA LEFT EDGE HIT")
-		#new_velocity_x = max(0, new_velocity_x)
-	#elif !is_within_camera_right(proposed_position_x):
-		#print("CAMERA RIGHT EDGE HIT")
-		#new_velocity_x = min(0, new_velocity_x)
-	velocity.x = new_velocity_x
+	velocity.x = move_toward(velocity.x, target_speed, acceleration_amount * delta)
 
 func clamp_x_by_camera():
 	var new_x: float = global_position.x
 	if not is_within_camera_left(new_x):
-		print("CLAMPING LEFT")
 		new_x = GameManager.get_camera_1().global_position.x - ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) + (collision_shape_2d.shape.get_rect().size.x / 2)
 	if not is_within_camera_right(new_x):
-		print("CLAMPING RIGHT")
 		new_x = GameManager.get_camera_1().global_position.x + ((GameManager.get_camera_1().get_viewport_rect().size.x / GameManager.get_camera_1().zoom.x) / 2.0) - (collision_shape_2d.shape.get_rect().size.x / 2)
 	global_position.x = new_x
 
