@@ -13,7 +13,6 @@ var left_edge_threshold_percentage: float = 0.2
 var right_edge_threshold_percentage: float = 0.4
 
 const CAMERA_LERP_SPEED := 120.0  # Pixels per second
-var prev = 0.0
 
 func _ready() -> void:
 	global_position.x = get_viewport_rect().size.x + get_viewport_rect().size.x / 2.0
@@ -25,8 +24,6 @@ func _ready() -> void:
 	# TODO mess around with this more
 	#position_smoothing_enabled = false  # Disable built-in smoothing
 	
-	# TODO mess around with this more
-	#limit_left = 0
 	if dimension == 1:
 		limit_bottom = 0
 	if dimension == 2:
@@ -64,9 +61,14 @@ func set_x_position(delta: float) -> void:
 
 	# Only move toward the one violating the boundary
 	if p1_outside != p2_outside or (p1_outside_left and p2_outside_left) or (p1_outside_right and p2_outside_right):
-		var target_x = p1_x if p1_outside else p2_x
-		prev = position.x
-		position.x = move_toward(position.x, target_x, CAMERA_LERP_SPEED * delta)
+		var midpoint_x = p1_x if p1_outside else p2_x
+		
+		var target_x = move_toward(position.x, midpoint_x, CAMERA_LERP_SPEED * delta)
+
+		# Don't move camera behind x = 0 boundary
+		if target_x < half_width:
+			return
+		position.x = target_x
 
 func get_active_player() -> Player:
 	return player1 if player1.current_dimension == dimension else player2

@@ -35,6 +35,7 @@ func check_level_complete() -> void:
 	if level_complete_zone_1.complete == true and level_complete_zone_2.complete == true:
 		if players[0].is_state_interactable() and players[1].is_state_interactable():
 			level_complete = true
+			GameManager.set_players_state_respawn()
 			GameManager.load_next_level.rpc()
 
 func check_respawn():

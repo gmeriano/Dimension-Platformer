@@ -109,7 +109,6 @@ func load_level(level: PackedScene) -> void:
 	player2.update_shadow_location()
 	current_level_node.add_child(player2)
 	
-	GameManager.focus_camera_on_players()
-	GameManager.set_players_state_idle()
+	GameManager.focus_camera_on_start()
 
 	InputManager.setup_player_inputs(player1, player2)

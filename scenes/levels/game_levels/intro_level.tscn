@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bia17nkot56g2" path="res://assets/sprites/background/clouds_resized.png" id="10_jgpjn"]
 [ext_resource type="Texture2D" uid="uid://br0tqrtilemi5" path="res://assets/sprites/background/stars_resized.png" id="11_108yl"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4ptlk"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b83fd"]
 texture = ExtResource("3_av4k6")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
@@ -30,14 +30,13 @@ texture_region_size = Vector2i(8, 8)
 tile_size = Vector2i(8, 8)
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 3
-sources/0 = SubResource("TileSetAtlasSource_4ptlk")
+sources/0 = SubResource("TileSetAtlasSource_b83fd")
 
 [node name="intro_level" type="Node2D"]
 script = ExtResource("1_a58my")
 
 [node name="LevelManager" type="Node2D" parent="."]
 script = ExtResource("1_c80c1")
-allow_swapping = false
 
 [node name="Dimension1" type="Node2D" parent="."]
 
@@ -102,12 +101,12 @@ position = Vector2(1165, -27)
 position = Vector2(3018, -27)
 
 [node name="Fireball2" parent="Dimension2" instance=ExtResource("6_2q3kh")]
-position = Vector2(3300, -90)
+position = Vector2(3299, -98)
 speed = 0.0
 bounce_multiplier = 0.0
 
 [node name="Fireball3" parent="Dimension2" instance=ExtResource("6_2q3kh")]
-position = Vector2(3285, -90)
+position = Vector2(3283, -98)
 speed = 0.0
 bounce_multiplier = 0.0
 

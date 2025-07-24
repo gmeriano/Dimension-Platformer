@@ -47,7 +47,6 @@ func load_next_level() -> void:
 	# set respawn point to zero so that the game knows to update respawn point to next level location
 	player1.respawn_point = Vector2.ZERO
 	player2.respawn_point = Vector2.ZERO
-	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
 
@@ -57,7 +56,6 @@ func reload_current_level() -> void:
 	# TODO: this is a hacky way to do this, need to find a better solution
 	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100000)
 	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100000)
-	set_players_state_respawn()
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.reload_current_level()
 
@@ -102,9 +100,12 @@ func set_camera_zoom_default() -> void:
 	camera1.zoom = Vector2(1.0, 1.0)
 	camera2.zoom = Vector2(1.0, 1.0)
 
-func focus_camera_on_players() -> void:
-	camera1.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
-	camera2.global_position.x = round((player1.global_position.x + player2.global_position.x) / 2.0)
+func focus_camera_on_start() -> void:
+	var x_position: float = (player1.global_position.x + player2.global_position.x) / 2.0
+	if x_position < camera1.get_viewport_rect().size.x / camera1.zoom.x:
+		x_position = camera1.get_viewport_rect().size.x / camera1.zoom.x * 0.5
+	camera1.global_position.x = x_position
+	camera2.global_position.x = x_position
 	camera1.reset_smoothing()
 	camera2.reset_smoothing()
 
