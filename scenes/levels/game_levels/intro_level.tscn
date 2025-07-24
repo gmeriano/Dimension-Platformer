@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://brt1jwpmx47to"]
+[gd_scene load_steps=17 format=4 uid="uid://cgk41yxqwpux4"]
 
 [ext_resource type="Script" path="res://scenes/levels/game_levels/intro_level.gd" id="1_a58my"]
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_c80c1"]
@@ -8,8 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://446mij02hd3y" path="res://scenes/objects/fireball/fireball.tscn" id="6_2q3kh"]
 [ext_resource type="PackedScene" uid="uid://dmo66gpk6g61i" path="res://scenes/background/parallax_background.tscn" id="7_odadq"]
 [ext_resource type="Texture2D" uid="uid://ciniaf3lmy1p5" path="res://assets/sprites/background/bg.png" id="8_42n5a"]
+[ext_resource type="Texture2D" uid="uid://cmom5d2ca1873" path="res://assets/sprites/background/bg_resized.png" id="8_ubfxx"]
 [ext_resource type="Texture2D" uid="uid://i5nqxs8u4gtw" path="res://assets/sprites/background/swoosh.png" id="9_bv6ve"]
+[ext_resource type="Texture2D" uid="uid://dkluy6raknpcv" path="res://assets/sprites/background/swoosh_resized.png" id="9_fswp7"]
 [ext_resource type="Texture2D" uid="uid://cccg6i8hsjwmf" path="res://assets/sprites/background/clouds.png" id="10_dcxjv"]
+[ext_resource type="Texture2D" uid="uid://bia17nkot56g2" path="res://assets/sprites/background/clouds_resized.png" id="10_jgpjn"]
+[ext_resource type="Texture2D" uid="uid://br0tqrtilemi5" path="res://assets/sprites/background/stars_resized.png" id="11_108yl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4ptlk"]
 texture = ExtResource("3_av4k6")
@@ -67,17 +71,19 @@ speed = 0.0
 bounce_multiplier = 0.0
 
 [node name="ParallaxBackground" parent="Dimension1" instance=ExtResource("7_odadq")]
-position = Vector2(1005, -88)
-background_texture = ExtResource("8_42n5a")
+position = Vector2(320, -90)
+background_texture = ExtResource("8_ubfxx")
 background_speed = 0.1
 background_repeat = 3
-secondary_background_texture = ExtResource("9_bv6ve")
-secondary_background_speed = 0.6
-secondary_background_repeat = 6
-foreground_texture = ExtResource("10_dcxjv")
-foreground_speed = 1.0
-foreground_repeat = 6
-image_size = Vector2(1920, 0)
+secondary_background_texture = ExtResource("9_fswp7")
+secondary_background_speed = 0.3
+secondary_background_repeat = 3
+foreground_texture = ExtResource("10_jgpjn")
+foreground_speed = 0.6
+foreground_repeat = 3
+special_texture = ExtResource("11_108yl")
+special_repeat = 3
+image_size = Vector2(640, 0)
 
 [node name="Dimension2" type="Node2D" parent="."]
 position = Vector2(0, 400)

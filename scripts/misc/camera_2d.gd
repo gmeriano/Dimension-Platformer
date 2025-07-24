@@ -60,11 +60,12 @@ func set_x_position(delta: float) -> void:
 
 	# Only move toward the one violating the boundary
 	if p1_outside != p2_outside or (p1_outside_left and p2_outside_left) or (p1_outside_right and p2_outside_right):
+		print("CAMERA MOVING")
 		#print("P1: ", p1_outside, " P2: ", p2_outside)
 		var target_x = p1_x if p1_outside else p2_x
 		prev = position.x
 		position.x = move_toward(position.x, target_x, CAMERA_LERP_SPEED * delta)
-		position.x = round(position.x)  # <--- important
+		#position.x = round(position.x)  # <--- important
 		#print("CAM: ", position.x)
 
 		#print("CAM: ", position.x - prev)
