@@ -32,14 +32,14 @@ repeat = 3
 script = ExtResource("18_ryyc6")
 image_scale = 1.0
 texture = ExtResource("6_g8a76")
-speed = 0.5
+speed = 0.2
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_wwwx6"]
 script = ExtResource("18_ryyc6")
 image_scale = 1.0
 texture = ExtResource("7_lqxjy")
-speed = 0.6
+speed = 0.4
 repeat = 3
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gq236"]

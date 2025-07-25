@@ -36,7 +36,7 @@ var level_paths: Array[String] = [
 var current_level_index: int = 0
 
 func _ready() -> void:
-	Engine.max_fps = 60
+	#Engine.max_fps = 60
 	player1 = GameManager.get_player_1()
 	player2 = GameManager.get_player_2()
 	camera1.dimension = 1

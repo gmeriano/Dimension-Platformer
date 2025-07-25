@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://scenes/levels/background/background_node.gd" id="1_nelf6"]
 
 [node name="BackgroundNode" type="Node2D"]
+z_index = -1000
 script = ExtResource("1_nelf6")

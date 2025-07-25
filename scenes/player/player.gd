@@ -114,10 +114,12 @@ func update_shadow_location() -> void:
 	elif (current_dimension == 2):
 		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
 
+
 func _physics_process(delta: float) -> void:
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
-		
+	#if current_dimension == 2:
+		#print("VEL: ", velocity)
 	# Jump input processing
 	jump_input = InputManager.is_jump_just_pressed(self)
 	if jump_input_buffered:
@@ -140,7 +142,10 @@ func _physics_process(delta: float) -> void:
 		get_wall_direction()
 		clamp_x_by_camera()
 
+	var tmp = global_position.x
 	move_and_slide()
+	if global_position.x < tmp:
+		print("LEFT: ", global_position.x, " | ", tmp)
 
 func get_wall_direction() -> void:
 	if right_ray_cast.is_colliding():
