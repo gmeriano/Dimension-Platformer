@@ -35,7 +35,8 @@ script = ExtResource("2_t3hje")
 
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer/SubViewport"]
 texture_filter = 1
-position_smoothing_speed = 10.0
+position_smoothing_enabled = true
+position_smoothing_speed = 50.0
 script = ExtResource("3_ovq0l")
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
@@ -56,6 +57,7 @@ script = ExtResource("2_t3hje")
 
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer2/SubViewport"]
 texture_filter = 1
-position_smoothing_speed = 0.0
+position_smoothing_enabled = true
+position_smoothing_speed = 50.0
 script = ExtResource("3_ovq0l")
 dimension = 2

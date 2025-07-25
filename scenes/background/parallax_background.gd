@@ -2,6 +2,7 @@ extends Node2D
 class_name GameBackgroundParallaxNode
 
 @export var dimension: int = 1
+@export var image_scale: float = 1.0
 @export var background_texture: Texture2D
 @export var background_speed: float
 @export var background_repeat: int
@@ -22,9 +23,9 @@ class_name GameBackgroundParallaxNode
 @onready var secondary_background: Sprite2D = $Parallax2D2/secondary_background
 @onready var parallax_2d_3: Parallax2D = $Parallax2D3
 @onready var foreground: Sprite2D = $Parallax2D3/foreground
+
 @onready var parallax_2d_4: Parallax2D = $Parallax2D4
 @onready var special: Sprite2D = $Parallax2D4/special
-
 func _ready() -> void:
 	parallax_2d.scroll_scale.x = background_speed
 	parallax_2d.repeat_size = image_size
@@ -40,7 +41,11 @@ func _ready() -> void:
 	parallax_2d_4.repeat_times = special_repeat
 
 	background.texture = background_texture
+	background.scale = Vector2(image_scale, image_scale) 
 	secondary_background.texture = secondary_background_texture
+	secondary_background.scale = Vector2(image_scale, image_scale)
 	foreground.texture = foreground_texture
+	foreground.scale = Vector2(image_scale, image_scale)
 	special.texture = special_texture
+	special.scale = Vector2(image_scale, image_scale)
 

@@ -22,7 +22,7 @@ func _ready() -> void:
 	right_edge_threshold = get_viewport_rect().size.x * right_edge_threshold_percentage
 
 	# TODO mess around with this more
-	#position_smoothing_enabled = false  # Disable built-in smoothing
+	position_smoothing_enabled = false  # Disable built-in smoothing
 	
 	if dimension == 1:
 		limit_bottom = 0

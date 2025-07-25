@@ -8,7 +8,7 @@ func _ready() -> void:
 	add_to_group("player_entered_switch_platform")
 	switch_platform.current_dimension = current_dimension
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	update_color()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

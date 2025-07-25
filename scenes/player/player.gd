@@ -74,15 +74,20 @@ func _enter_tree():
 			GameManager.set_player_2(self)
 			current_dimension = 2
 			original_dimension = 2
+			sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
+			player_sprite.texture = sprite_texture
 		elif !is_multiplayer_authority() and !multiplayer.is_server():
 			GameManager.set_player_1(self)
 		else:
 			GameManager.set_player_2(self)
 			current_dimension = 2
 			original_dimension = 2
+			sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
+			player_sprite.texture = sprite_texture
 		controls = load("res://assets/resources/player1_movement.tres")
 
 func _ready():
+	player_sprite.texture = sprite_texture
 	update_shadow_location()
 	var states: Array[State] = [
 		PlayerIdleState.new(self),

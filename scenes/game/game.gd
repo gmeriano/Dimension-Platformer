@@ -90,7 +90,7 @@ func load_level(level: PackedScene) -> void:
 
 	current_level_node = level_node
 
-	# Re-assign players
+	# Set respawn point to start of level if not already set
 	if player1.respawn_point == Vector2.ZERO:	
 		player1.respawn_point = current_level_node.get_node("Dimension1").get_node("Player1Spawn").global_position
 	if player2.respawn_point == Vector2.ZERO:
