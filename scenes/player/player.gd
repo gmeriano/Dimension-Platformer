@@ -116,36 +116,34 @@ func update_shadow_location() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
-		return
-	#if current_dimension == 2:
-		#print("VEL: ", velocity)
-	# Jump input processing
-	jump_input = InputManager.is_jump_just_pressed(self)
-	if jump_input_buffered:
-		jump_buffer_timer -= delta
-		if jump_buffer_timer <= 0:
-			jump_input_buffered = false
-	if jump_input:
-		jump_input_buffered = true
-		jump_buffer_timer = jump_buffer_time
+	if Input.is_action_pressed("ui_right"):
+		global_position.x += 3
+# func _physics_process(delta: float) -> void:
+# 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
+# 		return
 
-	jump_cut_input = InputManager.is_jump_just_released(self)
-	
-	# Movement input processing
-	input_axis = InputManager.get_input_axis(self)
-	
-	# General physics processing
-	if is_state_interactable():
-		handle_gravity(delta)
-		apply_air_resistance(delta)
-		get_wall_direction()
-		clamp_x_by_camera()
+# 	jump_input = InputManager.is_jump_just_pressed(self)
+# 	if jump_input_buffered:
+# 		jump_buffer_timer -= delta
+# 		if jump_buffer_timer <= 0:
+# 			jump_input_buffered = false
+# 	if jump_input:
+# 		jump_input_buffered = true
+# 		jump_buffer_timer = jump_buffer_time
 
-	var tmp = global_position.x
-	move_and_slide()
-	if global_position.x < tmp:
-		print("LEFT: ", global_position.x, " | ", tmp)
+# 	jump_cut_input = InputManager.is_jump_just_released(self)
+	
+# 	# Movement input processing
+# 	input_axis = InputManager.get_input_axis(self)
+	
+# 	# General physics processing
+# 	if is_state_interactable():
+# 		handle_gravity(delta)
+# 		apply_air_resistance(delta)
+# 		get_wall_direction()
+# 		clamp_x_by_camera()
+
+# 	move_and_slide()
 
 func get_wall_direction() -> void:
 	if right_ray_cast.is_colliding():

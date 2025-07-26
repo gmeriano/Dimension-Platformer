@@ -69,9 +69,9 @@ script = ExtResource("1_a58my")
 script = ExtResource("1_c80c1")
 
 [node name="Dimension1" type="Node2D" parent="."]
+scale = Vector2(3, 3)
 
 [node name="BackgroundNode1" parent="Dimension1" instance=ExtResource("17_5q4d8")]
-z_index = -1000
 position = Vector2(320, -90)
 background_settings = Array[ExtResource("18_ryyc6")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
 image_size = Vector2(640, 180)
@@ -118,7 +118,6 @@ scale = Vector2(0.5, 0.5)
 position = Vector2(0, 400)
 
 [node name="BackgroundNode2" parent="Dimension2" instance=ExtResource("17_5q4d8")]
-z_index = -1000
 position = Vector2(320, -90)
 background_settings = Array[ExtResource("18_ryyc6")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
 image_size = Vector2(640, 180)

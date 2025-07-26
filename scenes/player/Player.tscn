@@ -151,7 +151,7 @@ shape = SubResource("CapsuleShape2D_rsxto")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(5, -15)
-scale = Vector2(4, 4)
+scale = Vector2(12, 12)
 texture = ExtResource("2_yeuum")
 
 [node name="PlayerShadow" type="Sprite2D" parent="."]
