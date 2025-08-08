@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://cgk41yxqwpux4"]
+[gd_scene load_steps=22 format=4 uid="uid://cgk41yxqwpux4"]
 
 [ext_resource type="Script" path="res://scenes/levels/game_levels/intro_level.gd" id="1_a58my"]
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_c80c1"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://bxh4dlujhjipy" path="res://assets/sprites/background/mtn-highdef/hd_clouds.png" id="6_g8a76"]
 [ext_resource type="Texture2D" uid="uid://cqdcyna61su0s" path="res://assets/sprites/background/mtn-highdef/hd_bushes.png" id="7_lqxjy"]
 [ext_resource type="PackedScene" uid="uid://cik7f1p4h4twl" path="res://scenes/objects/trampoline/trampoline.tscn" id="12_6m0hb"]
+[ext_resource type="Texture2D" uid="uid://c4p0gfgpmwn38" path="res://assets/icon.svg" id="14_4e6m6"]
+[ext_resource type="Script" path="res://scenes/levels/game_levels/sprite_2d.gd" id="15_c15v2"]
 [ext_resource type="PackedScene" uid="uid://dbkimnvm3tbbw" path="res://scenes/levels/background/BackgroundNode.tscn" id="17_5q4d8"]
 [ext_resource type="Script" path="res://assets/resources/background_settings.gd" id="18_ryyc6"]
 
@@ -71,7 +73,6 @@ script = ExtResource("1_c80c1")
 [node name="Dimension1" type="Node2D" parent="."]
 
 [node name="BackgroundNode1" parent="Dimension1" instance=ExtResource("17_5q4d8")]
-z_index = -1000
 position = Vector2(320, -90)
 background_settings = Array[ExtResource("18_ryyc6")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
 image_size = Vector2(640, 180)
@@ -114,11 +115,16 @@ scale = Vector2(0.5, 0.5)
 position = Vector2(330, -56)
 scale = Vector2(0.5, 0.5)
 
+[node name="Sprite2D" type="Sprite2D" parent="Dimension1"]
+position = Vector2(144, -77)
+scale = Vector2(0.28125, 0.25)
+texture = ExtResource("14_4e6m6")
+script = ExtResource("15_c15v2")
+
 [node name="Dimension2" type="Node2D" parent="."]
 position = Vector2(0, 400)
 
 [node name="BackgroundNode2" parent="Dimension2" instance=ExtResource("17_5q4d8")]
-z_index = -1000
 position = Vector2(320, -90)
 background_settings = Array[ExtResource("18_ryyc6")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
 image_size = Vector2(640, 180)

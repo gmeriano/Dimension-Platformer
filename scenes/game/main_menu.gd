@@ -150,8 +150,8 @@ func _on_local_pressed() -> void:
 	var player2 = PLAYER.instantiate()
 	player2.controls = load("res://assets/resources/player2_movement.tres")
 	#player1.sprite_texture = load("res://assets/sprites/player/BLACK-CAT.png")
-	player1.sprite_texture = load("res://assets/sprites/background/black-cat-test.png")
-	player2.sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
+	#player1.sprite_texture = load("res://assets/sprites/background/black-cat-test.png")
+	#player2.sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
 	#player2.player_sprite.texture = player2.sprite_texture
 	player1.global_position = player_1_spawn.global_position
 	player2.global_position = player_2_spawn.global_position

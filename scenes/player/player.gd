@@ -18,7 +18,7 @@ signal respawn
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var original_dimension = 1
 var tween: Tween = null
-var sprite_texture: Texture2D = preload("res://assets/sprites/player/BLACK-CAT.png")
+var sprite_texture: Texture2D = preload("res://assets/sprites/player/cat.png")
 
 # Respawn vars
 var respawn_point: Vector2 = Vector2.ZERO

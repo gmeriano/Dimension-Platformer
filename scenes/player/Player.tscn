@@ -1,14 +1,14 @@
 [gd_scene load_steps=25 format=3 uid="uid://dalyetdhjh33m"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8a6k0"]
+[ext_resource type="Texture2D" uid="uid://dri25xq0nx838" path="res://assets/sprites/player/cat.png" id="2_2nhe6"]
 [ext_resource type="Texture2D" uid="uid://1lifn7h5b57d" path="res://assets/sprites/square.png" id="2_oqytx"]
-[ext_resource type="Texture2D" uid="uid://dbut2cq64qtxr" path="res://assets/sprites/background/black-cat-test.PNG" id="2_yeuum"]
 [ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_h5lw5"]
 [ext_resource type="Texture2D" uid="uid://3yugmseusdfy" path="res://assets/sprites/knight.png" id="5_j4xsf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rsxto"]
-radius = 26.7856
-height = 96.4282
+radius = 7.14286
+height = 20.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v68sj"]
 properties/0/path = NodePath(".:position")
@@ -139,22 +139,21 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
-scale = Vector2(0.2, 0.2)
 collision_layer = 4
 script = ExtResource("1_8a6k0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(10, -5)
+position = Vector2(4.76837e-07, -10)
 rotation = 1.5708
 scale = Vector2(1.4, 1.4)
 shape = SubResource("CapsuleShape2D_rsxto")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-position = Vector2(5, -15)
-scale = Vector2(4, 4)
-texture = ExtResource("2_yeuum")
+position = Vector2(284, -35)
+texture = ExtResource("2_2nhe6")
 
 [node name="PlayerShadow" type="Sprite2D" parent="."]
+visible = false
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_oqytx")
 
