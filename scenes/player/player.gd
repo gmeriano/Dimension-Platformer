@@ -224,7 +224,7 @@ func handle_acceleration(delta):
 
 	var target_speed: float = speed * input_axis
 	var acceleration_amount: float = acceleration * boost_multiplier
-	velocity.x = move_toward(velocity.x, target_speed, acceleration_amount * delta)
+	velocity.x = move_toward(velocity.x, target_speed*2, acceleration_amount * delta)
 
 func clamp_x_by_camera():
 	var new_x: float = global_position.x

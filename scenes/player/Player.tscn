@@ -139,6 +139,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(3, 3)
 collision_layer = 4
 script = ExtResource("1_8a6k0")
 
