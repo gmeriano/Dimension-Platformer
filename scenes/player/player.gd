@@ -12,7 +12,7 @@ signal respawn
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var state_machine: StateMachine = $StateMachine
 @onready var player_sprite: Sprite2D = $PlayerSprite
-#@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 #var color: Color
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -27,9 +27,9 @@ var update_respawn: bool = false
 
 # Jump vars
 var frames_since_last_on_ground = 0
-var coyote_time_frames = 10
+var coyote_time_frames = 5
 var double_jump = true
-var jump_velocity = -300
+var jump_velocity = -200
 var was_on_wall = false
 var last_wall_direction: Vector2 = Vector2.ZERO
 var last_wall_jump_direction: Vector2 = Vector2.ZERO
@@ -41,9 +41,9 @@ var jump_input_buffered : bool = false
 
 
 # Movement vars
-var speed: int = 120
+var speed: float = Global.MOVESPEED
 var friction: int = 2000
-var air_resistance: int = 500
+var air_resistance: int = 1000
 
 # Input vars
 var input_axis: float
@@ -87,6 +87,7 @@ func _enter_tree():
 		controls = load("res://assets/resources/player1_movement.tres")
 
 func _ready():
+	animated_sprite_2d.play("default")
 	player_sprite.texture = sprite_texture
 	update_shadow_location()
 	var states: Array[State] = [
@@ -118,8 +119,7 @@ func update_shadow_location() -> void:
 func _physics_process(delta: float) -> void:
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
-	#if current_dimension == 2:
-		#print("VEL: ", velocity)
+
 	# Jump input processing
 	jump_input = InputManager.is_jump_just_pressed(self)
 	if jump_input_buffered:
@@ -131,10 +131,10 @@ func _physics_process(delta: float) -> void:
 		jump_buffer_timer = jump_buffer_time
 
 	jump_cut_input = InputManager.is_jump_just_released(self)
-	
+
 	# Movement input processing
 	input_axis = InputManager.get_input_axis(self)
-	
+
 	# General physics processing
 	if is_state_interactable():
 		handle_gravity(delta)
@@ -142,10 +142,8 @@ func _physics_process(delta: float) -> void:
 		get_wall_direction()
 		clamp_x_by_camera()
 
-	var tmp = global_position.x
 	move_and_slide()
-	if global_position.x < tmp:
-		print("LEFT: ", global_position.x, " | ", tmp)
+	position.x = round(position.x)
 
 func get_wall_direction() -> void:
 	if right_ray_cast.is_colliding():
@@ -197,34 +195,36 @@ func handle_gravity(delta):
 	else:
 		frames_since_last_on_ground = 0
 
-func apply_friction(delta):
+func apply_friction(_delta):
 	# Only apply friction if not accelerating and on floor, AND not actively wall sliding
 	if input_axis == 0 and is_on_floor():
-		velocity.x = move_toward(velocity.x, 0, friction * delta)
+		#velocity.x = move_toward(velocity.x, 0, friction * delta)
+		velocity.x = 0
 
 func apply_air_resistance(delta):
 	if input_axis == 0 and not is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
 
-func handle_acceleration(delta):
+func handle_acceleration(_delta):
 	if input_axis == 0:
 		return
-	var acceleration: float = air_resistance
-	var direction_switch_boost: int = 10
-	var current_direction: int = sign(velocity.x)
-	var input_direction: int = sign(input_axis)
-	var boost_multiplier: float = 1.0
-	if current_direction != 0 and input_direction != 0 and input_direction != current_direction:
-		boost_multiplier = direction_switch_boost
+	#var acceleration: float = air_resistance
+	#var direction_switch_boost: int = 10
+	#var current_direction: int = sign(velocity.x)
+	#var input_direction: int = sign(input_axis)
+	#var boost_multiplier: float = 1.0
+	#if current_direction != 0 and input_direction != 0 and input_direction != current_direction:
+	#    boost_multiplier = direction_switch_boost
 
-	if is_on_floor():
-		acceleration = air_resistance
-	else:
-		acceleration = air_resistance * 2.0
+	# if is_on_floor():
+	#     acceleration = air_resistance
+	# else:
+	#     acceleration = air_resistance * 2.0
 
 	var target_speed: float = speed * input_axis
-	var acceleration_amount: float = acceleration * boost_multiplier
-	velocity.x = move_toward(velocity.x, target_speed, acceleration_amount * delta)
+	#var acceleration_amount: float = acceleration * boost_multiplier
+	velocity.x = target_speed
+	#velocity.x = move_toward(velocity.x, target_speed, acceleration_amount * delta)
 
 func clamp_x_by_camera():
 	var new_x: float = global_position.x

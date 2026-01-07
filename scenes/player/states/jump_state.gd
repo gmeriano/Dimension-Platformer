@@ -1,7 +1,7 @@
 class_name PlayerJumpState extends PlayerState
 
 static var state_name = "PlayerJumpState"
-const JUMP_VELOCITY: float = -300
+const JUMP_VELOCITY: float = -200
 const MAX_SPEED: float = 350.0
 
 func get_state_name() -> String:

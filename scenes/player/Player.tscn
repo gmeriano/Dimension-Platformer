@@ -7,8 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://3yugmseusdfy" path="res://assets/sprites/knight.png" id="5_j4xsf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rsxto"]
-radius = 7.14286
-height = 20.0
+radius = 5.0
+height = 11.4286
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v68sj"]
 properties/0/path = NodePath(".:position")
@@ -143,12 +143,13 @@ collision_layer = 4
 script = ExtResource("1_8a6k0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(4.76837e-07, -10)
+position = Vector2(3.18323e-12, -7)
 rotation = 1.5708
 scale = Vector2(1.4, 1.4)
 shape = SubResource("CapsuleShape2D_rsxto")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(284, -35)
 texture = ExtResource("2_2nhe6")
 
@@ -172,18 +173,15 @@ metadata/_edit_use_anchors_ = true
 script = ExtResource("3_h5lw5")
 
 [node name="RightRayCast" type="RayCast2D" parent="."]
-position = Vector2(75, 5.72205e-06)
 rotation = -1.5708
 target_position = Vector2(0, 10)
 
 [node name="LeftRayCast" type="RayCast2D" parent="."]
-position = Vector2(-55, 3.8147e-06)
+position = Vector2(1, 2.72848e-12)
 rotation = 1.5708
 target_position = Vector2(0, 10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(1, -36)
-scale = Vector2(3, 3)
+position = Vector2(1, -12)
 sprite_frames = SubResource("SpriteFrames_u4egk")
 frame_progress = 0.193133

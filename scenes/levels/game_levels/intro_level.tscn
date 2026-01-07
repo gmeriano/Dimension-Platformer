@@ -44,7 +44,7 @@ texture = ExtResource("7_lqxjy")
 speed = 0.4
 repeat = 3
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gq236"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_csjia"]
 texture = ExtResource("3_av4k6")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
@@ -62,7 +62,7 @@ texture_region_size = Vector2i(8, 8)
 tile_size = Vector2i(8, 8)
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 3
-sources/0 = SubResource("TileSetAtlasSource_gq236")
+sources/0 = SubResource("TileSetAtlasSource_csjia")
 
 [node name="intro_level" type="Node2D"]
 script = ExtResource("1_a58my")
@@ -116,6 +116,7 @@ position = Vector2(330, -56)
 scale = Vector2(0.5, 0.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="Dimension1"]
+visible = false
 position = Vector2(144, -77)
 scale = Vector2(0.28125, 0.25)
 texture = ExtResource("14_4e6m6")
