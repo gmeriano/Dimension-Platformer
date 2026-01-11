@@ -1,14 +1,14 @@
 [gd_scene load_steps=25 format=3 uid="uid://dalyetdhjh33m"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8a6k0"]
-[ext_resource type="Texture2D" uid="uid://dri25xq0nx838" path="res://assets/sprites/player/cat.png" id="2_2nhe6"]
+[ext_resource type="Texture2D" uid="uid://cak5evvuotd0n" path="res://assets/sprites/player/blob/character-green-noglow.png" id="2_egfnl"]
 [ext_resource type="Texture2D" uid="uid://1lifn7h5b57d" path="res://assets/sprites/square.png" id="2_oqytx"]
 [ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_h5lw5"]
 [ext_resource type="Texture2D" uid="uid://3yugmseusdfy" path="res://assets/sprites/knight.png" id="5_j4xsf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rsxto"]
-radius = 5.0
-height = 11.4286
+radius = 2.14286
+height = 8.57143
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v68sj"]
 properties/0/path = NodePath(".:position")
@@ -139,19 +139,18 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
+position = Vector2(-3, 4)
+scale = Vector2(2, 2)
 collision_layer = 4
 script = ExtResource("1_8a6k0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3.18323e-12, -7)
 rotation = 1.5708
 scale = Vector2(1.4, 1.4)
 shape = SubResource("CapsuleShape2D_rsxto")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(284, -35)
-texture = ExtResource("2_2nhe6")
+texture = ExtResource("2_egfnl")
 
 [node name="PlayerShadow" type="Sprite2D" parent="."]
 visible = false
@@ -172,16 +171,18 @@ metadata/_edit_use_anchors_ = true
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("3_h5lw5")
 
-[node name="RightRayCast" type="RayCast2D" parent="."]
-rotation = -1.5708
-target_position = Vector2(0, 10)
-
 [node name="LeftRayCast" type="RayCast2D" parent="."]
-position = Vector2(1, 2.72848e-12)
+position = Vector2(-3, 3)
 rotation = 1.5708
-target_position = Vector2(0, 10)
+target_position = Vector2(1.43051e-05, 4)
+
+[node name="RightRayCast" type="RayCast2D" parent="."]
+position = Vector2(3, 3)
+rotation = -1.5708
+target_position = Vector2(1.43051e-05, 4)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(1, -12)
 sprite_frames = SubResource("SpriteFrames_u4egk")
 frame_progress = 0.193133

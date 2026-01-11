@@ -3,7 +3,7 @@ extends Node2D
 class_name BackgroundNode
 
 @export var background_settings: Array[BackgroundSettings]
-@export var image_size: Vector2
+@export var full_image_size: Vector2
 
 var background_set = false
 
@@ -21,11 +21,11 @@ func _process(_delta: float) -> void:
 
 func set_background_from_settings() -> void:
 	z_index = -1000  # Ensure the background is rendered behind everything else
-	position = Vector2(image_size.x / 2.0, -image_size.y / 2.0)
+	position = Vector2(full_image_size.x / 2.0, -full_image_size.y / 2.0)
 	for i in range(background_settings.size()):
 		var parallax_2d = Parallax2D.new()
 		parallax_2d.scroll_scale.x = background_settings[i].speed
-		parallax_2d.repeat_size = Vector2(image_size.x, 0)
+		parallax_2d.repeat_size = Vector2(background_settings[i].image_size.x, 0)
 		parallax_2d.repeat_times = background_settings[i].repeat
 		var texture_sprite = Sprite2D.new()
 		texture_sprite.texture = background_settings[i].texture

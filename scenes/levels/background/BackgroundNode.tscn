@@ -5,3 +5,4 @@
 [node name="BackgroundNode" type="Node2D"]
 z_index = -1000
 script = ExtResource("1_nelf6")
+full_image_size = null

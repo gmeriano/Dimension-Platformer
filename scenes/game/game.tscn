@@ -39,10 +39,6 @@ position_smoothing_enabled = true
 position_smoothing_speed = 50.0
 script = ExtResource("3_ovq0l")
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
-custom_minimum_size = Vector2(8, 8)
-layout_mode = 2
-
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="VBoxContainer"]
 material = SubResource("ShaderMaterial_0smxa")
 layout_mode = 2

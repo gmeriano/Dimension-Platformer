@@ -18,7 +18,7 @@ signal respawn
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var original_dimension = 1
 var tween: Tween = null
-var sprite_texture: Texture2D = preload("res://assets/sprites/player/cat.png")
+#var sprite_texture: Texture2D = preload("res://assets/sprites/player/cat.png")
 
 # Respawn vars
 var respawn_point: Vector2 = Vector2.ZERO
@@ -74,21 +74,21 @@ func _enter_tree():
 			GameManager.set_player_2(self)
 			current_dimension = 2
 			original_dimension = 2
-			sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
-			player_sprite.texture = sprite_texture
+			#sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
+			#player_sprite.texture = sprite_texture
 		elif !is_multiplayer_authority() and !multiplayer.is_server():
 			GameManager.set_player_1(self)
 		else:
 			GameManager.set_player_2(self)
 			current_dimension = 2
 			original_dimension = 2
-			sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
-			player_sprite.texture = sprite_texture
+			#sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
+			#player_sprite.texture = sprite_texture
 		controls = load("res://assets/resources/player1_movement.tres")
 
 func _ready():
-	animated_sprite_2d.play("default")
-	player_sprite.texture = sprite_texture
+	#animated_sprite_2d.play("default")
+	#player_sprite.texture = sprite_texture
 	update_shadow_location()
 	var states: Array[State] = [
 		PlayerIdleState.new(self),
