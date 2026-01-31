@@ -1,6 +1,6 @@
 extends Node
 
-const DIMENSION_OFFSET = 800
+const DIMENSION_OFFSET = 400
 
 var IS_ONLINE_MULTIPLAYER = false
 

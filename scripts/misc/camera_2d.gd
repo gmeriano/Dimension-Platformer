@@ -15,6 +15,7 @@ var right_edge_threshold_percentage: float = 0.4
 var CAMERA_LERP_SPEED: float = Global.MOVESPEED  # Pixels per second
 
 func _ready() -> void:
+	print("GLOB POS: ", global_position)
 	global_position.x = get_viewport_rect().size.x + get_viewport_rect().size.x / 2.0
 	zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
 	initial_position = position
