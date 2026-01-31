@@ -13,6 +13,7 @@ const MOVE_AXIS: int = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 var connected_joypads: Array[int] = Input.get_connected_joypads()
 	
 func setup_player_inputs(player1: Player, player2: Player) -> void:
+	print("Connected Joypads: ", connected_joypads)
 	if !Global.IS_ONLINE_MULTIPLAYER or player1.is_multiplayer_authority():
 		if use_controller_for_p1 and connected_joypads.has(0):
 			player1.device_id = connected_joypads[0]
