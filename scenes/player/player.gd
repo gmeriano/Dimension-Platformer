@@ -33,7 +33,7 @@ var jump_velocity = -200
 var was_on_wall = false
 var last_wall_direction: Vector2 = Vector2.ZERO
 var last_wall_jump_direction: Vector2 = Vector2.ZERO
-var jump_buffer_time : float = 0.3
+var jump_buffer_time : float = 0.2
 var jump_buffer_timer : float= 0.0
 var jump_input_buffered : bool = false
 @onready var right_ray_cast: RayCast2D = $RightRayCast
@@ -145,13 +145,16 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	position.x = round(position.x)
 
-func get_wall_direction() -> void:
+func get_wall_direction() -> Vector2:
 	if right_ray_cast.is_colliding():
 		last_wall_direction = Vector2.RIGHT
+		return Vector2.RIGHT
 	elif left_ray_cast.is_colliding():
 		last_wall_direction = Vector2.LEFT
+		return Vector2.LEFT
 	else:
 		last_wall_direction = Vector2.ZERO
+		return Vector2.ZERO
 
 # Try small diagonal and cardinal movements to escape the collision
 func unstick_player_if_necessary() -> bool:
@@ -191,7 +194,10 @@ func unstick_player_if_necessary() -> bool:
 func handle_gravity(delta):
 	if not is_on_floor():
 		frames_since_last_on_ground += 1
-		velocity.y += gravity * delta
+		if get_wall_direction() != Vector2.ZERO:
+			velocity.y += (gravity * 0.5) * delta
+		else:
+			velocity.y += gravity * delta
 	else:
 		frames_since_last_on_ground = 0
 
@@ -204,6 +210,8 @@ func apply_friction(_delta):
 func apply_air_resistance(delta):
 	if input_axis == 0 and not is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
+
+var wall_jump_timer: float = 0.2
 
 func handle_acceleration(_delta):
 	if input_axis == 0:
@@ -220,6 +228,9 @@ func handle_acceleration(_delta):
 	#     acceleration = air_resistance
 	# else:
 	#     acceleration = air_resistance * 2.0
+	if wall_jump_timer > 0:
+		wall_jump_timer -= _delta
+		return
 
 	var target_speed: float = speed * input_axis
 	#var acceleration_amount: float = acceleration * boost_multiplier

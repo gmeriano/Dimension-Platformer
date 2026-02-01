@@ -6,6 +6,7 @@ const HORIZONTAL_BOOST = 200.0
 #const VERTICAL_BOOST = -100.0
 
 func get_state_name() -> String:
+	player.wall_jump_timer = 0.2
 	return state_name
 
 func enter() -> void:
