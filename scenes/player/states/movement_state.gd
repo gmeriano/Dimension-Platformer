@@ -14,9 +14,10 @@ func physics_process(delta: float) -> void:
 	handle_transitions()
 
 func handle_transitions() -> void:
-	if player.jump_input and player.last_wall_direction != Vector2.ZERO:
-		state_machine.transition(PlayerWallJumpState.state_name)
-		return
+	if player.jump_input_buffered or player.jump_input:
+		if player.last_wall_direction != player.last_wall_jump_direction and player.last_wall_direction != Vector2.ZERO and player.input_axis != 0 and sign(player.input_axis) != sign(player.last_wall_direction.x):
+			state_machine.transition(PlayerWallJumpState.state_name)
+			return
 	if player.jump_input:
 		state_machine.transition(PlayerJumpState.state_name)
 		return

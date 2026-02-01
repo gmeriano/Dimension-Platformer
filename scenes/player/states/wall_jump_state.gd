@@ -3,7 +3,7 @@ class_name PlayerWallJumpState extends PlayerState
 static var state_name = "PlayerWallJumpState"
 
 const HORIZONTAL_BOOST = 200.0
-const VERTICAL_BOOST = -100.0
+#const VERTICAL_BOOST = -100.0
 
 func get_state_name() -> String:
 	return state_name
