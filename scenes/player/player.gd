@@ -1,8 +1,6 @@
 extends CharacterBody2D
 class_name Player
 
-signal respawn
-
 @export var controls: Resource = null
 @export var current_dimension: int = 1
 
@@ -142,6 +140,10 @@ func _physics_process(delta: float) -> void:
 		get_wall_direction()
 		clamp_x_by_camera()
 
+	# Debug: log extreme fall speeds for diagnosis
+	if velocity.y > 1000:
+		print("High fall speed:", velocity.y, "pos:", global_position)
+
 	move_and_slide()
 	position.x = round(position.x)
 
@@ -194,7 +196,7 @@ func unstick_player_if_necessary() -> bool:
 func handle_gravity(delta):
 	if not is_on_floor():
 		frames_since_last_on_ground += 1
-		if get_wall_direction() != Vector2.ZERO:
+		if get_wall_direction() != Vector2.ZERO and velocity.y > 0:
 			velocity.y += (gravity * 0.5) * delta
 		else:
 			velocity.y += gravity * delta
