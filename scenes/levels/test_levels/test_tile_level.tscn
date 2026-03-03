@@ -442,4 +442,4 @@ position = Vector2(309, -26)
 
 [node name="Player" parent="." instance=ExtResource("6_6djuv")]
 position = Vector2(47, -24)
-current_dimension = null
+current_dimension = 1

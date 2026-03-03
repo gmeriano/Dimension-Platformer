@@ -143,7 +143,6 @@ position = Vector2(-3, 4)
 scale = Vector2(2, 2)
 collision_layer = 4
 script = ExtResource("1_8a6k0")
-current_dimension = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708

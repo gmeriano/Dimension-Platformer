@@ -123,10 +123,6 @@ func should_wall_jump() -> bool:
 	
 	var can_wall_jump: bool = valid_wall_direction != Vector2.ZERO and valid_wall_direction != last_wall_jump_direction
 	
-	# Debug output
-	print("should_wall_jump check: last_wall_dir=", last_wall_direction, " last_wall_jump_dir=", last_wall_jump_direction, 
-		" valid_wall_dir=", valid_wall_direction, " coyote_timer=", wall_jump_coyote_timer, " result=", can_wall_jump)
-	
 	return can_wall_jump
 
 func update_shadow_location() -> void:
@@ -164,6 +160,8 @@ func _physics_process(delta: float) -> void:
 	# Wall jump input lockout timer
 	if wall_jump_input_lockout_timer > 0.0:
 		wall_jump_input_lockout_timer -= delta
+	
+
 
 	# General physics processing
 	if is_state_interactable():
@@ -171,10 +169,6 @@ func _physics_process(delta: float) -> void:
 		apply_air_resistance(delta)
 		get_wall_direction()
 		clamp_x_by_camera()
-
-	# Debug: log extreme fall speeds for diagnosis
-	if velocity.y > 1000:
-		print("High fall speed:", velocity.y, "pos:", global_position)
 
 	move_and_slide()
 	position.x = round(position.x)
@@ -235,16 +229,14 @@ func handle_gravity(delta):
 	else:
 		frames_since_last_on_ground = 0
 
-func apply_friction(_delta):
+func apply_friction(delta):
 	# Only apply friction if not accelerating and on floor, AND not actively wall sliding
 	if input_axis == 0 and is_on_floor():
-		#velocity.x = move_toward(velocity.x, 0, friction * delta)
-		velocity.x = 0
+		velocity.x = move_toward(velocity.x, 0, friction * delta)
 
 func apply_air_resistance(delta):
 	if input_axis == 0 and not is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
-
 
 func handle_acceleration(_delta):
 	if input_axis == 0:
