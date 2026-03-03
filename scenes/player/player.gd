@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name Player
 
+signal respawn
+
 @export var controls: Resource = null
 @export var current_dimension: int = 1
 
@@ -31,6 +33,11 @@ var jump_velocity = -200
 var was_on_wall = false
 var last_wall_direction: Vector2 = Vector2.ZERO
 var last_wall_jump_direction: Vector2 = Vector2.ZERO
+var wall_direction_coyote: Vector2 = Vector2.ZERO
+var wall_jump_coyote_timer: float = 0.0
+var wall_jump_coyote_time: float = 0.2
+var wall_jump_input_lockout_timer: float = 0.0
+var wall_jump_input_lockout_time: float = 0.1
 var jump_buffer_time : float = 0.2
 var jump_buffer_timer : float= 0.0
 var jump_input_buffered : bool = false
@@ -41,7 +48,7 @@ var jump_input_buffered : bool = false
 # Movement vars
 var speed: float = Global.MOVESPEED
 var friction: int = 2000
-var air_resistance: int = 1000
+var air_resistance: int = 500
 
 # Input vars
 var input_axis: float
@@ -105,6 +112,23 @@ func _ready():
 func is_on_ground() -> bool:
 	return is_on_floor()
 
+func should_wall_jump() -> bool:
+	if is_on_floor():
+		return false
+	
+	# Check if currently on a wall or in wall jump coyote window
+	var valid_wall_direction: Vector2 = last_wall_direction
+	if valid_wall_direction == Vector2.ZERO and wall_jump_coyote_timer > 0.0:
+		valid_wall_direction = wall_direction_coyote
+	
+	var can_wall_jump: bool = valid_wall_direction != Vector2.ZERO and valid_wall_direction != last_wall_jump_direction
+	
+	# Debug output
+	print("should_wall_jump check: last_wall_dir=", last_wall_direction, " last_wall_jump_dir=", last_wall_jump_direction, 
+		" valid_wall_dir=", valid_wall_direction, " coyote_timer=", wall_jump_coyote_timer, " result=", can_wall_jump)
+	
+	return can_wall_jump
+
 func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 1):
@@ -132,6 +156,14 @@ func _physics_process(delta: float) -> void:
 
 	# Movement input processing
 	input_axis = InputManager.get_input_axis(self)
+
+	# Wall jump coyote timer
+	if wall_jump_coyote_timer > 0.0:
+		wall_jump_coyote_timer -= delta
+
+	# Wall jump input lockout timer
+	if wall_jump_input_lockout_timer > 0.0:
+		wall_jump_input_lockout_timer -= delta
 
 	# General physics processing
 	if is_state_interactable():
@@ -213,31 +245,22 @@ func apply_air_resistance(delta):
 	if input_axis == 0 and not is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, air_resistance * delta)
 
-var wall_jump_timer: float = 0.2
 
 func handle_acceleration(_delta):
 	if input_axis == 0:
 		return
-	#var acceleration: float = air_resistance
-	#var direction_switch_boost: int = 10
-	#var current_direction: int = sign(velocity.x)
-	#var input_direction: int = sign(input_axis)
-	#var boost_multiplier: float = 1.0
-	#if current_direction != 0 and input_direction != 0 and input_direction != current_direction:
-	#    boost_multiplier = direction_switch_boost
 
-	# if is_on_floor():
-	#     acceleration = air_resistance
-	# else:
-	#     acceleration = air_resistance * 2.0
-	if wall_jump_timer > 0:
-		wall_jump_timer -= _delta
+	# Ignore input for a few frames after wall jump
+	if wall_jump_input_lockout_timer > 0.0:
 		return
 
 	var target_speed: float = speed * input_axis
-	#var acceleration_amount: float = acceleration * boost_multiplier
-	velocity.x = target_speed
-	#velocity.x = move_toward(velocity.x, target_speed, acceleration_amount * delta)
+	
+	if is_on_floor():
+		# On ground: instant movement
+		velocity.x = target_speed
+	else:
+		velocity.x = target_speed
 
 func clamp_x_by_camera():
 	var new_x: float = global_position.x
@@ -284,10 +307,23 @@ func should_respawn() -> bool:
 
 @rpc("any_peer", "call_local")
 func send_respawn_signal() -> void:
-	emit_signal("respawn")
+	respawn.emit()
 
 func on_hit() -> void:
 	send_respawn_signal.rpc()
+
+func is_on_wall_left() -> bool:
+	return left_ray_cast.is_colliding()
+
+func is_on_wall_right() -> bool:
+	return right_ray_cast.is_colliding()
+
+func is_on_any_wall() -> bool:
+	return is_on_wall_left() or is_on_wall_right()
+
+func handle_wall_slide(delta: float, gravity_multiplier: float) -> void:
+	if not is_on_floor():
+		velocity.y += (gravity * gravity_multiplier) * delta
 
 func is_state_interactable() -> bool:
 	return state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name and state_machine.current_state.get_state_name() != PlayerRespawnState.state_name

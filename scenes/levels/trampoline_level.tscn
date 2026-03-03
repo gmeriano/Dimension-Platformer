@@ -422,8 +422,6 @@ position = Vector2(-2, 104)
 
 [node name="Trampoline" parent="Dimension1" instance=ExtResource("5_2ggdh")]
 position = Vector2(74, 102)
-max_bounce_force = 800.0
-min_bounce_force = 300.0
 
 [node name="MovingPlatformSpawn" type="Marker2D" parent="Dimension1"]
 position = Vector2(372, 128)

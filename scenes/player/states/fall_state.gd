@@ -10,10 +10,19 @@ func physics_process(delta: float) -> void:
 	handle_transitions()
 
 func handle_transitions() -> void:
-	if player.jump_input_buffered or player.jump_input:
-		if player.last_wall_direction != player.last_wall_jump_direction and player.last_wall_direction != Vector2.ZERO and player.input_axis != 0 and sign(player.input_axis) != sign(player.last_wall_direction.x):
-			state_machine.transition(PlayerWallJumpState.state_name)
-			return
+	print("FALL STATE: is_on_any_wall=", player.is_on_any_wall(), " jump_input=", player.jump_input, " coyote_timer=", player.wall_jump_coyote_timer)
+	
+	# Check for wall jump coyote FIRST (high priority) before bouncing back to wall slide
+	if player.jump_input and player.should_wall_jump():
+		print("  -> Performing wall jump coyote")
+		state_machine.transition(PlayerWallJumpState.state_name)
+		return
+
+	# Check if touching wall
+	if player.is_on_any_wall():
+		print("  -> Transitioning to wall_slide (touching wall)")
+		state_machine.transition(PlayerWallSlideState.state_name)
+		return
 
 	if player.jump_input and player.double_jump:
 		state_machine.transition(PlayerDoubleJumpState.state_name)

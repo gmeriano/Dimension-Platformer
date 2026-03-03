@@ -8,6 +8,8 @@ func get_state_name() -> String:
 func enter() -> void:
 	player.double_jump = true
 	player.last_wall_jump_direction = Vector2.ZERO
+	player.wall_jump_coyote_timer = 0.0
+	player.wall_jump_input_lockout_timer = 0.0
 
 func physics_process(delta: float) -> void:
 	player.apply_friction(delta)

@@ -17,16 +17,15 @@ func physics_process(delta: float) -> void:
 	handle_transitions()
 
 func handle_transitions() -> void:
-	if player.jump_input_buffered or player.jump_input:
-		if player.last_wall_direction != player.last_wall_jump_direction and player.last_wall_direction != Vector2.ZERO and player.input_axis != 0 and sign(player.input_axis) != sign(player.last_wall_direction.x):
-			state_machine.transition(PlayerWallJumpState.state_name)
-			return
-
 	if player.jump_input and player.double_jump:
 		state_machine.transition(PlayerDoubleJumpState.state_name)
 		return
 
 	if player.velocity.y > 0:
+		# Check if touching wall before transitioning to fall
+		if player.is_on_any_wall():
+			state_machine.transition(PlayerWallSlideState.state_name)
+			return
 		state_machine.transition(PlayerFallState.state_name)
 		return
 

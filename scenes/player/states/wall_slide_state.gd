@@ -8,39 +8,47 @@ func get_state_name() -> String:
 	return state_name
 
 func enter() -> void:
-	pass
+	player.double_jump = true
 
 func physics_process(delta: float) -> void:
 	player.handle_wall_slide(delta, GRAVITY_MULTIPLIER)
 	handle_transitions()
-	
-# NOTES:
-# go from this to wall jump if conditions met
-# can go to normal jump as well? Infinite loop between jump and this?
-# make wall slide condition only met when holding a button to prevent this
 
 func handle_transitions() -> void:
-	if player.is_on_wall_left():
-		if player.jump_input:
+	# Check if we should wall jump
+	if player.jump_input:
+		# Can only wall jump if we're on a different wall than last jump
+		if player.should_wall_jump():
 			state_machine.transition(PlayerWallJumpState.state_name)
 			return
-	if player.is_on_wall_right():
-		if player.jump_input:
-			state_machine.transition(PlayerWallJumpState.state_name)
-			return
-	# if the player is on a wall and moving into wall, continue wall slide
-	if player.input_axis < 0.0 and player.is_on_wall_left() or player.input_axis > 0.0 and player.is_on_wall_right():
+
+	# Check if player has stopped touching the wall or is on the ground
+	if player.is_on_ground():
+		if player.input_axis == 0:
+			state_machine.transition(PlayerIdleState.state_name)
+		else:
+			state_machine.transition(PlayerMovementState.state_name)
 		return
-	state_machine.transition(PlayerFallState.state_name)
-	#
-	#if player.jump_input and (player.is_on_wall_left() or player.is_on_wall_right()):
-		#state_machine.transition(PlayerWallJumpState.state_name)
-		#return
-	##if player.jump_input:
-		##state_machine.transition(PlayerJumpState.state_name)
-		##return
-	#if !(player.is_on_wall_left() or player.is_on_wall_right()) and player.velocity.y > 0 and player.frames_since_last_on_ground > player.coyote_time_frames:
-		#state_machine.transition(PlayerFallState.state_name)
-		#return
-	#if player.input_axis != 0.0:
-		#state_machine.transition(PlayerFallState.state_name)
+	
+	# Check if still touching a wall
+	var touching_left_wall: bool = player.is_on_wall_left()
+	var touching_right_wall: bool = player.is_on_wall_right()
+	
+	if not (touching_left_wall or touching_right_wall):
+		# Not touching wall anymore, continue falling
+		state_machine.transition(PlayerFallState.state_name)
+		return
+	
+	# Still touching wall - check if actively moving away from it
+	var moving_away_from_left_wall: bool = touching_left_wall and player.input_axis > 0.0
+	var moving_away_from_right_wall: bool = touching_right_wall and player.input_axis < 0.0
+	
+	if moving_away_from_left_wall or moving_away_from_right_wall:
+		# Moving away from wall, but start coyote timer so they can still wall jump
+		player.wall_direction_coyote = player.last_wall_direction
+		player.wall_jump_coyote_timer = player.wall_jump_coyote_time
+		print("WALL_SLIDE: Setting coyote timer - wall_dir=", player.wall_direction_coyote, " timer=", player.wall_jump_coyote_timer)
+		state_machine.transition(PlayerFallState.state_name)
+		return
+	
+	# Stay in wall slide (either zero input or moving into wall)
