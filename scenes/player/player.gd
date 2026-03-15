@@ -128,10 +128,10 @@ func should_wall_jump() -> bool:
 func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 1):
-		# times 2 bc we scaled sprite by 0.5, + 16 to match rect exactly
-		player_shadow.offset.y = Global.DIMENSION_OFFSET * 2 - 16
+		# times 2 bc we scaled sprite by 0.25
+		player_shadow.offset.y = 2*Global.DIMENSION_OFFSET
 	elif (current_dimension == 2):
-		player_shadow.offset.y = -Global.DIMENSION_OFFSET * 2 - 16
+		player_shadow.offset.y = -2*Global.DIMENSION_OFFSET
 
 
 func _physics_process(delta: float) -> void:
