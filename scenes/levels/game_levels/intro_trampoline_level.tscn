@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=4 uid="uid://d36l20uekndc0"]
+[gd_scene load_steps=33 format=4 uid="uid://d36l20uekndc0"]
 
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_5cj41"]
 [ext_resource type="Script" path="res://scenes/levels/game_levels/intro_trampoline_level.gd" id="1_letbx"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bfyrpyfty7ne8" path="res://assets/sprites/background/city/cloud-bottom.png" id="18_b1q1n"]
 [ext_resource type="Texture2D" uid="uid://cawndt8u06bjn" path="res://assets/sprites/background/city/mountain-bottom.png" id="19_byyur"]
 [ext_resource type="Texture2D" uid="uid://p64xhadrxrdh" path="res://assets/sprites/background/city/building-bottom.png" id="20_75jwd"]
+[ext_resource type="PackedScene" uid="uid://clqrlkibsorgs" path="res://scenes/objects/moving_platform_v2/MovingPlatformV2.tscn" id="21_s10lb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b78jn"]
 texture = ExtResource("2_3fn6t")
@@ -556,7 +557,7 @@ tile_set = SubResource("TileSet_ppfpx")
 position = Vector2(4940, -69)
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1"]
-position = Vector2(3259, -40)
+position = Vector2(3252, -32)
 
 [node name="Trampoline" parent="Dimension1" instance=ExtResource("4_33ixc")]
 position = Vector2(356, -24)
@@ -616,7 +617,7 @@ tile_set = SubResource("TileSet_ppfpx")
 position = Vector2(4940, -69)
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2"]
-position = Vector2(3795, -38)
+position = Vector2(3271, -37)
 
 [node name="Trampoline2" parent="Dimension2" instance=ExtResource("4_33ixc")]
 position = Vector2(356, -24)
@@ -685,7 +686,7 @@ position = Vector2(2675, -8)
 position = Vector2(4701, -8)
 
 [node name="Button" parent="Dimension2" instance=ExtResource("9_5uw6l")]
-position = Vector2(3802, -67)
+position = Vector2(3799, -67)
 
 [node name="BackgroundNode" type="Node2D" parent="Dimension2"]
 z_index = -1000
@@ -693,3 +694,16 @@ position = Vector2(320, -90)
 script = ExtResource("16_njr4m")
 background_settings = Array[ExtResource("11_sds1c")]([SubResource("Resource_xtx6e"), SubResource("Resource_w31ts"), SubResource("Resource_6jbr2"), SubResource("Resource_ghf6k")])
 full_image_size = Vector2(640, 180)
+
+[node name="MovingPlatformV2" parent="Dimension2" instance=ExtResource("21_s10lb")]
+position = Vector2(3132, -45)
+start_right = false
+
+[node name="MovingPlatformV3" parent="Dimension2" instance=ExtResource("21_s10lb")]
+position = Vector2(3132, -75)
+
+[node name="MovingPlatformV4" parent="Dimension2" instance=ExtResource("21_s10lb")]
+position = Vector2(3132, -101)
+distance = 600.0
+time = 8.0
+start_right = false
