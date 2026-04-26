@@ -18,9 +18,9 @@ func physics_process(delta: float) -> void:
 func handle_transitions() -> void:
 	if player.jump_input:
 		# Check for wall jump coyote before normal jump
-		if player.should_wall_jump():
-			state_machine.transition(PlayerWallJumpState.state_name)
-			return
+		#if player.should_wall_jump():
+			#state_machine.transition(PlayerWallJumpState.state_name)
+			#return
 		state_machine.transition(PlayerJumpState.state_name)
 		return
 	if player.velocity.y > 0 and player.frames_since_last_on_ground > player.coyote_time_frames:

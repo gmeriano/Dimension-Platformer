@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://d36l20uekndc0"]
+[gd_scene load_steps=34 format=4 uid="uid://d36l20uekndc0"]
 
 [ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_5cj41"]
 [ext_resource type="Script" path="res://scenes/levels/game_levels/intro_trampoline_level.gd" id="1_letbx"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="5_es431"]
 [ext_resource type="PackedScene" uid="uid://3xk4fdftjod6" path="res://scenes/objects/player_entered_switch_platform/player_entered_switch_platform.tscn" id="6_obioi"]
 [ext_resource type="PackedScene" uid="uid://bwfmr1ifenmm3" path="res://scenes/game/update_respawn_area.tscn" id="7_kqbxw"]
+[ext_resource type="PackedScene" uid="uid://cauiy5gk8oehh" path="res://scenes/objects/ladder/ladder.tscn" id="8_wqmn3"]
 [ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="9_5uw6l"]
 [ext_resource type="PackedScene" uid="uid://dbkimnvm3tbbw" path="res://scenes/levels/background/BackgroundNode.tscn" id="10_fh0sw"]
 [ext_resource type="Script" path="res://assets/resources/background_settings.gd" id="11_sds1c"]
@@ -570,6 +571,12 @@ position = Vector2(4793, -24)
 
 [node name="Platform" parent="Dimension1" instance=ExtResource("5_es431")]
 position = Vector2(1447, -45)
+
+[node name="Ladder" parent="Dimension1" instance=ExtResource("8_wqmn3")]
+position = Vector2(1014, -56)
+
+[node name="Ladder2" parent="Dimension1" instance=ExtResource("8_wqmn3")]
+position = Vector2(3256, -54)
 
 [node name="Platform2" parent="Dimension1" instance=ExtResource("5_es431")]
 position = Vector2(1730, -45)

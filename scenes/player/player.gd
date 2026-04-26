@@ -101,6 +101,7 @@ func _ready():
 		PlayerJumpState.new(self),
 		PlayerDoubleJumpState.new(self),
 		PlayerFallState.new(self),
+		PlayerClimbState.new(self),
 		PlayerDimensionSwapState.new(self),
 		PlayerWallSlideState.new(self),
 		PlayerWallJumpState.new(self),
@@ -220,6 +221,8 @@ func unstick_player_if_necessary() -> bool:
 	return false
 
 func handle_gravity(delta):
+	if state_machine.current_state.get_state_name() == PlayerClimbState.state_name:
+		return
 	if not is_on_floor():
 		frames_since_last_on_ground += 1
 		if get_wall_direction() != Vector2.ZERO and velocity.y > 0:
@@ -318,4 +321,5 @@ func handle_wall_slide(delta: float, gravity_multiplier: float) -> void:
 		velocity.y += (gravity * gravity_multiplier) * delta
 
 func is_state_interactable() -> bool:
-	return state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name and state_machine.current_state.get_state_name() != PlayerRespawnState.state_name
+	var current_state_name: String = state_machine.current_state.get_state_name()
+	return current_state_name != PlayerDimensionSwapState.state_name and current_state_name != PlayerRespawnState.state_name

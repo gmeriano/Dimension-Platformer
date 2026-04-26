@@ -9,6 +9,7 @@ const JUMP_BUTTON: int = 0        # JOY_BUTTON_0 (bottom button: X/A)
 const SWAP_BUTTON: int = 1        # JOY_BUTTON_1 (right button: Circle/B)
 const INTERACT_BUTTON: int = 2    # JOY_BUTTON_2 (left button: Square/Y)
 const MOVE_AXIS: int = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
+const VERTICAL_MOVE_AXIS: int = 1     # JOY_AXIS_LEFT_Y (left stick vertical)
 
 var connected_joypads: Array[int] = Input.get_connected_joypads()
 	
@@ -62,7 +63,22 @@ func get_input_axis(player: Player) -> float:
 			return -1.0
 		return axis_value
 	else:
-		return Input.get_axis(player.controls.move_left, player.controls.move_right)	
+		return Input.get_axis(player.controls.move_left, player.controls.move_right)
+
+func get_vertical_input_axis(player: Player) -> float:
+	if !read_player_input(player):
+		return false
+	if player.use_controller:
+		var axis_value: float = Input.get_joy_axis(player.device_id, VERTICAL_MOVE_AXIS)
+		if abs(axis_value) < DEADZONE:
+			return 0.0
+		if axis_value > 0.8:
+			return 1.0
+		elif axis_value < -0.8:
+			return -1.0
+		return axis_value
+	else:
+		return Input.get_axis(player.controls.up, player.controls.down)
 
 func is_jump_just_pressed(player) -> bool:
 	if !read_player_input(player):

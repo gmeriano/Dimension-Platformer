@@ -13,10 +13,10 @@ func handle_transitions() -> void:
 	print("FALL STATE: is_on_any_wall=", player.is_on_any_wall(), " jump_input=", player.jump_input, " coyote_timer=", player.wall_jump_coyote_timer)
 	
 	# Check for wall jump coyote FIRST (high priority) before bouncing back to wall slide
-	if player.jump_input and player.should_wall_jump():
-		print("  -> Performing wall jump coyote")
-		state_machine.transition(PlayerWallJumpState.state_name)
-		return
+	#if player.jump_input and player.should_wall_jump():
+		#print("  -> Performing wall jump coyote")
+		#state_machine.transition(PlayerWallJumpState.state_name)
+		#return
 
 	# Check if touching wall
 	if player.is_on_any_wall():

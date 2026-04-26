@@ -16,11 +16,13 @@ func physics_process(delta: float) -> void:
 
 func handle_transitions() -> void:
 	# Check if we should wall jump
-	if player.jump_input:
+	#if player.jump_input:
 		# Can only wall jump if we're on a different wall than last jump
-		if player.should_wall_jump():
-			state_machine.transition(PlayerWallJumpState.state_name)
-			return
+		#if player.should_wall_jump():
+			#state_machine.transition(PlayerWallJumpState.state_name)
+			#return
+	if player.jump_input and player.double_jump:
+		state_machine.transition(PlayerDoubleJumpState.state_name)
 
 	# Check if player has stopped touching the wall or is on the ground
 	if player.is_on_ground():
