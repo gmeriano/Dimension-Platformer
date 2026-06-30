@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bwfmr1ifenmm3"]
 
-[ext_resource type="Script" path="res://scenes/game/update_respawn_area.gd" id="1_c2cyb"]
+[ext_resource type="Script" uid="uid://bnl3bx55mpgsm" path="res://scenes/game/update_respawn_area.gd" id="1_c2cyb"]
 [ext_resource type="Texture2D" uid="uid://4uthpo274uer" path="res://assets/sprites/circle.png" id="2_7whm4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ry57"]

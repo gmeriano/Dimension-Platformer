@@ -1,11 +1,11 @@
 [gd_scene load_steps=10 format=4 uid="uid://csip7yajkyp7k"]
 
-[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_kpyow"]
-[ext_resource type="Script" path="res://scenes/levels/fire_switch_level.gd" id="1_p6b6e"]
+[ext_resource type="Script" uid="uid://biu0sw6e14klu" path="res://scripts/game/level_manager.gd" id="1_kpyow"]
+[ext_resource type="Script" uid="uid://cy2oefem12n2w" path="res://scenes/levels/fire_switch_level.gd" id="1_p6b6e"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="2_h2fwg"]
-[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="3_y4bqe"]
-[ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/objects/fireball_spawner/fireball_spawner.tscn" id="4_gsvik"]
-[ext_resource type="Script" path="res://scenes/levels/fireball_despawn_line.gd" id="6_ofi15"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/levels/background/objects/level_complete_zone/level_complete_zone.tscn" id="3_y4bqe"]
+[ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/levels/background/objects/fireball_spawner/fireball_spawner.tscn" id="4_gsvik"]
+[ext_resource type="Script" uid="uid://bvfw53hjwwtoi" path="res://scenes/levels/fireball_despawn_line.gd" id="6_ofi15"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e2uca"]
 texture = ExtResource("2_h2fwg")

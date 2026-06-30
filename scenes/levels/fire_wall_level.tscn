@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=4 uid="uid://bre2p53b6ueao"]
 
-[ext_resource type="Script" path="res://scenes/levels/fire_wall_level.gd" id="1_4f1ex"]
+[ext_resource type="Script" uid="uid://b2owlts815n1h" path="res://scenes/levels/fire_wall_level.gd" id="1_4f1ex"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_tv5bj"]
-[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="5_64kfv"]
-[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_sim7r"]
-[ext_resource type="Script" path="res://scripts/fireball_shoot_area.gd" id="6_yyf3p"]
-[ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/objects/fireball_spawner/fireball_spawner.tscn" id="7_esi6c"]
-[ext_resource type="Script" path="res://scripts/misc/area_2d.gd" id="8_2fiyt"]
-[ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="8_ns5ob"]
+[ext_resource type="Script" uid="uid://biu0sw6e14klu" path="res://scripts/game/level_manager.gd" id="5_64kfv"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/levels/background/objects/level_complete_zone/level_complete_zone.tscn" id="6_sim7r"]
+[ext_resource type="Script" uid="uid://cq34c84lyqy7i" path="res://scripts/fireball_shoot_area.gd" id="6_yyf3p"]
+[ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/levels/background/objects/fireball_spawner/fireball_spawner.tscn" id="7_esi6c"]
+[ext_resource type="Script" uid="uid://cw7n8j1scc17l" path="res://scripts/misc/area_2d.gd" id="8_2fiyt"]
+[ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/levels/background/objects/button/button.tscn" id="8_ns5ob"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mkjiw"]
 texture = ExtResource("1_tv5bj")

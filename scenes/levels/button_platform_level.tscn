@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=4 uid="uid://cx0nvqurd1bn6"]
 
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_fvgci"]
-[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="5_43six"]
-[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_2px47"]
-[ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="7_ocqm0"]
-[ext_resource type="PackedScene" uid="uid://rfsx5rigaqks" path="res://scenes/objects/button_pressed_switch_platform/button_pressed_switch_platform.tscn" id="8_jsvsv"]
+[ext_resource type="Script" uid="uid://biu0sw6e14klu" path="res://scripts/game/level_manager.gd" id="5_43six"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/levels/background/objects/level_complete_zone/level_complete_zone.tscn" id="6_2px47"]
+[ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/levels/background/objects/button/button.tscn" id="7_ocqm0"]
+[ext_resource type="PackedScene" uid="uid://rfsx5rigaqks" path="res://scenes/levels/background/objects/button_pressed_switch_platform/button_pressed_switch_platform.tscn" id="8_jsvsv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ck0r6"]
 texture = ExtResource("1_fvgci")

@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=4 uid="uid://c7ffl75xgfk0g"]
 
-[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_f2l0j"]
-[ext_resource type="Script" path="res://scenes/levels/test_levels/test_tile_level.gd" id="1_qfgjl"]
+[ext_resource type="Script" uid="uid://biu0sw6e14klu" path="res://scripts/game/level_manager.gd" id="1_f2l0j"]
+[ext_resource type="Script" uid="uid://cfe1ruvc423ko" path="res://scenes/levels/test_levels/test_tile_level.gd" id="1_qfgjl"]
 [ext_resource type="PackedScene" uid="uid://dalyetdhjh33m" path="res://scenes/player/Player.tscn" id="6_6djuv"]
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="6_wnu0c"]
-[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="7_17psm"]
-[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="9_qni7h"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/levels/background/objects/level_complete_zone/level_complete_zone.tscn" id="7_17psm"]
+[ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/levels/background/objects/platform/platform.tscn" id="9_qni7h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ad5xj"]
 texture = ExtResource("6_wnu0c")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=4 uid="uid://dujjff74bfg6d"]
 
-[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="1_bjirx"]
-[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="3_lv8ip"]
+[ext_resource type="Script" uid="uid://biu0sw6e14klu" path="res://scripts/game/level_manager.gd" id="1_bjirx"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/levels/background/objects/level_complete_zone/level_complete_zone.tscn" id="3_lv8ip"]
 [ext_resource type="Texture2D" uid="uid://bbxb2ig6py22b" path="res://assets/sprites/graytile2.png" id="4_3qng7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2bmlt"]

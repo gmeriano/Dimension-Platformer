@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=4 uid="uid://bopvn86clb5ri"]
 
 [ext_resource type="Texture2D" uid="uid://cg1klvmt3m81m" path="res://assets/sprites/8x8tiles.png" id="1_lg2sk"]
-[ext_resource type="Script" path="res://scripts/game/level_manager.gd" id="5_pmwfk"]
-[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="6_dqgw3"]
+[ext_resource type="Script" uid="uid://biu0sw6e14klu" path="res://scripts/game/level_manager.gd" id="5_pmwfk"]
+[ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/levels/background/objects/level_complete_zone/level_complete_zone.tscn" id="6_dqgw3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o3iwj"]
 texture = ExtResource("1_lg2sk")
