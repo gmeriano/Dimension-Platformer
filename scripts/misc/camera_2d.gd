@@ -25,7 +25,7 @@ func _ready() -> void:
 	# TODO mess around with this more
 	position_smoothing_enabled = false  # Disable built-in smoothing
 	#position_smoothing_speed = 100
-    
+	
 	if dimension == 1:
 		limit_bottom = 0
 	if dimension == 2:
@@ -64,7 +64,7 @@ func set_x_position(delta: float) -> void:
 	# Only move toward the one violating the boundary
 	if p1_outside != p2_outside or (p1_outside_left and p2_outside_left) or (p1_outside_right and p2_outside_right):
 		var midpoint_x = p1_x if p1_outside else p2_x
-        
+		
 		var target_x = move_toward(position.x, midpoint_x, CAMERA_LERP_SPEED * delta)
 
 		# Don't move camera behind x = 0 boundary

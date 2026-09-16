@@ -1,7 +1,7 @@
 class_name PlayerDoubleJumpState extends PlayerState
 
 static var state_name = "PlayerDoubleJumpState"
-const DOUBLE_JUMP_VELOCITY: float = -240.0 # JUMP_VELOCTY * 0.8
+const DOUBLE_JUMP_VELOCITY: float = -150 * 3 * 0.8 # JUMP_VELOCTY * 0.8
 
 func get_state_name() -> String:
 	return state_name

@@ -15,7 +15,7 @@ signal respawn
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 #var color: Color
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity") * 1.5
 var original_dimension = 1
 var tween: Tween = null
 #var sprite_texture: Texture2D = preload("res://assets/sprites/player/cat.png")

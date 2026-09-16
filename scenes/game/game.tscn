@@ -27,16 +27,14 @@ layout_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer" unique_id=1447743984]
 handle_input_locally = false
-snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(512, 2)
 render_target_update_mode = 4
 script = ExtResource("2_t3hje")
 
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=868168356]
 texture_filter = 1
 position_smoothing_enabled = true
-position_smoothing_speed = 50.0
+position_smoothing_speed = 150.0
 script = ExtResource("3_ovq0l")
 
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="VBoxContainer" unique_id=1181042378]
@@ -45,15 +43,13 @@ layout_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer2" unique_id=662792788]
 handle_input_locally = false
-snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(512, 2)
 render_target_update_mode = 4
 script = ExtResource("2_t3hje")
 
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer2/SubViewport" unique_id=2100952936]
 texture_filter = 1
 position_smoothing_enabled = true
-position_smoothing_speed = 50.0
+position_smoothing_speed = 150.0
 script = ExtResource("3_ovq0l")
 dimension = 2

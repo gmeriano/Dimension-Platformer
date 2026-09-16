@@ -25,6 +25,66 @@
 [ext_resource type="PackedScene" uid="uid://diyo0uxywwon" path="res://scenes/objects/fireball_spawner/fireball_spawner.tscn" id="20_a42sb"]
 [ext_resource type="Script" uid="uid://jn3p3axug2bl" path="res://scripts/fireball_shoot_area.gd" id="22_4kwfj"]
 
+[sub_resource type="Resource" id="Resource_2bych"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+texture = ExtResource("11_haeyt")
+image_size = Vector2(640, 90)
+speed = 0.1
+repeat = 3
+
+[sub_resource type="Resource" id="Resource_c001f"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+texture = ExtResource("12_j7bwe")
+image_size = Vector2(1596, 90)
+speed = 1.0
+repeat = 3
+
+[sub_resource type="Resource" id="Resource_e0dn7"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+texture = ExtResource("13_o5p48")
+image_size = Vector2(1914, 90)
+speed = 1.0
+repeat = 3
+
+[sub_resource type="Resource" id="Resource_wwwx6"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+
+[sub_resource type="Resource" id="Resource_xtx6e"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+texture = ExtResource("15_dl1fs")
+image_size = Vector2(640, 90)
+speed = 1.0
+repeat = 3
+
+[sub_resource type="Resource" id="Resource_w31ts"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+texture = ExtResource("16_ot1ix")
+image_size = Vector2(532, 90)
+speed = 0.1
+repeat = 3
+
+[sub_resource type="Resource" id="Resource_6jbr2"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+texture = ExtResource("17_32crd")
+image_size = Vector2(638, 90)
+speed = 0.1
+repeat = 3
+
+[sub_resource type="Resource" id="Resource_ghf6k"]
+script = ExtResource("10_7ewse")
+image_scale = 2.0
+texture = ExtResource("18_ajj6b")
+image_size = Vector2(798, 90)
+speed = 0.3
+repeat = 3
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6dt4m"]
 texture = ExtResource("2_l8avw")
 texture_region_size = Vector2i(8, 8)
@@ -4470,68 +4530,8 @@ sources/2 = SubResource("TileSetAtlasSource_rnt3r")
 sources/3 = SubResource("TileSetAtlasSource_h8pgu")
 sources/4 = SubResource("TileSetAtlasSource_435yu")
 
-[sub_resource type="Resource" id="Resource_2bych"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-texture = ExtResource("11_haeyt")
-image_size = Vector2(640, 90)
-speed = 0.01
-repeat = 3
-
-[sub_resource type="Resource" id="Resource_c001f"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-texture = ExtResource("12_j7bwe")
-image_size = Vector2(1596, 90)
-speed = 0.1
-repeat = 3
-
-[sub_resource type="Resource" id="Resource_e0dn7"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-texture = ExtResource("13_o5p48")
-image_size = Vector2(1914, 90)
-speed = 0.1
-repeat = 3
-
-[sub_resource type="Resource" id="Resource_wwwx6"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4kwfj"]
 size = Vector2(25, 242)
-
-[sub_resource type="Resource" id="Resource_xtx6e"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-texture = ExtResource("15_dl1fs")
-image_size = Vector2(640, 90)
-speed = 0.01
-repeat = 3
-
-[sub_resource type="Resource" id="Resource_w31ts"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-texture = ExtResource("16_ot1ix")
-image_size = Vector2(532, 90)
-speed = 0.1
-repeat = 3
-
-[sub_resource type="Resource" id="Resource_6jbr2"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-texture = ExtResource("17_32crd")
-image_size = Vector2(638, 90)
-speed = 0.1
-repeat = 3
-
-[sub_resource type="Resource" id="Resource_ghf6k"]
-script = ExtResource("10_7ewse")
-image_scale = 2.0
-texture = ExtResource("18_ajj6b")
-image_size = Vector2(798, 90)
-speed = 0.3
-repeat = 3
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_05848"]
 size = Vector2(42.5, 242)
@@ -4542,7 +4542,21 @@ script = ExtResource("1_3klhh")
 [node name="LevelManager" type="Node2D" parent="." unique_id=1711482556]
 script = ExtResource("1_uuelw")
 
+[node name="BackgroundNode1" parent="." unique_id=1599024252 instance=ExtResource("9_ioypj")]
+position = Vector2(960, 0)
+background_settings = Array[ExtResource("10_7ewse")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
+full_image_size = Vector2(640, 180)
+
+[node name="BackgroundNode" type="Node2D" parent="." unique_id=220244173]
+z_index = -1000
+position = Vector2(1765, 245)
+script = ExtResource("14_lumx5")
+background_settings = Array[ExtResource("10_7ewse")]([SubResource("Resource_xtx6e"), SubResource("Resource_w31ts"), SubResource("Resource_6jbr2"), SubResource("Resource_ghf6k")])
+full_image_size = Vector2(640, 180)
+dimension = 2
+
 [node name="Dimension1" type="Node2D" parent="." unique_id=606282630]
+scale = Vector2(3, 3)
 
 [node name="FireballSpawner" parent="Dimension1" unique_id=1265903810 instance=ExtResource("20_a42sb")]
 position = Vector2(428, -58)
@@ -4570,12 +4584,7 @@ tile_map_data = PackedByteArray("AAAAAP7/AQABAAIAAAAAAP//AQABAAIAAAAAAPz/AQABAAI
 tile_set = SubResource("TileSet_kf04l")
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1" unique_id=229327917]
-position = Vector2(54, -66)
-
-[node name="BackgroundNode1" parent="Dimension1" unique_id=1599024252 instance=ExtResource("9_ioypj")]
-position = Vector2(320, -90)
-background_settings = Array[ExtResource("10_7ewse")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
-full_image_size = Vector2(640, 180)
+position = Vector2(597.6667, -56)
 
 [node name="Area2D" type="Area2D" parent="Dimension1" unique_id=857680914]
 collision_mask = 4
@@ -4601,6 +4610,7 @@ position = Vector2(1105, -174)
 
 [node name="Dimension2" type="Node2D" parent="." unique_id=1852181795]
 position = Vector2(0, 400)
+scale = Vector2(3, 3)
 
 [node name="LevelCompleteZone2" parent="Dimension2" unique_id=2135407011 instance=ExtResource("2_a42sb")]
 position = Vector2(2174, -85)
@@ -4610,14 +4620,7 @@ tile_map_data = PackedByteArray("AAAHAP7/AQABAAIAAAAHAP//AQABAAIAAAAIAP7/AQABAAI
 tile_set = SubResource("TileSet_kf04l")
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2" unique_id=586361891]
-position = Vector2(68, -60)
-
-[node name="BackgroundNode" type="Node2D" parent="Dimension2" unique_id=220244173]
-z_index = -1000
-position = Vector2(320, -90)
-script = ExtResource("14_lumx5")
-background_settings = Array[ExtResource("10_7ewse")]([SubResource("Resource_xtx6e"), SubResource("Resource_w31ts"), SubResource("Resource_6jbr2"), SubResource("Resource_ghf6k")])
-full_image_size = Vector2(640, 180)
+position = Vector2(595.6667, -59.333332)
 
 [node name="Area2D2" type="Area2D" parent="Dimension2" unique_id=1836578102]
 position = Vector2(0, -400)

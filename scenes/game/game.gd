@@ -20,7 +20,7 @@ var level_paths: Array[String] = [
 	#"res://scenes/levels/test_levels/test_tile_level.tscn",
 	#"res://scenes/levels/game_levels/intro_level.tscn",
 	#"res://scenes/levels/game_levels/intro_swapping_level.tscn",
-	#"res://scenes/levels/game_levels/intro_trampoline_level.tscn",
+	"res://scenes/levels/game_levels/intro_trampoline_level.tscn",
 	"res://scenes/levels/game_levels/intro_fire_level.tscn",
 	"res://scenes/levels/level1.tscn", # 0
 	"res://scenes/levels/easy_platform_level.tscn", # 1

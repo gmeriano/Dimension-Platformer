@@ -1,9 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://dalyetdhjh33m"]
+[gd_scene format=3 uid="uid://dalyetdhjh33m"]
 
-[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8a6k0"]
+[ext_resource type="Script" uid="uid://d1cgtbq6o5ddy" path="res://scenes/player/player.gd" id="1_8a6k0"]
 [ext_resource type="Texture2D" uid="uid://cak5evvuotd0n" path="res://assets/sprites/player/blob/character-green-noglow.png" id="2_egfnl"]
 [ext_resource type="Texture2D" uid="uid://1lifn7h5b57d" path="res://assets/sprites/square.png" id="2_oqytx"]
-[ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_h5lw5"]
+[ext_resource type="Script" uid="uid://dpl4iyvhcbfgm" path="res://scripts/state_machine/state_machine.gd" id="3_h5lw5"]
 [ext_resource type="Texture2D" uid="uid://3yugmseusdfy" path="res://assets/sprites/knight.png" id="5_j4xsf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rsxto"]
@@ -133,32 +133,32 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cnqie")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=1532579360]
 position = Vector2(-3, 4)
-scale = Vector2(2, 2)
+scale = Vector2(6, 6)
 collision_layer = 4
 script = ExtResource("1_8a6k0")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1723331666]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_rsxto")
 
-[node name="PlayerSprite" type="Sprite2D" parent="."]
+[node name="PlayerSprite" type="Sprite2D" parent="." unique_id=595172981]
 texture = ExtResource("2_egfnl")
 
-[node name="PlayerShadow" type="Sprite2D" parent="."]
+[node name="PlayerShadow" type="Sprite2D" parent="." unique_id=409126941]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_oqytx")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=869490544]
 replication_config = SubResource("SceneReplicationConfig_v68sj")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=691820893]
 visible = false
 offset_left = -8.0
 offset_top = -16.0
@@ -166,20 +166,20 @@ offset_right = 8.0
 color = Color(0.0901961, 0.4, 1, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." unique_id=790857272]
 script = ExtResource("3_h5lw5")
 
-[node name="LeftRayCast" type="RayCast2D" parent="."]
+[node name="LeftRayCast" type="RayCast2D" parent="." unique_id=1791471495]
 position = Vector2(-3, 3)
 rotation = 1.5708
 target_position = Vector2(1.43051e-05, 4)
 
-[node name="RightRayCast" type="RayCast2D" parent="."]
+[node name="RightRayCast" type="RayCast2D" parent="." unique_id=1355464621]
 position = Vector2(3, 3)
 rotation = -1.5708
 target_position = Vector2(1.43051e-05, 4)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1493128612]
 visible = false
 position = Vector2(1, -12)
 sprite_frames = SubResource("SpriteFrames_u4egk")
