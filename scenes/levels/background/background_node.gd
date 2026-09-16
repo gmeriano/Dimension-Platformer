@@ -32,4 +32,3 @@ func set_background_from_settings() -> void:
 		texture_sprite.scale = Vector2(background_settings[i].image_scale, background_settings[i].image_scale)
 		parallax_2d.add_child(texture_sprite)
 		add_child(parallax_2d)
-

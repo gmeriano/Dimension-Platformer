@@ -6,7 +6,7 @@ class_name FireballSpawner
 @onready var muzzle: Marker2D = $Muzzle
 @onready var timer: Timer = $Timer
 @export var direction: Vector2 = Vector2.LEFT
-@export var shoot_as_group = true
+@export var shoot_as_group = 0
 @export var fireball_speed = 225.0
 @export var dimension = 1
 

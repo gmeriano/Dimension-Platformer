@@ -9,6 +9,11 @@ func _ready() -> void:
 
 func _on_body_entered(body):
 	if body is Player:
+		print("hiiii")
 		for spawner in spawners:
-			if spawner.shoot_as_group:
+			print("hey")
+			if spawner.shoot_as_group == 0:
+				print("shoot")
 				spawner.shoot_fireball()
+			else:
+				print("not shoot")
