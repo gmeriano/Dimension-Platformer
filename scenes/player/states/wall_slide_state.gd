@@ -7,9 +7,6 @@ const GRAVITY_MULTIPLIER = 0.05
 func get_state_name() -> String:
 	return state_name
 
-func enter() -> void:
-	player.double_jump = true
-
 func physics_process(delta: float) -> void:
 	player.handle_wall_slide(delta, GRAVITY_MULTIPLIER)
 	handle_transitions()

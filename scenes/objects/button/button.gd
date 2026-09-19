@@ -11,7 +11,7 @@ var can_be_pressed = true
 
 signal button_pressed
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	add_to_group("trigger_buttons")
 
 func _process(delta: float) -> void:

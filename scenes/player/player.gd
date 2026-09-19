@@ -134,8 +134,14 @@ func update_shadow_location() -> void:
 	elif (current_dimension == 2):
 		player_shadow.offset.y = -2*Global.DIMENSION_OFFSET
 
+func get_velocity_for_camera() -> float:
+	if velocity.x == 0:
+		return get_platform_velocity().x
+	else:
+		return velocity.x
 
 func _physics_process(delta: float) -> void:
+	#print(get_platform_velocity())
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
 

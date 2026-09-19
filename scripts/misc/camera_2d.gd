@@ -10,12 +10,11 @@ var initial_position: Vector2
 var left_edge_threshold: float = 0.0
 var right_edge_threshold: float = 0.0
 var left_edge_threshold_percentage: float = 0.2
-var right_edge_threshold_percentage: float = 0.4
+var right_edge_threshold_percentage: float = 1.5
 
 var CAMERA_LERP_SPEED: float = Global.MOVESPEED  # Pixels per second
 
 func _ready() -> void:
-	print("GLOB POS: ", global_position)
 	global_position.x = get_viewport_rect().size.x + get_viewport_rect().size.x / 2.0
 	zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
 	initial_position = position
@@ -65,7 +64,8 @@ func set_x_position(delta: float) -> void:
 	if p1_outside != p2_outside or (p1_outside_left and p2_outside_left) or (p1_outside_right and p2_outside_right):
 		var midpoint_x = p1_x if p1_outside else p2_x
 		
-		var target_x = move_toward(position.x, midpoint_x, CAMERA_LERP_SPEED * delta)
+		var speed = max(abs(GameManager.get_player_1().get_velocity_for_camera()), abs(GameManager.get_player_2().get_velocity_for_camera()))
+		var target_x = move_toward(position.x, midpoint_x, speed * delta)
 
 		# Don't move camera behind x = 0 boundary
 		if target_x < half_width:
