@@ -64,12 +64,6 @@ func dimension_swap():
 func respawn_all_players():
 	GameManager.set_players_state_respawn()
 	GameManager.reload_current_level()
-	# TODO cleanup despawn_objects and code like this now that we fully reset the level on respawn
-	#GameManager.set_players_state_respawn()
-	#TransitionScreen.transition()
-	#TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
-	#TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))
-	#despawn_objects()
 
 func _on_transition_finished_respawn():
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))

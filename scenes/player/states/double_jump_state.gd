@@ -1,7 +1,7 @@
 class_name PlayerDoubleJumpState extends PlayerState
 
 static var state_name = "PlayerDoubleJumpState"
-const DOUBLE_JUMP_VELOCITY: float = -150 * 3 * 0.8 # JUMP_VELOCTY * 0.8
+const DOUBLE_JUMP_VELOCITY: float = -150 * Global.ART_SCALAR * 0.8 # JUMP_VELOCTY * 0.8
 
 func get_state_name() -> String:
 	return state_name
@@ -17,11 +17,6 @@ func physics_process(delta: float) -> void:
 	handle_transitions()
 
 func handle_transitions() -> void:
-	#if player.jump_input_buffered or player.jump_input:
-		#if player.last_wall_direction != player.last_wall_jump_direction and player.last_wall_direction != Vector2.ZERO and player.input_axis != 0 and player.input_axis != player.last_wall_direction.x:
-			#state_machine.transition(PlayerWallJumpState.state_name)
-			#return
-
 	if player.velocity.y > 0:
 		state_machine.transition(PlayerFallState.state_name)
 		return

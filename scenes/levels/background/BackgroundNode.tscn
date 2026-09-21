@@ -1,7 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbkimnvm3tbbw"]
+[gd_scene format=3 uid="uid://dbkimnvm3tbbw"]
 
-[ext_resource type="Script" path="res://scenes/levels/background/background_node.gd" id="1_nelf6"]
+[ext_resource type="Script" uid="uid://bqu7n8key3d4q" path="res://scenes/levels/background/background_node.gd" id="1_nelf6"]
 
-[node name="BackgroundNode" type="Node2D"]
+[node name="BackgroundNode" type="Node2D" unique_id=1568081273]
 z_index = -1000
 script = ExtResource("1_nelf6")

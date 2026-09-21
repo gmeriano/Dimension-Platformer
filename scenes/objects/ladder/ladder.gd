@@ -13,7 +13,7 @@ func _ready() -> void:
 	area_2d.body_entered.connect(_on_body_entered)
 	area_2d.body_exited.connect(_on_body_exited)
 	timer.timeout.connect(_on_timer_timeout)
-	width = collision_shape_2d.shape.extents.x * 2.0 * 3.0
+	width = collision_shape_2d.shape.extents.x * 2.0 * Global.ART_SCALAR
 
 func _physics_process(_delta: float) -> void:
 	# Transition to climb state if on ground or already airborne

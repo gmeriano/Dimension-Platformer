@@ -17,22 +17,20 @@ func _process(_delta: float) -> void:
 	if Engine.is_editor_hint() and !background_set:
 		print(background_set)
 		background_set = true
-		print("Setting background from settings in editor.")
 		set_background_from_settings()
 
 func set_background_from_settings() -> void:
 	z_index = -1000  # Ensure the background is rendered behind everything else
-	position = Vector2(full_image_size.x / 2.0, -full_image_size.y / 2.0) * 3.0
+	position = Vector2(full_image_size.x / 2.0, -full_image_size.y / 2.0) * Global.ART_SCALAR
 	if dimension == 2:
 		position.y += Global.DIMENSION_OFFSET
 	for i in range(background_settings.size()):
 		var parallax_2d = Parallax2D.new()
-		parallax_2d.scroll_scale.x = background_settings[i].speed / 3.0
-		print("para scroll: ", parallax_2d.scroll_scale)
-		parallax_2d.repeat_size = Vector2(background_settings[i].image_size.x, 0)
+		parallax_2d.scroll_scale.x = background_settings[i].speed / Global.ART_SCALAR
+		parallax_2d.repeat_size = Vector2(background_settings[i].image_size.x * Global.ART_SCALAR, 0)
 		parallax_2d.repeat_times = background_settings[i].repeat
 		var texture_sprite = Sprite2D.new()
 		texture_sprite.texture = background_settings[i].texture
-		texture_sprite.scale = Vector2(background_settings[i].image_scale, background_settings[i].image_scale) * 3.0
+		texture_sprite.scale = Vector2(background_settings[i].image_scale, background_settings[i].image_scale) * Global.ART_SCALAR
 		parallax_2d.add_child(texture_sprite)
 		add_child(parallax_2d)

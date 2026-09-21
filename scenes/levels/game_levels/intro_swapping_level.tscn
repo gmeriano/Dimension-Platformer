@@ -32,28 +32,24 @@ repeat = 3
 script = ExtResource("9_52x6x")
 image_scale = 2.0
 texture = ExtResource("11_pdoms")
-image_size = Vector2(1596, 90)
-speed = 1.0
+image_size = Vector2(532, 90)
+speed = 0.2
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_e0dn7"]
 script = ExtResource("9_52x6x")
 image_scale = 2.0
 texture = ExtResource("12_dob0i")
-image_size = Vector2(1914, 90)
-speed = 1.0
+image_size = Vector2(638, 90)
+speed = 0.4
 repeat = 3
-
-[sub_resource type="Resource" id="Resource_wwwx6"]
-script = ExtResource("9_52x6x")
-image_scale = 2.0
 
 [sub_resource type="Resource" id="Resource_xtx6e"]
 script = ExtResource("9_52x6x")
 image_scale = 2.0
 texture = ExtResource("15_oh0fp")
 image_size = Vector2(640, 90)
-speed = 1.0
+speed = 0.1
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_w31ts"]
@@ -69,7 +65,7 @@ script = ExtResource("9_52x6x")
 image_scale = 2.0
 texture = ExtResource("17_elr8a")
 image_size = Vector2(638, 90)
-speed = 0.1
+speed = 0.4
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_ghf6k"]
@@ -77,7 +73,7 @@ script = ExtResource("9_52x6x")
 image_scale = 2.0
 texture = ExtResource("18_2ejus")
 image_size = Vector2(798, 90)
-speed = 0.3
+speed = 0.7
 repeat = 3
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qmpyx"]
@@ -166,13 +162,13 @@ sources/1 = SubResource("TileSetAtlasSource_7psee")
 [node name="IntroSwappingLevel" type="Node2D" unique_id=1378344270]
 
 [node name="BackgroundNode1" parent="." unique_id=382324210 instance=ExtResource("8_wv4jt")]
-position = Vector2(320, -90)
-background_settings = Array[ExtResource("9_52x6x")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
+position = Vector2(960, -270)
+background_settings = Array[ExtResource("9_52x6x")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7")])
 full_image_size = Vector2(640, 180)
 
 [node name="BackgroundNode" type="Node2D" parent="." unique_id=23833073]
 z_index = -1000
-position = Vector2(320, 310)
+position = Vector2(960, 530)
 script = ExtResource("14_i1qsg")
 background_settings = Array[ExtResource("9_52x6x")]([SubResource("Resource_xtx6e"), SubResource("Resource_w31ts"), SubResource("Resource_6jbr2"), SubResource("Resource_ghf6k")])
 full_image_size = Vector2(640, 180)

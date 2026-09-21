@@ -13,5 +13,4 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			bounce_force = clamp(bounce_force, min_bounce_force, max_bounce_force)
 			
 			body.velocity.y = -bounce_force  # Launch upwards
-			print("TRAMPOILNE BOUNCE: ", bounce_force, " velocity: ", body.velocity)
 			body.move_and_slide()  # Apply the velocity immediately

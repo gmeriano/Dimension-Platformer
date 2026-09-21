@@ -12,12 +12,6 @@ func physics_process(delta: float) -> void:
 	handle_transitions()
 
 func handle_transitions() -> void:
-	# Check if we should wall jump
-	#if player.jump_input:
-		# Can only wall jump if we're on a different wall than last jump
-		#if player.should_wall_jump():
-			#state_machine.transition(PlayerWallJumpState.state_name)
-			#return
 	if player.jump_input and player.double_jump:
 		state_machine.transition(PlayerDoubleJumpState.state_name)
 
@@ -46,8 +40,6 @@ func handle_transitions() -> void:
 		# Moving away from wall, but start coyote timer so they can still wall jump
 		player.wall_direction_coyote = player.last_wall_direction
 		player.wall_jump_coyote_timer = player.wall_jump_coyote_time
-		print("WALL_SLIDE: Setting coyote timer - wall_dir=", player.wall_direction_coyote, " timer=", player.wall_jump_coyote_timer)
 		state_machine.transition(PlayerFallState.state_name)
 		return
 	
-	# Stay in wall slide (either zero input or moving into wall)

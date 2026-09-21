@@ -4563,7 +4563,7 @@ speed = 60.0
 direction = 1
 
 [node name="Dimension2" type="Node2D" parent="." unique_id=926402001]
-position = Vector2(0, 400)
+position = Vector2(0, 800)
 scale = Vector2(3, 3)
 
 [node name="LevelCompleteZone2" parent="Dimension2" unique_id=1429382090 instance=ExtResource("12_fxxy4")]

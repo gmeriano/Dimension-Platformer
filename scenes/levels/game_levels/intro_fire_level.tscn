@@ -4626,7 +4626,7 @@ tile_map_data = PackedByteArray("AAAAAP7/AQABAAIAAAAAAP//AQABAAIAAAAAAPz/AQABAAI
 tile_set = SubResource("TileSet_kf04l")
 
 [node name="Player1Spawn" type="Marker2D" parent="Dimension1" unique_id=229327917]
-position = Vector2(854.6667, -69.666664)
+position = Vector2(68.66669, -55.33333)
 
 [node name="Area2D" type="Area2D" parent="Dimension1" unique_id=857680914]
 position = Vector2(43, 0.6666667)
@@ -4710,7 +4710,7 @@ tile_map_data = PackedByteArray("AAAHAP7/AQABAAIAAAAHAP//AQABAAIAAAAIAP7/AQABAAI
 tile_set = SubResource("TileSet_kf04l")
 
 [node name="Player2Spawn" type="Marker2D" parent="Dimension2" unique_id=586361891]
-position = Vector2(850.3334, -59.333336)
+position = Vector2(71.333374, -58.666668)
 
 [node name="Area2D2" type="Area2D" parent="Dimension2" unique_id=1836578102]
 position = Vector2(38.666668, -403.66666)

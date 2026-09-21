@@ -12,7 +12,6 @@ func physics_process(delta: float) -> void:
 func handle_transitions() -> void:
 	# Check if touching wall
 	if player.is_on_any_wall():
-		print("  -> Transitioning to wall_slide (touching wall)")
 		state_machine.transition(PlayerWallSlideState.state_name)
 		return
 
