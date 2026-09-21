@@ -4651,7 +4651,7 @@ position = Vector2(1105, -174)
 position = Vector2(1511.3334, 0)
 
 [node name="Dimension2" type="Node2D" parent="." unique_id=1852181795]
-position = Vector2(0, 400)
+position = Vector2(0, 800)
 scale = Vector2(3, 3)
 
 [node name="UpdateRespawnArea" parent="Dimension2" unique_id=552622960 instance=ExtResource("13_ioypj")]

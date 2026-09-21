@@ -15,7 +15,6 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint() and !background_set:
-		print(background_set)
 		background_set = true
 		set_background_from_settings()
 

@@ -229,7 +229,7 @@ tile_map_data = PackedByteArray("AAAAAP7/AQABAAIAAAAAAP//AQABAAIAAAABAP7/AQABAAI
 tile_set = SubResource("TileSet_pyd5v")
 
 [node name="Dimension2" type="Node2D" parent="." unique_id=27107479]
-position = Vector2(0, 400)
+position = Vector2(0, 800)
 scale = Vector2(3, 3)
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="Dimension2" unique_id=2116512014]

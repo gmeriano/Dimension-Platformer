@@ -616,7 +616,7 @@ position = Vector2(3972, -19)
 position = Vector2(3318.3333, -70)
 
 [node name="Dimension2" type="Node2D" parent="." unique_id=1755359348]
-position = Vector2(0, 400)
+position = Vector2(0, 800)
 scale = Vector2(3, 3)
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="Dimension2" unique_id=1963237384]
