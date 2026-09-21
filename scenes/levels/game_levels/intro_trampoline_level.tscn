@@ -27,35 +27,31 @@ script = ExtResource("11_sds1c")
 image_scale = 2.0
 texture = ExtResource("12_3s8rx")
 image_size = Vector2(640, 90)
-speed = 0.01
+speed = 0.1
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_c001f"]
 script = ExtResource("11_sds1c")
 image_scale = 2.0
 texture = ExtResource("13_ybxiu")
-image_size = Vector2(1596, 90)
-speed = 0.1
+image_size = Vector2(532, 90)
+speed = 0.2
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_e0dn7"]
 script = ExtResource("11_sds1c")
 image_scale = 2.0
 texture = ExtResource("14_rnbkc")
-image_size = Vector2(1914, 90)
-speed = 0.1
+image_size = Vector2(638, 90)
+speed = 0.4
 repeat = 3
-
-[sub_resource type="Resource" id="Resource_wwwx6"]
-script = ExtResource("11_sds1c")
-image_scale = 2.0
 
 [sub_resource type="Resource" id="Resource_xtx6e"]
 script = ExtResource("11_sds1c")
 image_scale = 2.0
 texture = ExtResource("17_w4j57")
 image_size = Vector2(640, 90)
-speed = 0.01
+speed = 0.1
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_w31ts"]
@@ -71,7 +67,7 @@ script = ExtResource("11_sds1c")
 image_scale = 2.0
 texture = ExtResource("19_byyur")
 image_size = Vector2(638, 90)
-speed = 0.1
+speed = 0.4
 repeat = 3
 
 [sub_resource type="Resource" id="Resource_ghf6k"]
@@ -79,7 +75,7 @@ script = ExtResource("11_sds1c")
 image_scale = 2.0
 texture = ExtResource("20_75jwd")
 image_size = Vector2(798, 90)
-speed = 0.3
+speed = 0.7
 repeat = 3
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b78jn"]
@@ -539,12 +535,12 @@ sources/1 = SubResource("TileSetAtlasSource_ljay3")
 [node name="IntroTrampolineLevel" type="Node2D" unique_id=1527814775]
 script = ExtResource("1_letbx")
 
-[node name="BackgroundNode1" parent="." unique_id=84789404 instance=ExtResource("10_fh0sw")]
+[node name="BackgroundNode1" parent="." unique_id=1568081273 instance=ExtResource("10_fh0sw")]
 position = Vector2(960, -270)
-background_settings = Array[ExtResource("11_sds1c")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7"), SubResource("Resource_wwwx6")])
+background_settings = Array[ExtResource("11_sds1c")]([SubResource("Resource_2bych"), SubResource("Resource_c001f"), SubResource("Resource_e0dn7")])
 full_image_size = Vector2(640, 180)
 
-[node name="BackgroundNode" type="Node2D" parent="." unique_id=1834628338]
+[node name="BackgroundNode" type="Node2D" parent="." unique_id=281399874]
 z_index = -1000
 position = Vector2(960, 530)
 script = ExtResource("16_njr4m")
