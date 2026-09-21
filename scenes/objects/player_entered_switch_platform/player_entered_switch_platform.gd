@@ -11,13 +11,15 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if curr_player:
-		if curr_player.global_position.y < global_position.y:
-			if curr_player != null and curr_player.state_machine.current_state.get_state_name() != PlayerRespawnState.state_name and curr_player.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name:
+		if curr_player.global_position.y < switch_platform.global_position.y:
+			#print("STATE: ", curr_player.state_machine.current_state.get_state_name())
+			if curr_player.state_machine.current_state.get_state_name() != PlayerRespawnState.state_name and curr_player.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name:
 				switch_platform.player_on_platform = true
 	update_color()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
+		print("PLAYER")
 		var player = body as Player
 		curr_player = player
 		

@@ -4,8 +4,8 @@ class_name Fireball
 @export var speed: float = 225.0
 var direction: Vector2 = Vector2.LEFT
 @export var bounce_multiplier = 1.5  # Tune this to adjust how much force is applied
-@export var max_bounce_force = 500.0
-@export var min_bounce_force = 400.0
+@export var max_bounce_force = 500.0 * 2
+@export var min_bounce_force = 400.0 * 2
 var player_bouncing = false
 @onready var timer: Timer = $Timer
 

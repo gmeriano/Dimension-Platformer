@@ -13,7 +13,7 @@ func _ready() -> void:
 	area_2d.body_entered.connect(_on_body_entered)
 	area_2d.body_exited.connect(_on_body_exited)
 	timer.timeout.connect(_on_timer_timeout)
-	width = collision_shape_2d.shape.extents.x * 2.0
+	width = collision_shape_2d.shape.extents.x * 2.0 * 3.0
 
 func _physics_process(_delta: float) -> void:
 	# Transition to climb state if on ground or already airborne
@@ -22,7 +22,6 @@ func _physics_process(_delta: float) -> void:
 		player.velocity = Vector2.ZERO
 		player.global_position.x = global_position.x + width / 2.0
 		player.state_machine.transition(PlayerClimbState.state_name)
-		print("HEREEE")
 		
 	if can_get_off_ladder and player != null and InputManager.is_interact_pressed(player) and player.state_machine.current_state.get_state_name() == PlayerClimbState.state_name:
 		player.state_machine.transition(PlayerFallState.state_name)

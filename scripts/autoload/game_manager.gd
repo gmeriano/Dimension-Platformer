@@ -60,10 +60,11 @@ func reload_current_level() -> void:
 	game_node.reload_current_level()
 
 func update_player_respawn_points() -> void:
-	player1.respawn_point = player1.possible_respawn_point.marker_2d.global_position
-	player2.respawn_point = player2.possible_respawn_point.marker_2d.global_position
-	player1.possible_respawn_point.queue_free()
-	player2.possible_respawn_point.queue_free()
+	if player1.possible_respawn_point and player2.possible_respawn_point:
+		player1.respawn_point = player1.possible_respawn_point.marker_2d.global_position
+		player2.respawn_point = player2.possible_respawn_point.marker_2d.global_position
+		player1.possible_respawn_point.queue_free()
+		player2.possible_respawn_point.queue_free()
 
 func _on_fade_to_normal_finished_can_move_true():
 	GameManager.set_players_state_idle()
