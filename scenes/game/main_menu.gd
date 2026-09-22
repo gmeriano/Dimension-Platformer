@@ -149,18 +149,18 @@ func _on_local_pressed() -> void:
 	player1.controls = load("res://assets/resources/player1_movement.tres")
 	var player2 = PLAYER.instantiate()
 	player2.controls = load("res://assets/resources/player2_movement.tres")
-	#player1.sprite_texture = load("res://assets/sprites/player/BLACK-CAT.png")
-	#player1.sprite_texture = load("res://assets/sprites/background/black-cat-test.png")
+	player1.sprite_texture = load("res://assets/sprites/player/blob/character-green-noglow.png")
+	player2.sprite_texture = load("res://assets/sprites/player/blob/character-red-noglow.png")
 	#player2.sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
 	#player2.player_sprite.texture = player2.sprite_texture
 	player1.global_position = player_1_spawn.global_position
 	player2.global_position = player_2_spawn.global_position
-	player2.current_dimension = 1
-	player2.original_dimension = 1
+	player2.current_dimension = 2
+	player2.original_dimension = 2
 	GameManager.set_player_1(player1)
 	GameManager.set_player_2(player2)
-	add_child(player1)
-	add_child(player2)
+	add_child(player1, true)
+	add_child(player2, true)
 
 func _on_start_pressed() -> void:
 	start_game.rpc()

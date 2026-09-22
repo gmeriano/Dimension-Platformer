@@ -9,6 +9,7 @@ class_name FireballSpawner
 @export var shoot_as_group = 0
 @export var fireball_speed = 225.0
 @export var dimension = 1
+@export var rapid_fire = false
 
 var can_fire: bool = true
 
@@ -16,7 +17,7 @@ func _ready():
 	add_to_group("fireball_spawners")
 
 func shoot_fireball():
-	if can_fire:
+	if can_fire or rapid_fire:
 		can_fire = false
 		timer.start()
 		var fireball = fireball_scene.instantiate()

@@ -7,7 +7,11 @@ func get_state_name() -> String:
 	return state_name
 
 func enter() -> void:
-	player.velocity.y = DOUBLE_JUMP_VELOCITY
+	#player.velocity.y += DOUBLE_JUMP_VELOCITY
+	if player.velocity.y < 0:
+		player.velocity.y += DOUBLE_JUMP_VELOCITY / 3.0
+	else:
+		player.velocity.y = DOUBLE_JUMP_VELOCITY
 	player.double_jump = false
 
 func physics_process(delta: float) -> void:

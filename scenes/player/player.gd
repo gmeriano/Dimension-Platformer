@@ -5,6 +5,7 @@ signal respawn
 
 @export var controls: Resource = null
 @export var current_dimension: int = 1
+@export var sprite_texture: Texture2D = preload("res://assets/sprites/player/blob/character-green-noglow.png")
 
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
@@ -47,7 +48,7 @@ var jump_input_buffered : bool = false
 
 # Movement vars
 var speed: float = Global.MOVESPEED
-var friction: int = 2000
+var friction: int = 6000
 var air_resistance: int = 500
 
 # Input vars
@@ -75,25 +76,25 @@ func _enter_tree():
 		set_multiplayer_authority(int(str(name)))
 		if is_multiplayer_authority() and multiplayer.is_server():
 			GameManager.set_player_1(self)
+			sprite_texture = load("res://assets/sprites/player/blob/character-green-noglow.png")
 		elif is_multiplayer_authority() and !multiplayer.is_server():
 			GameManager.set_player_2(self)
 			current_dimension = 2
 			original_dimension = 2
-			#sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
-			#player_sprite.texture = sprite_texture
+			sprite_texture = load("res://assets/sprites/player/blob/character-red-noglow.png")
 		elif !is_multiplayer_authority() and !multiplayer.is_server():
 			GameManager.set_player_1(self)
+			sprite_texture = load("res://assets/sprites/player/blob/character-green-noglow.png")
 		else:
 			GameManager.set_player_2(self)
 			current_dimension = 2
 			original_dimension = 2
-			#sprite_texture = load("res://assets/sprites/background/white-cat-test.png")
-			#player_sprite.texture = sprite_texture
+			sprite_texture = load("res://assets/sprites/player/blob/character-red-noglow.png")
 		controls = load("res://assets/resources/player1_movement.tres")
 
 func _ready():
-	#animated_sprite_2d.play("default")
-	#player_sprite.texture = sprite_texture
+	player_sprite.texture = sprite_texture
+	player_shadow.texture = sprite_texture
 	update_shadow_location()
 	var states: Array[State] = [
 		PlayerIdleState.new(self),
@@ -129,10 +130,10 @@ func should_wall_jump() -> bool:
 func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
 	if (current_dimension == 1):
-		# times 2 bc we scaled sprite by 0.25
-		player_shadow.offset.y = 2*Global.DIMENSION_OFFSET
+		# divided by 2 bc we scaled sprite by 6
+		player_shadow.offset.y = Global.DIMENSION_OFFSET / 6.0
 	elif (current_dimension == 2):
-		player_shadow.offset.y = -2*Global.DIMENSION_OFFSET
+		player_shadow.offset.y = -Global.DIMENSION_OFFSET / 6.0
 
 func get_velocity_for_camera() -> float:
 	if velocity.x == 0:
@@ -141,9 +142,12 @@ func get_velocity_for_camera() -> float:
 		return velocity.x
 
 func _physics_process(delta: float) -> void:
-	#print(get_platform_velocity())
 	if Global.IS_ONLINE_MULTIPLAYER && !is_multiplayer_authority():
 		return
+
+	# show shadow
+	if InputManager.is_show_shadow_just_pressed(self):
+		player_shadow.visible = !player_shadow.visible
 
 	# Jump input processing
 	jump_input = InputManager.is_jump_just_pressed(self)
@@ -193,7 +197,7 @@ func get_wall_direction() -> Vector2:
 
 # Try small diagonal and cardinal movements to escape the collision
 func unstick_player_if_necessary() -> bool:
-	var offset_distance: float = collision_shape_2d.shape.get_rect().size.x
+	var offset_distance: float = collision_shape_2d.shape.get_rect().size.x * (2 * Global.ART_SCALAR)
 	var directions : Array[Vector2] = [
 		Vector2(0, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0),
 		Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1)

@@ -35,9 +35,16 @@ func _on_button_pressed() -> void:
 
 func _on_fire_wall_timer_timeout() -> void:
 	for spawner in spawners:
-		if spawner.shoot_as_group == curr_shoot_group or spawner.shoot_as_group == 4:
+		if spawner.shoot_as_group == curr_shoot_group:
 			spawner.shoot_fireball()
 	if curr_shoot_group == 2:
 		curr_shoot_group = 3
 	elif curr_shoot_group == 3: 
 		curr_shoot_group = 2
+
+
+func _on_fire_wall_timer_2_timeout() -> void:
+	print("TIMEOUT")
+	for spawner in spawners:
+		if spawner.shoot_as_group == 4:
+			spawner.shoot_fireball()
