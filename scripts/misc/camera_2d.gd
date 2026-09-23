@@ -62,11 +62,16 @@ func set_x_position(delta: float) -> void:
 
 	# Only move toward the one violating the boundary
 	if p1_outside != p2_outside or (p1_outside_left and p2_outside_left) or (p1_outside_right and p2_outside_right):
-		var midpoint_x = p1_x if p1_outside else p2_x
+		var player_outside = player1 if p1_outside else player2
+		if p1_outside_left and p2_outside_left:
+			player_outside = player1 if player1.global_position.x < player2.global_position.x else player2
+		elif p1_outside_right and p2_outside_right:
+			player_outside = player1 if player1.global_position.x > player2.global_position.x else player2
+		var midpoint_x = player_outside.global_position.x
 		
-		var speed = max(abs(GameManager.get_player_1().get_velocity_for_camera()), abs(GameManager.get_player_2().get_velocity_for_camera()))
-		var target_x = move_toward(position.x, midpoint_x, speed * delta)
-
+		var speed = abs(player_outside.get_velocity_for_camera())
+		var target_x = position.x + sign(midpoint_x - position.x) * speed * delta
+		
 		# Don't move camera behind x = 0 boundary
 		if target_x < half_width:
 			return

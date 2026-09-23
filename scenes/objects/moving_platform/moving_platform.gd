@@ -25,7 +25,6 @@ func _physics_process(delta: float) -> void:
 		var collision = platform.move_and_collide(velocity * delta)
 		if collision:
 			direction *= -1
-		platform.global_position = round(platform.global_position)
 		
 func respawn() -> void:
 	platform.global_position = platform_starting_position
