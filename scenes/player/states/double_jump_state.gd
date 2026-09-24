@@ -7,7 +7,6 @@ func get_state_name() -> String:
 	return state_name
 
 func enter() -> void:
-	#player.velocity.y += DOUBLE_JUMP_VELOCITY
 	if player.velocity.y < 0:
 		player.velocity.y += DOUBLE_JUMP_VELOCITY / 3.0
 	else:
@@ -24,9 +23,6 @@ func handle_transitions() -> void:
 	if player.velocity.y > 0:
 		state_machine.transition(PlayerFallState.state_name)
 		return
-	#if player.is_on_wall_left() or player.is_on_wall_right():
-	#	state_machine.transition(PlayerWallSlideState.state_name)
-	#	return
 	if player.is_on_ground():
 		if player.input_axis == 0:
 			state_machine.transition(PlayerIdleState.state_name)

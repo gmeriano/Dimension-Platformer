@@ -9,17 +9,14 @@ signal respawn
 
 @onready var player_shadow: Sprite2D = $PlayerShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
-#@onready var color_rect: ColorRect = $ColorRect
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var state_machine: StateMachine = $StateMachine
 @onready var player_sprite: Sprite2D = $PlayerSprite
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 #var color: Color
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity") * Global.ART_SCALAR / 2.0
 var original_dimension = 1
 var tween: Tween = null
-#var sprite_texture: Texture2D = preload("res://assets/sprites/player/cat.png")
 
 # Respawn vars
 var respawn_point: Vector2 = Vector2.ZERO
@@ -31,20 +28,11 @@ var frames_since_last_on_ground = 0
 var coyote_time_frames = 5
 var double_jump = true
 var jump_velocity = -200
-var was_on_wall = false
-var last_wall_direction: Vector2 = Vector2.ZERO
-var last_wall_jump_direction: Vector2 = Vector2.ZERO
-var wall_direction_coyote: Vector2 = Vector2.ZERO
-var wall_jump_coyote_timer: float = 0.0
-var wall_jump_coyote_time: float = 0.2
-var wall_jump_input_lockout_timer: float = 0.0
-var wall_jump_input_lockout_time: float = 0.1
 var jump_buffer_time : float = 0.2
 var jump_buffer_timer : float= 0.0
 var jump_input_buffered : bool = false
 @onready var right_ray_cast: RayCast2D = $RightRayCast
 @onready var left_ray_cast: RayCast2D = $LeftRayCast
-
 
 # Movement vars
 var speed: float = Global.MOVESPEED
@@ -67,8 +55,7 @@ const MOVE_AXIS: int = 0			# JOY_AXIS_LEFT_X (left stick horizontal)
 var prev_state: String
 var jump_states: Array[String] = [
 	PlayerJumpState.state_name,
-	PlayerDoubleJumpState.state_name,
-	PlayerWallJumpState.state_name,
+	PlayerDoubleJumpState.state_name
 ]
 
 func _enter_tree():
@@ -95,6 +82,7 @@ func _enter_tree():
 func _ready():
 	player_sprite.texture = sprite_texture
 	player_shadow.texture = sprite_texture
+	player_shadow.visible = false
 	update_shadow_location()
 	var states: Array[State] = [
 		PlayerIdleState.new(self),
@@ -105,7 +93,6 @@ func _ready():
 		PlayerClimbState.new(self),
 		PlayerDimensionSwapState.new(self),
 		PlayerWallSlideState.new(self),
-		PlayerWallJumpState.new(self),
 		PlayerRespawnState.new(self),
 	]
 	prev_state = states[0].get_state_name()
@@ -113,19 +100,6 @@ func _ready():
 
 func is_on_ground() -> bool:
 	return is_on_floor()
-
-func should_wall_jump() -> bool:
-	if is_on_floor():
-		return false
-	
-	# Check if currently on a wall or in wall jump coyote window
-	var valid_wall_direction: Vector2 = last_wall_direction
-	if valid_wall_direction == Vector2.ZERO and wall_jump_coyote_timer > 0.0:
-		valid_wall_direction = wall_direction_coyote
-	
-	var can_wall_jump: bool = valid_wall_direction != Vector2.ZERO and valid_wall_direction != last_wall_jump_direction
-	
-	return can_wall_jump
 
 func update_shadow_location() -> void:
 	player_shadow.offset = Vector2.ZERO
@@ -164,16 +138,6 @@ func _physics_process(delta: float) -> void:
 	# Movement input processing
 	input_axis = InputManager.get_input_axis(self)
 
-	# Wall jump coyote timer
-	if wall_jump_coyote_timer > 0.0:
-		wall_jump_coyote_timer -= delta
-
-	# Wall jump input lockout timer
-	if wall_jump_input_lockout_timer > 0.0:
-		wall_jump_input_lockout_timer -= delta
-	
-
-
 	# General physics processing
 	if is_state_interactable():
 		handle_gravity(delta)
@@ -182,17 +146,13 @@ func _physics_process(delta: float) -> void:
 		clamp_x_by_camera()
 
 	move_and_slide()
-	position.x = round(position.x)
 
 func get_wall_direction() -> Vector2:
 	if right_ray_cast.is_colliding():
-		last_wall_direction = Vector2.RIGHT
 		return Vector2.RIGHT
 	elif left_ray_cast.is_colliding():
-		last_wall_direction = Vector2.LEFT
 		return Vector2.LEFT
 	else:
-		last_wall_direction = Vector2.ZERO
 		return Vector2.ZERO
 
 # Try small diagonal and cardinal movements to escape the collision
@@ -255,10 +215,6 @@ func handle_acceleration(_delta):
 	if input_axis == 0:
 		return
 
-	# Ignore input for a few frames after wall jump
-	if wall_jump_input_lockout_timer > 0.0:
-		return
-
 	var target_speed: float = speed * input_axis
 	
 	if is_on_floor():
@@ -300,7 +256,7 @@ func should_respawn() -> bool:
 	if current_dimension == 1:
 		var top_camera: Camera2D = GameManager.get_camera_1()
 		var viewport_size: Vector2 = top_camera.get_viewport_rect().size
-		var half_height: float = (viewport_size.y / top_camera.zoom.y) / 2.0
+		var half_height: float = (viewport_size.y / top_camera.zoom.y) / (2.0 * Global.ART_SCALAR)
 		var camera_bottom_y: float = top_camera.global_position.y + half_height + 32
 		return global_position.y > camera_bottom_y
 	else:

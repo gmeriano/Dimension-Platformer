@@ -52,9 +52,6 @@ func handle_inputs() -> void:
 			dimension_swap.rpc()
 			await reset_swapping_delay()
 
-	if Input.is_action_just_pressed("switch_scene"):
-		GameManager.load_next_level()
-
 @rpc("any_peer", "call_local")
 func dimension_swap():
 	for player in players:
@@ -62,6 +59,7 @@ func dimension_swap():
 
 @rpc("any_peer", "call_local")
 func respawn_all_players():
+	allow_swapping = false
 	GameManager.set_players_state_respawn()
 	GameManager.reload_current_level()
 

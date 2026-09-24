@@ -4,11 +4,13 @@ static var state_name = "PlayerDimensionSwapState"
 var prev_state: String
 var tween: Tween
 var stored_velocity: Vector2
+var player_shadow_visible_at_swap_time: bool
 
 func get_state_name() -> String:
 	return state_name
 
 func enter() -> void:
+	player_shadow_visible_at_swap_time = player.player_shadow.visible
 	prev_state = player.prev_state
 	stored_velocity = player.velocity  # Store current velocity
 	if player.current_dimension == 1:
@@ -18,7 +20,6 @@ func enter() -> void:
 
 func move_to(target_position: Vector2, duration: float = 1.0):
 	player.multiplayer_synchronizer.replication_interval = 5.0
-	#player.color_rect.color.a = 0.2
 	player.player_shadow.visible = false
 	
 	if tween and tween.is_valid():
@@ -35,9 +36,7 @@ func move_to(target_position: Vector2, duration: float = 1.0):
 
 func handle_transitions() -> void:
 	tween.disconnect("finished", Callable(self, "handle_transitions"))
-	#player.color_rect.color.a = 1
-	#player.color_rect.rotation = 0
-	player.player_shadow.visible = true
+	player.player_shadow.visible = player_shadow_visible_at_swap_time
 	if player.current_dimension == 1:
 		player.current_dimension = 2
 	else:

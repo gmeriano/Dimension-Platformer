@@ -37,9 +37,6 @@ func handle_transitions() -> void:
 	var moving_away_from_right_wall: bool = touching_right_wall and player.input_axis < 0.0
 	
 	if moving_away_from_left_wall or moving_away_from_right_wall:
-		# Moving away from wall, but start coyote timer so they can still wall jump
-		player.wall_direction_coyote = player.last_wall_direction
-		player.wall_jump_coyote_timer = player.wall_jump_coyote_time
 		state_machine.transition(PlayerFallState.state_name)
 		return
 	

@@ -22,10 +22,6 @@ func handle_transitions() -> void:
 		return
 
 	if player.velocity.y > 0:
-		# Check if touching wall before transitioning to fall
-		if player.is_on_any_wall():
-			state_machine.transition(PlayerWallSlideState.state_name)
-			return
 		state_machine.transition(PlayerFallState.state_name)
 		return
 
