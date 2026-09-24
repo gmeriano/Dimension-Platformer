@@ -4,6 +4,7 @@ var player1: Player
 var player2: Player
 var camera1: Camera2D
 var camera2: Camera2D
+var start_level: int = 1
 
 func set_player_1(player: Player) -> void:
 	player1 = player
@@ -49,6 +50,20 @@ func load_next_level() -> void:
 	player2.respawn_point = Vector2.ZERO
 	var game_node = get_tree().get_root().get_node("Game")
 	game_node.load_next_level()
+	
+@rpc("any_peer", "call_local")
+func load_specific_level(level: int) -> void:
+	var game_node = get_tree().get_root().get_node("Game")
+	if !game_node.check_level_index(level):
+		return
+	# need this to move the player off the LevelComplete area to not trigger twice
+	# TODO: this is a hacky way to do this, need to find a better solution
+	player1.global_position = Vector2(player1.global_position.x, player1.global_position.y + 100000)
+	player2.global_position = Vector2(player2.global_position.x, player2.global_position.y + 100000)
+	# set respawn point to zero so that the game knows to update respawn point to next level location
+	player1.respawn_point = Vector2.ZERO
+	player2.respawn_point = Vector2.ZERO
+	game_node.load_level_by_index(level)
 
 @rpc("any_peer", "call_local")
 func reload_current_level() -> void:

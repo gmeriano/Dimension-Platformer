@@ -8,6 +8,7 @@ const PLAYER = preload("res://scenes/player/Player.tscn")
 @onready var host: Button = $UI/Multiplayer/VBoxContainer/Host
 @onready var join: Button = $UI/Multiplayer/VBoxContainer/Join
 @onready var local: Button = $UI/Multiplayer/VBoxContainer/Local
+@onready var level_selector: LineEdit = $UI/Multiplayer/VBoxContainer/LevelSelector
 @onready var start: Button = $UI/Multiplayer/VBoxContainer/Start
 @onready var loading: Label = $UI/Multiplayer/VBoxContainer/Loading
 @onready var http_request: HTTPRequest = $HTTPRequest
@@ -171,6 +172,7 @@ func start_game() -> void:
 		remove_child(GameManager.get_player_1())
 		remove_child(GameManager.get_player_2())
 		GameManager.set_players_state_respawn()
+		GameManager.start_level = level_selector.text if level_selector.text.is_valid_int() else 1
 		TransitionScreen.transition()
 		TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_start_game"))
 		TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))

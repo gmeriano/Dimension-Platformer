@@ -67,10 +67,6 @@ layout_mode = 2
 layout_mode = 2
 text = "Local"
 
-[node name="LevelSelector" type="LineEdit" parent="UI/Multiplayer/VBoxContainer" unique_id=2142202866]
-layout_mode = 2
-placeholder_text = "1"
-
 [node name="Start" type="Button" parent="UI/Multiplayer/VBoxContainer" unique_id=21195020]
 layout_mode = 2
 text = "Start

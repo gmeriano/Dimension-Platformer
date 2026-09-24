@@ -26,6 +26,7 @@ var current_level_index: int = 0
 
 func _ready() -> void:
 	Engine.max_fps = 60
+	current_level_index = (GameManager.start_level - 1) % (len(level_paths))
 	player1 = GameManager.get_player_1()
 	player2 = GameManager.get_player_2()
 	camera1.dimension = 1
@@ -61,6 +62,18 @@ func reload_current_level() -> void:
 func _on_transition_finished_reload_current_level() -> void:
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_reload_current_level"))
 	load_level(load(level_paths[current_level_index]))
+
+func check_level_index(index: int) -> bool:
+	return index >= 0 and index < len(level_paths)
+	
+func load_level_by_index(index: int) -> void:
+	TransitionScreen.transition()
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_reload_level_by_index").bind(index))
+
+func _on_transition_finished_reload_level_by_index(index: int) -> void:
+	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_reload_level_by_index"))
+	print("INDEX: ", index)
+	load_level(load(level_paths[index]))
 
 func load_level(level: PackedScene) -> void:
 	# Remove previous level if it exists
@@ -101,3 +114,10 @@ func load_level(level: PackedScene) -> void:
 	GameManager.focus_camera_on_start()
 
 	InputManager.setup_player_inputs(player1, player2)
+	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed('ui_cancel'):
+		toggle_pause()	
+
+func toggle_pause() -> void:
+	get_tree().paused = !get_tree().paused
