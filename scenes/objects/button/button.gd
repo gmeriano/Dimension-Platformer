@@ -2,6 +2,7 @@ extends Node2D
 class_name GameButton
 
 @export var button_pressed_signal: String = "button_pressed"
+@export var cooldown_time: float = 2.0
 @onready var cooldown_timer: Timer = $Timer
 @onready var color_rect: ColorRect = $ColorRect
 var player: Player = null
@@ -13,6 +14,9 @@ signal button_pressed
 
 func _enter_tree() -> void:
 	add_to_group("trigger_buttons")
+
+func _ready() -> void:
+	cooldown_timer.wait_time = cooldown_time
 
 func _process(_delta: float) -> void:
 	if player:

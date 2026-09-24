@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cauiy5gk8oehh" path="res://scenes/objects/ladder/ladder.tscn" id="8_wqmn3"]
 [ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="9_5uw6l"]
 [ext_resource type="PackedScene" uid="uid://dbkimnvm3tbbw" path="res://scenes/levels/background/BackgroundNode.tscn" id="10_fh0sw"]
-[ext_resource type="Script" uid="uid://r27vm72vx37s" path="res://assets/resources/background_settings.gd" id="11_sds1c"]
+[ext_resource type="Script" uid="uid://c876dprenbt1s" path="res://assets/resources/background_settings.gd" id="11_sds1c"]
 [ext_resource type="Texture2D" uid="uid://c0hacu3h52pkx" path="res://assets/sprites/background/city/sky-top.png" id="12_3s8rx"]
 [ext_resource type="Texture2D" uid="uid://cyv2b6gljemfr" path="res://assets/sprites/background/city/cloud-top.png" id="13_ybxiu"]
 [ext_resource type="Texture2D" uid="uid://b3mr426h7t43y" path="res://assets/sprites/background/city/mountain-top.png" id="14_rnbkc"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://bfyrpyfty7ne8" path="res://assets/sprites/background/city/cloud-bottom.png" id="18_b1q1n"]
 [ext_resource type="Texture2D" uid="uid://cawndt8u06bjn" path="res://assets/sprites/background/city/mountain-bottom.png" id="19_byyur"]
 [ext_resource type="Texture2D" uid="uid://p64xhadrxrdh" path="res://assets/sprites/background/city/building-bottom.png" id="20_75jwd"]
+[ext_resource type="PackedScene" uid="uid://cqrvq0kmxac7f" path="res://scenes/objects/collectible/collectible.tscn" id="22_qxrtv"]
 
 [sub_resource type="Resource" id="Resource_2bych"]
 script = ExtResource("11_sds1c")
@@ -609,6 +610,9 @@ position = Vector2(3972, -19)
 [node name="MovingPlatformSpawn" type="Marker2D" parent="Dimension1" unique_id=1119668722]
 position = Vector2(3318.3333, -70)
 
+[node name="Collectible" parent="Dimension1" unique_id=1886983203 instance=ExtResource("22_qxrtv")]
+position = Vector2(3039.0005, -175)
+
 [node name="Dimension2" type="Node2D" parent="." unique_id=1755359348]
 position = Vector2(0, 800)
 scale = Vector2(3, 3)
@@ -697,3 +701,7 @@ position = Vector2(3971, -14)
 
 [node name="Button" parent="Dimension2" unique_id=1283173908 instance=ExtResource("9_5uw6l")]
 position = Vector2(3300, -55)
+
+[node name="Collectible2" parent="Dimension2" unique_id=1097904854 instance=ExtResource("22_qxrtv")]
+position = Vector2(3605.3335, -178)
+index = 1

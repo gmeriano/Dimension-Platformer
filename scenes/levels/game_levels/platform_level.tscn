@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://8ay66syekr7s" path="res://scripts/game/level_manager.gd" id="1_w4em1"]
 [ext_resource type="PackedScene" uid="uid://b58d4m8i72h2o" path="res://scenes/objects/platform/platform.tscn" id="2_0cxag"]
 [ext_resource type="PackedScene" uid="uid://dbkimnvm3tbbw" path="res://scenes/levels/background/BackgroundNode.tscn" id="2_r6bpn"]
-[ext_resource type="Script" uid="uid://r27vm72vx37s" path="res://assets/resources/background_settings.gd" id="3_0cxag"]
+[ext_resource type="Script" uid="uid://c876dprenbt1s" path="res://assets/resources/background_settings.gd" id="3_0cxag"]
 [ext_resource type="Texture2D" uid="uid://c0hacu3h52pkx" path="res://assets/sprites/background/city/sky-top.png" id="4_5x8ny"]
 [ext_resource type="Texture2D" uid="uid://cyv2b6gljemfr" path="res://assets/sprites/background/city/cloud-top.png" id="5_r6hhe"]
 [ext_resource type="Texture2D" uid="uid://b3mr426h7t43y" path="res://assets/sprites/background/city/mountain-top.png" id="6_c3aui"]
@@ -24,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://cike0l5na3pcy" path="res://assets/sprites/green-theme/Grass top.png" id="20_6okpf"]
 [ext_resource type="PackedScene" uid="uid://cjs342hs0jykq" path="res://scenes/objects/button/button.tscn" id="21_4nnvw"]
 [ext_resource type="PackedScene" uid="uid://3xk4fdftjod6" path="res://scenes/objects/player_entered_switch_platform/player_entered_switch_platform.tscn" id="22_0cxag"]
+[ext_resource type="PackedScene" uid="uid://cqrvq0kmxac7f" path="res://scenes/objects/collectible/collectible.tscn" id="24_r6hhe"]
 
 [sub_resource type="Resource" id="Resource_2bych"]
 script = ExtResource("3_0cxag")
@@ -4589,6 +4590,9 @@ position = Vector2(2965.6665, -49)
 [node name="Platform3" parent="Dimension1" unique_id=1654862958 instance=ExtResource("2_0cxag")]
 position = Vector2(3542.3333, -49)
 
+[node name="Collectible" parent="Dimension1" unique_id=1886983203 instance=ExtResource("24_r6hhe")]
+position = Vector2(504, -119)
+
 [node name="Dimension2" type="Node2D" parent="." unique_id=1409083098]
 position = Vector2(0, 800)
 scale = Vector2(3, 3)
@@ -4604,6 +4608,7 @@ position = Vector2(2870.3335, -47.666664)
 
 [node name="Button" parent="Dimension2" unique_id=1916492221 instance=ExtResource("21_4nnvw")]
 position = Vector2(332.6667, -95.333336)
+cooldown_time = 1.0
 
 [node name="Button2" parent="Dimension2" unique_id=587150487 instance=ExtResource("21_4nnvw")]
 position = Vector2(676.3334, -96)
@@ -4644,6 +4649,10 @@ current_dimension = 2
 
 [node name="Platform4" parent="Dimension2" unique_id=1761697724 instance=ExtResource("2_0cxag")]
 position = Vector2(3543, -51.666676)
+
+[node name="Collectible2" parent="Dimension2" unique_id=116831776 instance=ExtResource("24_r6hhe")]
+position = Vector2(504, -110.667)
+index = 1
 
 [node name="PlatformTimer" type="Timer" parent="." unique_id=2113136265]
 wait_time = 0.5

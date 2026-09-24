@@ -1,26 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjs342hs0jykq"]
+[gd_scene format=3 uid="uid://cjs342hs0jykq"]
 
-[ext_resource type="Script" path="res://scenes/objects/button/button.gd" id="1_6ygod"]
+[ext_resource type="Script" uid="uid://br0y3dvgij7p6" path="res://scenes/objects/button/button.gd" id="1_6ygod"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drkas"]
 size = Vector2(78, 60)
 
-[node name="Button" type="Node2D"]
+[node name="Button" type="Node2D" unique_id=1680799450]
 script = ExtResource("1_6ygod")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1492361005]
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.756863, 0.603922, 0.419608, 1)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=479504308]
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=329264465]
 position = Vector2(20, 20)
 shape = SubResource("RectangleShape2D_drkas")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=306376164]
 wait_time = 2.0
 one_shot = true
 

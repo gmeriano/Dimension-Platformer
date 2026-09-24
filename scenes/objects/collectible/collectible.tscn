@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cqrvq0kmxac7f"]
+
+[ext_resource type="Script" uid="uid://7feiwp4l0ak4" path="res://scenes/objects/collectible/collectible.gd" id="1_a1yus"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h0dnk"]
+size = Vector2(13, 14)
+
+[node name="Collectible" type="Node2D" unique_id=1886983203]
+script = ExtResource("1_a1yus")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1807473388]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1469839872]
+position = Vector2(6.5, 7)
+shape = SubResource("RectangleShape2D_h0dnk")
+
+[node name="ColorRect" type="ColorRect" parent="Area2D" unique_id=987785743]
+offset_right = 13.0
+offset_bottom = 14.0
+color = Color(0.93333334, 1, 0.3372549, 1)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -15,6 +15,15 @@ var level_paths: Array[String] = [
 	"res://scenes/levels/game_levels/moving_platform_level.tscn",
 ]
 
+var retrieved_collectibles: Array = [
+	[false, false],
+	[false, false],
+	[false, false],
+	[false, false],
+	[false, false],
+	[false, false],
+]
+
 func set_player_1(player: Player) -> void:
 	player1 = player
 	
@@ -47,6 +56,14 @@ func get_camera_1() -> Camera2D:
 
 func get_camera_2() -> Camera2D:
 	return camera2
+	
+func collect(collectible_index: int) -> void:
+	var game_node = get_tree().get_root().get_node("Game")
+	retrieved_collectibles[game_node.current_level_index][collectible_index] = true
+
+func get_current_level_collectibles() -> Array:
+	var game_node = get_tree().get_root().get_node("Game")
+	return retrieved_collectibles[game_node.current_level_index]
 
 @rpc("any_peer", "call_local")
 func load_next_level() -> void:

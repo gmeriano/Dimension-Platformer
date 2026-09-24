@@ -25,9 +25,10 @@
 [ext_resource type="Texture2D" uid="uid://btw6byqumtogx" path="res://assets/sprites/green-theme/Side top.png" id="17_l5ovf"]
 [ext_resource type="Texture2D" uid="uid://cdoyo5af0uj1y" path="res://assets/sprites/green-theme/Clouds-bottom.png" id="17_mtlve"]
 [ext_resource type="Texture2D" uid="uid://cyugrjxvmqpww" path="res://assets/sprites/green-theme/mountain-bottom (1).png" id="18_8axs3"]
-[ext_resource type="Script" uid="uid://r27vm72vx37s" path="res://assets/resources/background_settings.gd" id="18_ryyc6"]
+[ext_resource type="Script" uid="uid://c876dprenbt1s" path="res://assets/resources/background_settings.gd" id="18_ryyc6"]
 [ext_resource type="Texture2D" uid="uid://dmu7r7uul4m6c" path="res://assets/sprites/tree-bottom.png" id="19_3qmkk"]
 [ext_resource type="Texture2D" uid="uid://duv1yoim5t046" path="res://assets/sprites/green-theme/Side bottom.png" id="24_3l41r"]
+[ext_resource type="PackedScene" uid="uid://cqrvq0kmxac7f" path="res://scenes/objects/collectible/collectible.tscn" id="27_8e8rg"]
 
 [sub_resource type="Resource" id="Resource_2bych"]
 script = ExtResource("18_ryyc6")
@@ -4647,6 +4648,9 @@ position = Vector2(205.667, -21)
 scale = Vector2(6, 6)
 texture = ExtResource("12_3x5o4")
 
+[node name="Collectible" parent="Dimension1" unique_id=1886983203 instance=ExtResource("27_8e8rg")]
+position = Vector2(860, -134.33334)
+
 [node name="Dimension2" type="Node2D" parent="." unique_id=1923523063]
 position = Vector2(0, 800)
 scale = Vector2(3, 3)
@@ -4709,3 +4713,7 @@ visible = false
 position = Vector2(0, -162)
 scale = Vector2(6, 6)
 texture = ExtResource("13_jnykw")
+
+[node name="Collectible2" parent="Dimension2" unique_id=183144569 instance=ExtResource("27_8e8rg")]
+position = Vector2(864.3334, -135.33334)
+index = 1
