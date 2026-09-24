@@ -5,3 +5,5 @@ class_name PlayerMovement extends Resource
 @export var move_right = "p1_move_right"
 @export var jump = "p1_jump"
 @export var interact = "p1_interact"
+@export var up = "p1_up"
+@export var down = "p1_down"

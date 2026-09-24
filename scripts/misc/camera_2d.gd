@@ -1,19 +1,30 @@
 extends Camera2D
 
-@export var normal_camera_zoom = 1.5
+@export var normal_camera_zoom = 1.0
 @export var dimension = 1  # 1 or 2
-@export var edge_threshold: float = 0.0
 
 var player1: Player = GameManager.get_player_1()
 var player2: Player = GameManager.get_player_2()
 
 var initial_position: Vector2
+var left_edge_threshold: float = 0.0
+var right_edge_threshold: float = 0.0
+var left_edge_threshold_percentage: float = 0.2
+var right_edge_threshold_percentage: float = 1.5
+
+var CAMERA_LERP_SPEED: float = Global.MOVESPEED  # Pixels per second
 
 func _ready() -> void:
+	global_position.x = get_viewport_rect().size.x + get_viewport_rect().size.x / 2.0
 	zoom = Vector2(normal_camera_zoom, normal_camera_zoom)
-	initial_position = global_position
+	initial_position = position
+	left_edge_threshold = get_viewport_rect().size.x * left_edge_threshold_percentage
+	right_edge_threshold = get_viewport_rect().size.x * right_edge_threshold_percentage
+
+	# TODO mess around with this more
+	position_smoothing_enabled = false  # Disable built-in smoothing
+	#position_smoothing_speed = 100
 	
-	limit_left = 0
 	if dimension == 1:
 		limit_bottom = 0
 	if dimension == 2:
@@ -21,37 +32,51 @@ func _ready() -> void:
 		limit_bottom = Global.DIMENSION_OFFSET
 
 func _physics_process(delta: float) -> void:
-	call_deferred("_update_camera_logic", delta)
+	_update_camera_logic(delta)
 
-func _update_camera_logic(delta: float) -> void:
-	var camera_pos = get_screen_center_position()
-
-	if edge_threshold == 0:
-		edge_threshold = get_viewport_rect().size.x * 0.33
-
+func _update_camera_logic(delta: float) -> void:        
 	if player1.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name \
 	and player2.state_machine.current_state.get_state_name() != PlayerDimensionSwapState.state_name:
 		set_x_position(delta)
 
 func reset() -> void:
-	global_position = initial_position.round()
+	position = initial_position
 
 func set_x_position(delta: float) -> void:
 	var viewport_width = get_viewport_rect().size.x / zoom.x
 	var half_width = viewport_width * 0.5
-	var camera_pos_x = global_position.x
-	
-	var left_edge = camera_pos_x - half_width + edge_threshold
-	var right_edge = camera_pos_x + half_width - edge_threshold
+	var camera_pos_x = position.x
+
+	var left_edge = camera_pos_x - half_width + left_edge_threshold
+	var right_edge = camera_pos_x + half_width - right_edge_threshold
 
 	var p1_x = player1.global_position.x
 	var p2_x = player2.global_position.x
 
-	# Only move camera if necessary
-	if p1_x < left_edge or p1_x > right_edge or p2_x < left_edge or p2_x > right_edge:
-		var mid_x = (p1_x + p2_x) * 0.5
+	var p1_outside_left = p1_x < left_edge 
+	var p1_outside_right = p1_x > right_edge
+	var p2_outside_left = p2_x < left_edge 
+	var p2_outside_right = p2_x > right_edge
+	var p1_outside = p1_outside_left or p1_outside_right
+	var p2_outside = p2_outside_left or p2_outside_right
 
-		global_position.x = lerp(global_position.x, mid_x, 1.0 * delta)
+	# Only move toward the one violating the boundary
+	if p1_outside != p2_outside or (p1_outside_left and p2_outside_left) or (p1_outside_right and p2_outside_right):
+		var player_outside = player1 if p1_outside else player2
+		if p1_outside_left and p2_outside_left:
+			player_outside = player1 if player1.global_position.x < player2.global_position.x else player2
+		elif p1_outside_right and p2_outside_right:
+			player_outside = player1 if player1.global_position.x > player2.global_position.x else player2
+		var midpoint_x = player_outside.global_position.x
+		
+		var speed = abs(player_outside.get_velocity_for_camera())
+		var target_x = position.x + sign(midpoint_x - position.x) * speed * delta
+		
+		# Don't move camera behind x = 0 boundary
+		if target_x < half_width:
+			return
+		position.x = target_x
+		position.x = round(position.x * zoom.x) / zoom.x
 
 func get_active_player() -> Player:
 	return player1 if player1.current_dimension == dimension else player2

@@ -35,6 +35,7 @@ func check_level_complete() -> void:
 	if level_complete_zone_1.complete == true and level_complete_zone_2.complete == true:
 		if players[0].is_state_interactable() and players[1].is_state_interactable():
 			level_complete = true
+			GameManager.set_players_state_respawn()
 			GameManager.load_next_level.rpc()
 
 func check_respawn():
@@ -51,9 +52,6 @@ func handle_inputs() -> void:
 			dimension_swap.rpc()
 			await reset_swapping_delay()
 
-	if Input.is_action_just_pressed("switch_scene"):
-		GameManager.load_next_level()
-
 @rpc("any_peer", "call_local")
 func dimension_swap():
 	for player in players:
@@ -61,14 +59,9 @@ func dimension_swap():
 
 @rpc("any_peer", "call_local")
 func respawn_all_players():
+	allow_swapping = false
 	GameManager.set_players_state_respawn()
 	GameManager.reload_current_level()
-	# TODO cleanup despawn_objects and code like this now that we fully reset the level on respawn
-	#GameManager.set_players_state_respawn()
-	#TransitionScreen.transition()
-	#TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))
-	#TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))
-	#despawn_objects()
 
 func _on_transition_finished_respawn():
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_respawn"))

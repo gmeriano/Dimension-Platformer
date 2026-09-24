@@ -8,6 +8,7 @@ const PLAYER = preload("res://scenes/player/Player.tscn")
 @onready var host: Button = $UI/Multiplayer/VBoxContainer/Host
 @onready var join: Button = $UI/Multiplayer/VBoxContainer/Join
 @onready var local: Button = $UI/Multiplayer/VBoxContainer/Local
+@onready var level_selector: LineEdit = $UI/Multiplayer/VBoxContainer/LevelSelector
 @onready var start: Button = $UI/Multiplayer/VBoxContainer/Start
 @onready var loading: Label = $UI/Multiplayer/VBoxContainer/Loading
 @onready var http_request: HTTPRequest = $HTTPRequest
@@ -32,7 +33,7 @@ func _on_room_code_text_changed(new_text: String) -> void:
 		host.disabled = new_text.strip_edges() == ""
 		start.disabled = new_text.strip_edges() == ""
 
-func _on_request_completed(result, response_code, headers, body):
+func _on_request_completed(_result, response_code, _headers, body):
 	if response_code == 201:
 		print("Set Room Code")
 	elif response_code == 200:
@@ -65,7 +66,7 @@ func disable_buttons():
 	join.disabled = true
 	local.disabled = true
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if GameManager.get_player_1():
 		if GameManager.get_player_1().global_position.y - player_1_spawn.global_position.y > 500:
 			GameManager.get_player_1().global_position = player_1_spawn.global_position
@@ -89,7 +90,7 @@ func _on_host_pressed():
 	
 	add_player_online(multiplayer.get_unique_id())
 
-func add_room_code_to_db(room_code: String, oid: String) -> void:
+func add_room_code_to_db(new_room_code: String, oid: String) -> void:
 	var url := "https://khavewafdyrnurcujojk.supabase.co/rest/v1/room-codes"
 	var headers = [
 		"apikey: " + Keys.SUPABASE_API_KEY,
@@ -97,7 +98,7 @@ func add_room_code_to_db(room_code: String, oid: String) -> void:
 		"Content-Type: application/json"
 	]
 	var payload = {
-		"room_code": room_code,
+		"room_code": new_room_code,
 		"oid": oid
 	}
 	var json_body = JSON.stringify(payload)
@@ -108,9 +109,9 @@ func _on_join_pressed():
 	Global.IS_ONLINE_MULTIPLAYER = true
 	fetch_oid_from_room_code(room_code.text)
 
-func fetch_oid_from_room_code(room_code: String):
+func fetch_oid_from_room_code(new_room_code: String):
 	var url := "https://khavewafdyrnurcujojk.supabase.co/rest/v1/room-codes" \
-		+ "?room_code=eq." + room_code \
+		+ "?room_code=eq." + new_room_code \
 		+ "&order=created_at.desc" \
 		+ "&limit=1"
 
@@ -149,16 +150,16 @@ func _on_local_pressed() -> void:
 	player1.controls = load("res://assets/resources/player1_movement.tres")
 	var player2 = PLAYER.instantiate()
 	player2.controls = load("res://assets/resources/player2_movement.tres")
-	player1.color = Color.GREEN
-	player2.color = Color.RED
+	player1.sprite_texture = load("res://assets/sprites/player/blob/character-green-noglow.png")
+	player2.sprite_texture = load("res://assets/sprites/player/blob/character-red-noglow.png")
 	player1.global_position = player_1_spawn.global_position
 	player2.global_position = player_2_spawn.global_position
-	player2.current_dimension = 1
-	player2.original_dimension = 1
+	player2.current_dimension = 2
+	player2.original_dimension = 2
 	GameManager.set_player_1(player1)
 	GameManager.set_player_2(player2)
-	add_child(player1)
-	add_child(player2)
+	add_child(player1, true)
+	add_child(player2, true)
 
 func _on_start_pressed() -> void:
 	start_game.rpc()
@@ -169,6 +170,7 @@ func start_game() -> void:
 		remove_child(GameManager.get_player_1())
 		remove_child(GameManager.get_player_2())
 		GameManager.set_players_state_respawn()
+		GameManager.start_level = level_selector.text if level_selector.text.is_valid_int() else 1
 		TransitionScreen.transition()
 		TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_start_game"))
 		TransitionScreen.connect("on_fade_to_normal_finished", Callable(GameManager, "_on_fade_to_normal_finished_can_move_true"))

@@ -1,80 +1,64 @@
 extends Node2D
 
 var current_level_node: Node2D = null
-@onready var dimensions = {
-	"1": {
-		idx = 1,
-		viewport = $VBoxContainer/SubViewportContainer/SubViewport,
-		camera = $VBoxContainer/SubViewportContainer/SubViewport/Camera2D,
-	},
-	"2": {
-		idx = 2,
-		viewport = $VBoxContainer/SubViewportContainer2/SubViewport,
-		camera = $VBoxContainer/SubViewportContainer2/SubViewport/Camera2D,
-	}
-}
+
+@onready var viewport1: SubViewport =  $VBoxContainer/SubViewportContainer/SubViewport
+@onready var viewport2: SubViewport = $VBoxContainer/SubViewportContainer2/SubViewport
+@onready var camera1: Camera2D = $VBoxContainer/SubViewportContainer/SubViewport/Camera2D
+@onready var camera2: Camera2D = $VBoxContainer/SubViewportContainer2/SubViewport/Camera2D
+
 var player1: Player = null
 var player2: Player = null
 var connected_joypads = Input.get_connected_joypads()  # e.g. [0, 1]
 
-var use_controller_for_p1 = true
-var use_controller_for_p2 = true
+var use_controller_for_p1: bool = true
+var use_controller_for_p2: bool = true
 
-var level_paths := [
-	#"res://scenes/levels/test_levels/TestCameraLevel.tscn", # TEST (0)
-	"res://scenes/levels/game_levels/intro_level.tscn",
-	"res://scenes/levels/game_levels/intro_swapping_level.tscn",
-	"res://scenes/levels/game_levels/intro_trampoline_level.tscn",
-	"res://scenes/levels/level1.tscn", # 0
-	"res://scenes/levels/easy_platform_level.tscn", # 1
-	"res://scenes/levels/pole_jump_level.tscn", # 2
-	"res://scenes/levels/intro_level_1.tscn", # 3
-	"res://scenes/levels/level2.tscn", # 4
-	"res://scenes/levels/level3.tscn", # 5
-	"res://scenes/levels/button_platform_level.tscn", # 6
-	"res://scenes/levels/fire_switch_level.tscn", # 7
-	"res://scenes/levels/fire_wall_level.tscn", # 8
-	"res://scenes/levels/trampoline_level.tscn", # 9
-	"res://scenes/levels/moving_platform_level.tscn", # 10
-]
-var current_level_index = 0
+var current_level_index: int = 0
+var next_level_index: int = 0
 
 func _ready() -> void:
+	Engine.max_fps = 60
+	current_level_index = (GameManager.start_level - 1) % (len(GameManager.level_paths))
 	player1 = GameManager.get_player_1()
 	player2 = GameManager.get_player_2()
-	dimensions["1"].camera.dimension = 1
-	dimensions["2"].camera.dimension = 2
-	GameManager.set_camera_1(dimensions["1"].camera)
-	GameManager.set_camera_2(dimensions["2"].camera)
-	load_level(load(level_paths[current_level_index]))
+	camera1.dimension = 1
+	camera2.dimension = 2
+	GameManager.set_camera_1(camera1)
+	GameManager.set_camera_2(camera2)
+	load_level(load(GameManager.level_paths[current_level_index]))
 	InputManager.setup_player_inputs(player1, player2)
-	dimensions["2"].camera.global_position.y += Global.DIMENSION_OFFSET
+	camera2.global_position.y += Global.DIMENSION_OFFSET
 	
-	var joypads = Input.get_connected_joypads()
+	var joypads: Array[int] = Input.get_connected_joypads()
 	print("Connected joypads: ", joypads)
 
 func get_next_level_path() -> String:
-	current_level_index = (current_level_index + 1) % level_paths.size()
-	return level_paths[current_level_index]
+	current_level_index = (current_level_index + 1) % GameManager.level_paths.size()
+	return GameManager.level_paths[current_level_index]
 
 func load_next_level() -> void:
-	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	TransitionScreen.transition()
+	current_level_index += 1
+	if current_level_index >= GameManager.level_paths.size():
+		current_level_index = 0
+
+func load_level_by_index(index: int) -> void:
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	current_level_index = index
+	TransitionScreen.transition()
+	
+func reload_current_level() -> void:
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	TransitionScreen.transition()
 
 func _on_transition_finished_load_next_level() -> void:
-	current_level_index += 1
-	if current_level_index >= level_paths.size():
-		current_level_index = 0
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
-	load_level(load(level_paths[current_level_index]))
+	load_level(load(GameManager.level_paths[current_level_index]))
 
-func reload_current_level() -> void:
-	TransitionScreen.transition()
-	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_reload_current_level"))
 
-func _on_transition_finished_reload_current_level() -> void:
-	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_reload_current_level"))
-	load_level(load(level_paths[current_level_index]))
+
 
 func load_level(level: PackedScene) -> void:
 	# Remove previous level if it exists
@@ -87,13 +71,13 @@ func load_level(level: PackedScene) -> void:
 	GameManager.set_camera_zoom_default()
 
 	var level_node: Node2D = level.instantiate()
-	dimensions["1"].viewport.add_child(level_node)
-	dimensions["1"].viewport.move_child(level_node, 0)
-	dimensions["2"].viewport.world_2d = dimensions["1"].viewport.world_2d
+	viewport1.add_child(level_node)
+	viewport1.move_child(level_node, 0)
+	viewport2.world_2d = viewport1.world_2d
 
 	current_level_node = level_node
 
-	# Re-assign players
+	# Set respawn point to start of level if not already set
 	if player1.respawn_point == Vector2.ZERO:	
 		player1.respawn_point = current_level_node.get_node("Dimension1").get_node("Player1Spawn").global_position
 	if player2.respawn_point == Vector2.ZERO:
@@ -112,7 +96,13 @@ func load_level(level: PackedScene) -> void:
 	player2.update_shadow_location()
 	current_level_node.add_child(player2)
 	
-	GameManager.focus_camera_on_players()
-	GameManager.set_players_state_idle()
+	GameManager.focus_camera_on_start()
 
 	InputManager.setup_player_inputs(player1, player2)
+	
+func _input(event: InputEvent) -> void:
+	if InputManager.is_pause_just_pressed(player1) or InputManager.is_pause_just_pressed(player2):
+		toggle_pause()	
+
+func toggle_pause() -> void:
+	get_tree().paused = !get_tree().paused

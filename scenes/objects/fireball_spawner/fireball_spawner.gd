@@ -6,9 +6,10 @@ class_name FireballSpawner
 @onready var muzzle: Marker2D = $Muzzle
 @onready var timer: Timer = $Timer
 @export var direction: Vector2 = Vector2.LEFT
-@export var shoot_as_group = true
+@export var shoot_as_group = 0
 @export var fireball_speed = 225.0
 @export var dimension = 1
+@export var rapid_fire = false
 
 var can_fire: bool = true
 
@@ -16,14 +17,14 @@ func _ready():
 	add_to_group("fireball_spawners")
 
 func shoot_fireball():
-	if can_fire:
+	if can_fire or rapid_fire:
 		can_fire = false
 		timer.start()
 		var fireball = fireball_scene.instantiate()
 		fireball.speed = fireball_speed
 		fireball.position = muzzle.position
 		fireball.direction = direction
-		add_child(fireball)
+		self.call_deferred("add_child", fireball)
 
 func _on_timer_timeout() -> void:
 	can_fire = true

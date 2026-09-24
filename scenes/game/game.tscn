@@ -1,44 +1,68 @@
-[gd_scene load_steps=4 format=3 uid="uid://dnvdvrwi2m7qo"]
+[gd_scene format=3 uid="uid://dnvdvrwi2m7qo"]
 
-[ext_resource type="Script" path="res://scenes/game/game.gd" id="1_k5jh1"]
-[ext_resource type="Script" path="res://scripts/misc/sub_viewport.gd" id="2_t3hje"]
-[ext_resource type="Script" path="res://scripts/misc/camera_2d.gd" id="3_ovq0l"]
+[ext_resource type="Script" uid="uid://bhj27lirix0tv" path="res://scenes/game/game.gd" id="1_k5jh1"]
+[ext_resource type="Shader" uid="uid://cavxorhxe0j1x" path="res://scenes/game/subpixel.gdshader" id="2_k01cu"]
+[ext_resource type="PackedScene" uid="uid://c61gwajo6ualk" path="res://scenes/UI/PauseMenu.tscn" id="2_lfrn8"]
+[ext_resource type="Script" uid="uid://cfjq5stcrhyrf" path="res://scripts/misc/sub_viewport.gd" id="2_t3hje"]
+[ext_resource type="Script" uid="uid://bxevtrax63ti1" path="res://scripts/misc/camera_2d.gd" id="3_ovq0l"]
 
-[node name="Game" type="Node2D"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4gwng"]
+shader = ExtResource("2_k01cu")
+shader_parameter/cam_offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0smxa"]
+shader = ExtResource("2_k01cu")
+shader_parameter/cam_offset = Vector2(0, 0)
+
+[node name="Game" type="Node2D" unique_id=2112059300]
+process_mode = 3
 script = ExtResource("1_k5jh1")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1129423304]
+process_mode = 1
 offset_right = 512.0
 offset_bottom = 1029.0
 theme_override_constants/separation = 0
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=2113719902]
+material = SubResource("ShaderMaterial_4gwng")
 layout_mode = 2
 
-[node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer" unique_id=1447743984]
 handle_input_locally = false
+canvas_item_default_texture_filter = 0
 render_target_update_mode = 4
 script = ExtResource("2_t3hje")
 
-[node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer/SubViewport"]
+[node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=868168356]
+texture_filter = 1
 position_smoothing_enabled = true
-position_smoothing_speed = 20.0
+position_smoothing_speed = 150.0
 script = ExtResource("3_ovq0l")
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
-custom_minimum_size = Vector2(5, 5)
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="VBoxContainer" unique_id=1181042378]
+material = SubResource("ShaderMaterial_0smxa")
 layout_mode = 2
 
-[node name="SubViewportContainer2" type="SubViewportContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer2"]
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer2" unique_id=662792788]
 handle_input_locally = false
+canvas_item_default_texture_filter = 0
 render_target_update_mode = 4
 script = ExtResource("2_t3hje")
 
-[node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer2/SubViewport"]
+[node name="Camera2D" type="Camera2D" parent="VBoxContainer/SubViewportContainer2/SubViewport" unique_id=2100952936]
+texture_filter = 1
 position_smoothing_enabled = true
-position_smoothing_speed = 20.0
+position_smoothing_speed = 150.0
 script = ExtResource("3_ovq0l")
 dimension = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=886531855]
+
+[node name="PauseMenu" parent="CanvasLayer" unique_id=1674744254 instance=ExtResource("2_lfrn8")]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5

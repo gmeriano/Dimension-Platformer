@@ -20,14 +20,6 @@ func _ready() -> void:
 	TransitionScreen.connect("on_fade_to_normal_finished", Callable(self, "_on_fade_to_normal_finished_platform_can_move_true"))
 
 func _physics_process(delta: float) -> void:
-	if first_tick and can_move:
-		first_tick = false
-		var elapsed_msec = Time.get_ticks_msec() - start_time
-		var elapsed_sec = float(elapsed_msec) / 1000.0
-		var offset = Vector2(direction * speed * elapsed_sec, 0)
-		platform.global_position = platform_starting_position + offset
-		return 
-
 	if can_move:
 		var velocity := Vector2(direction * speed, 0)
 		var collision = platform.move_and_collide(velocity * delta)

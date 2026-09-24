@@ -1,18 +1,15 @@
 class_name PlayerMovementState extends PlayerState
 
 static var state_name = "PlayerMovementState"
-const ACCELERATION: float = 20.0
-const MAX_SPEED: float = 300.0
 
 func get_state_name() -> String:
 	return state_name
 
 func enter() -> void:
 	player.double_jump = true
-	player.last_wall_jump_direction = Vector2.ZERO
 
-func physics_process(_delta: float) -> void:
-	player.handle_acceleration(player.input_axis, _delta)
+func physics_process(delta: float) -> void:
+	player.handle_acceleration(delta)
 	handle_transitions()
 
 func handle_transitions() -> void:
@@ -20,6 +17,10 @@ func handle_transitions() -> void:
 		state_machine.transition(PlayerJumpState.state_name)
 		return
 	if player.velocity.y > 0 and player.frames_since_last_on_ground > player.coyote_time_frames:
+		# Check if touching wall before transitioning to fall
+		if player.is_on_any_wall():
+			state_machine.transition(PlayerWallSlideState.state_name)
+			return
 		state_machine.transition(PlayerFallState.state_name)
 		return
 	if player.input_axis == 0.0:

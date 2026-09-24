@@ -25,5 +25,6 @@ func transition(new_state_name: String) -> void:
 		current_state = new_state
 		current_state.enter()
 	else:
+		print("StateMachine: ", current_state.get_state_name(), " is already enabled.")
 		push_warning("Attempt to transition to already enabled state.")
 		

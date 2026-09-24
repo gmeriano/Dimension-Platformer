@@ -11,10 +11,10 @@ var can_be_pressed = true
 
 signal button_pressed
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	add_to_group("trigger_buttons")
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if player:
 		if can_be_pressed and InputManager.is_interact_pressed(player):
 			on_button_pressed.rpc()
