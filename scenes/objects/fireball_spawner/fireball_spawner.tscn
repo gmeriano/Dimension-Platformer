@@ -1,20 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://diyo0uxywwon"]
+[gd_scene format=3 uid="uid://diyo0uxywwon"]
 
-[ext_resource type="Script" path="res://scenes/objects/fireball_spawner/fireball_spawner.gd" id="1_f61da"]
+[ext_resource type="Script" uid="uid://bjshnag3truvj" path="res://scenes/objects/fireball_spawner/fireball_spawner.gd" id="1_f61da"]
 [ext_resource type="PackedScene" uid="uid://446mij02hd3y" path="res://scenes/objects/fireball/fireball.tscn" id="2_mgflj"]
 
-[node name="FireballSpawner" type="Node2D"]
+[node name="FireballSpawner" type="Node2D" unique_id=964683766]
 script = ExtResource("1_f61da")
 fireball_scene = ExtResource("2_mgflj")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1336137681]
 offset_top = -16.0
 offset_right = 7.0
 color = Color(0.0785541, 0.0238755, 0.00021676, 1)
 
-[node name="Muzzle" type="Marker2D" parent="."]
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1179950229]
 position = Vector2(0, -13)
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=2019985317]
+wait_time = 0.5
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

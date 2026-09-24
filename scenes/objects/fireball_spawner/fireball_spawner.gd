@@ -24,7 +24,7 @@ func shoot_fireball():
 		fireball.speed = fireball_speed
 		fireball.position = muzzle.position
 		fireball.direction = direction
-		add_child(fireball)
+		self.call_deferred("add_child", fireball)
 
 func _on_timer_timeout() -> void:
 	can_fire = true

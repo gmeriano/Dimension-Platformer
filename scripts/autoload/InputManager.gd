@@ -8,7 +8,8 @@ const DEADZONE: float = 0.2
 const JUMP_BUTTON: int = 0        # JOY_BUTTON_0 (bottom button: X/A)
 const SWAP_BUTTON: int = 1        # JOY_BUTTON_1 (right button: Circle/B)
 const INTERACT_BUTTON: int = 2    # JOY_BUTTON_2 (left button: Square/Y)
-const SHADOW_BUTTON: int = 9      # JOY_AXIS_TRIGGER_LEFT
+const SHADOW_BUTTON: int = 9      # JOY_BUTTON_LEFT_SHOULDER: LB
+const PAUSE_BUTTON: int = 6       # JOY_BUTTON_START: start
 const MOVE_AXIS: int = 0          # JOY_AXIS_LEFT_X (left stick horizontal)
 const VERTICAL_MOVE_AXIS: int = 1     # JOY_AXIS_LEFT_Y (left stick vertical)
 
@@ -40,7 +41,8 @@ func assign_controller_to_player(device_id: int, player_num: int) -> void:
 		"jump": JUMP_BUTTON,
 		"interact": INTERACT_BUTTON,
 		"dimension_swap": SWAP_BUTTON,
-		"show_shadow": SHADOW_BUTTON
+		"show_shadow": SHADOW_BUTTON,
+		"pause": PAUSE_BUTTON,
 	}
 	# Clear previous jump input mapping for this player
 	InputMap.action_erase_events("p%d_jump" % player_num)
@@ -49,7 +51,7 @@ func assign_controller_to_player(device_id: int, player_num: int) -> void:
 		event.device = device_id
 		event.button_index = actions[action_name]
 
-		var full_action_name = action_name if (action_name == "dimension_swap" or action_name == "show_shadow") else "p%d_%s" % [player_num, action_name]
+		var full_action_name = action_name if (action_name == "dimension_swap" or action_name == "show_shadow" or action_name == "pause") else "p%d_%s" % [player_num, action_name]
 		InputMap.action_add_event(full_action_name, event)
 
 func get_input_axis(player: Player) -> float:
@@ -115,6 +117,11 @@ func is_show_shadow_just_pressed(player) -> bool:
 	if !read_player_input(player):
 		return false
 	return Input.is_action_just_pressed("show_shadow")
+
+func is_pause_just_pressed(player) -> bool:
+	if !read_player_input(player):
+		return false
+	return Input.is_action_just_pressed("pause")
 		
 func read_player_input(player: Player) -> bool:
 	return !Global.IS_ONLINE_MULTIPLAYER or player.is_multiplayer_authority()

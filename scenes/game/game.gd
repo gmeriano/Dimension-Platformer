@@ -14,26 +14,19 @@ var connected_joypads = Input.get_connected_joypads()  # e.g. [0, 1]
 var use_controller_for_p1: bool = true
 var use_controller_for_p2: bool = true
 
-var level_paths: Array[String] = [
-	"res://scenes/levels/game_levels/intro_level.tscn",
-	"res://scenes/levels/game_levels/intro_swapping_level.tscn",
-	"res://scenes/levels/game_levels/intro_trampoline_level.tscn",
-	"res://scenes/levels/game_levels/intro_fire_level.tscn",
-	"res://scenes/levels/game_levels/platform_level.tscn",
-	"res://scenes/levels/game_levels/moving_platform_level.tscn",
-]
 var current_level_index: int = 0
+var next_level_index: int = 0
 
 func _ready() -> void:
 	Engine.max_fps = 60
-	current_level_index = (GameManager.start_level - 1) % (len(level_paths))
+	current_level_index = (GameManager.start_level - 1) % (len(GameManager.level_paths))
 	player1 = GameManager.get_player_1()
 	player2 = GameManager.get_player_2()
 	camera1.dimension = 1
 	camera2.dimension = 2
 	GameManager.set_camera_1(camera1)
 	GameManager.set_camera_2(camera2)
-	load_level(load(level_paths[current_level_index]))
+	load_level(load(GameManager.level_paths[current_level_index]))
 	InputManager.setup_player_inputs(player1, player2)
 	camera2.global_position.y += Global.DIMENSION_OFFSET
 	
@@ -41,39 +34,31 @@ func _ready() -> void:
 	print("Connected joypads: ", joypads)
 
 func get_next_level_path() -> String:
-	current_level_index = (current_level_index + 1) % level_paths.size()
-	return level_paths[current_level_index]
+	current_level_index = (current_level_index + 1) % GameManager.level_paths.size()
+	return GameManager.level_paths[current_level_index]
 
 func load_next_level() -> void:
-	TransitionScreen.transition()
 	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	TransitionScreen.transition()
+	current_level_index += 1
+	if current_level_index >= GameManager.level_paths.size():
+		current_level_index = 0
+
+func load_level_by_index(index: int) -> void:
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	current_level_index = index
+	TransitionScreen.transition()
+	
+func reload_current_level() -> void:
+	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
+	TransitionScreen.transition()
 
 func _on_transition_finished_load_next_level() -> void:
-	current_level_index += 1
-	if current_level_index >= level_paths.size():
-		current_level_index = 0
 	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_load_next_level"))
-	load_level(load(level_paths[current_level_index]))
+	load_level(load(GameManager.level_paths[current_level_index]))
 
-func reload_current_level() -> void:
-	TransitionScreen.transition()
-	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_reload_current_level"))
 
-func _on_transition_finished_reload_current_level() -> void:
-	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_reload_current_level"))
-	load_level(load(level_paths[current_level_index]))
 
-func check_level_index(index: int) -> bool:
-	return index >= 0 and index < len(level_paths)
-	
-func load_level_by_index(index: int) -> void:
-	TransitionScreen.transition()
-	TransitionScreen.connect("on_transition_finished", Callable(self, "_on_transition_finished_reload_level_by_index").bind(index))
-
-func _on_transition_finished_reload_level_by_index(index: int) -> void:
-	TransitionScreen.disconnect("on_transition_finished", Callable(self, "_on_transition_finished_reload_level_by_index"))
-	print("INDEX: ", index)
-	load_level(load(level_paths[index]))
 
 func load_level(level: PackedScene) -> void:
 	# Remove previous level if it exists
@@ -116,7 +101,7 @@ func load_level(level: PackedScene) -> void:
 	InputManager.setup_player_inputs(player1, player2)
 	
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed('ui_cancel'):
+	if InputManager.is_pause_just_pressed(player1) or InputManager.is_pause_just_pressed(player2):
 		toggle_pause()	
 
 func toggle_pause() -> void:

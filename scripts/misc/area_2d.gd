@@ -12,8 +12,11 @@ func _ready() -> void:
 func _on_body_entered(body):
 	if body is Player:
 		color_rect.modulate = Color(1,0,0,0.5)
+		print("hiiii")
 		for spawner in spawners:
+			print("yooo")
 			if spawner.shoot_as_group == 0:
+				print("shoot")
 				spawner.shoot_fireball()
 
 
