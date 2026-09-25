@@ -4,7 +4,7 @@
 [ext_resource type="Shader" uid="uid://cavxorhxe0j1x" path="res://scenes/game/subpixel.gdshader" id="2_k01cu"]
 [ext_resource type="PackedScene" uid="uid://c61gwajo6ualk" path="res://scenes/UI/PauseMenu.tscn" id="2_lfrn8"]
 [ext_resource type="Script" uid="uid://cfjq5stcrhyrf" path="res://scripts/misc/sub_viewport.gd" id="2_t3hje"]
-[ext_resource type="Script" uid="uid://bxevtrax63ti1" path="res://scripts/misc/camera_2d.gd" id="3_ovq0l"]
+[ext_resource type="Script" uid="uid://bxevtrax63ti1" path="res://scenes/game/camera_2d.gd" id="3_ovq0l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4gwng"]
 shader = ExtResource("2_k01cu")

@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bfyrpyfty7ne8" path="res://assets/sprites/background/city/cloud-bottom.png" id="9_qbco2"]
 [ext_resource type="Texture2D" uid="uid://cawndt8u06bjn" path="res://assets/sprites/background/city/mountain-bottom.png" id="10_kl34h"]
 [ext_resource type="Texture2D" uid="uid://p64xhadrxrdh" path="res://assets/sprites/background/city/building-bottom.png" id="11_hfm1s"]
+[ext_resource type="PackedScene" uid="uid://corxxwiun5a7w" path="res://scenes/levels/background/barrier.tscn" id="13_c3aui"]
 [ext_resource type="PackedScene" uid="uid://bgd44l8eq2mv3" path="res://scenes/objects/level_complete_zone/level_complete_zone.tscn" id="13_kik66"]
 [ext_resource type="Texture2D" uid="uid://bbxb2ig6py22b" path="res://assets/sprites/graytile2.png" id="14_4g0nx"]
 [ext_resource type="PackedScene" uid="uid://bwfmr1ifenmm3" path="res://scenes/game/update_respawn_area.tscn" id="14_5x8ny"]
@@ -4543,6 +4544,9 @@ script = ExtResource("7_3h248")
 background_settings = Array[ExtResource("3_0cxag")]([SubResource("Resource_xtx6e"), SubResource("Resource_w31ts"), SubResource("Resource_6jbr2"), SubResource("Resource_ghf6k")])
 full_image_size = Vector2(640, 180)
 dimension = 2
+
+[node name="Barrier" parent="." unique_id=943518237 instance=ExtResource("13_c3aui")]
+color = Color(0.27058825, 0.67058825, 0.8392157, 1)
 
 [node name="LevelManager" type="Node2D" parent="." unique_id=1924730663]
 script = ExtResource("1_w4em1")

@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dq2goxian0yuu" path="res://assets/sprites/green-theme/Long pipes thin.png" id="11_safk4"]
 [ext_resource type="Texture2D" uid="uid://dqd26vvydvwtn" path="res://assets/sprites/tiles/more-space.png" id="12_3l41r"]
 [ext_resource type="Texture2D" uid="uid://7d2qxenod5os" path="res://assets/sprites/barrier/barrier-top.png" id="12_3x5o4"]
+[ext_resource type="PackedScene" uid="uid://corxxwiun5a7w" path="res://scenes/levels/background/barrier.tscn" id="12_dedo4"]
 [ext_resource type="Texture2D" uid="uid://dmryabag43ani" path="res://assets/sprites/green-theme/Pipes.png" id="12_fxhrr"]
 [ext_resource type="Script" uid="uid://bqu7n8key3d4q" path="res://scenes/levels/background/background_node.gd" id="12_skv17"]
 [ext_resource type="Texture2D" uid="uid://hhkb10oido8u" path="res://assets/sprites/barrier/barrier-bottom.png" id="13_jnykw"]
@@ -4584,6 +4585,8 @@ background_settings = Array[ExtResource("18_ryyc6")]([SubResource("Resource_xtx6
 full_image_size = Vector2(640, 180)
 dimension = 2
 
+[node name="Barrier" parent="." unique_id=943518237 instance=ExtResource("12_dedo4")]
+
 [node name="LevelManager" type="Node2D" parent="." unique_id=848016763]
 script = ExtResource("1_c80c1")
 
@@ -4620,6 +4623,7 @@ speed = 0.0
 bounce_multiplier = 0.0
 
 [node name="TextureRect" type="TextureRect" parent="Dimension1" unique_id=1781193943]
+visible = false
 offset_top = -14.0
 offset_right = 320.0
 offset_bottom = 26.0
@@ -4641,12 +4645,6 @@ texture = ExtResource("15_u7k8w")
 [node name="Start-side" type="Sprite2D" parent="Dimension1" unique_id=1744573255]
 position = Vector2(26, -113)
 texture = ExtResource("17_l5ovf")
-
-[node name="BarrierTop" type="Sprite2D" parent="Dimension1" unique_id=1788870081]
-visible = false
-position = Vector2(205.667, -21)
-scale = Vector2(6, 6)
-texture = ExtResource("12_3x5o4")
 
 [node name="Collectible" parent="Dimension1" unique_id=1886983203 instance=ExtResource("27_8e8rg")]
 position = Vector2(860, -134.33334)
@@ -4707,12 +4705,6 @@ texture = ExtResource("15_u7k8w")
 position = Vector2(576, -75)
 scale = Vector2(2, 2)
 texture = ExtResource("15_u7k8w")
-
-[node name="BarrierBottom" type="Sprite2D" parent="Dimension2" unique_id=1326005479]
-visible = false
-position = Vector2(0, -162)
-scale = Vector2(6, 6)
-texture = ExtResource("13_jnykw")
 
 [node name="Collectible2" parent="Dimension2" unique_id=183144569 instance=ExtResource("27_8e8rg")]
 position = Vector2(864.3334, -135.33334)

@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://dbkimnvm3tbbw" path="res://scenes/levels/background/BackgroundNode.tscn" id="10_fh0sw"]
 [ext_resource type="Script" uid="uid://c876dprenbt1s" path="res://assets/resources/background_settings.gd" id="11_sds1c"]
 [ext_resource type="Texture2D" uid="uid://c0hacu3h52pkx" path="res://assets/sprites/background/city/sky-top.png" id="12_3s8rx"]
+[ext_resource type="PackedScene" uid="uid://corxxwiun5a7w" path="res://scenes/levels/background/barrier.tscn" id="12_q1eys"]
 [ext_resource type="Texture2D" uid="uid://cyv2b6gljemfr" path="res://assets/sprites/background/city/cloud-top.png" id="13_ybxiu"]
 [ext_resource type="Texture2D" uid="uid://b3mr426h7t43y" path="res://assets/sprites/background/city/mountain-top.png" id="14_rnbkc"]
 [ext_resource type="Script" uid="uid://bqu7n8key3d4q" path="res://scenes/levels/background/background_node.gd" id="16_njr4m"]
@@ -548,6 +549,9 @@ script = ExtResource("16_njr4m")
 background_settings = Array[ExtResource("11_sds1c")]([SubResource("Resource_xtx6e"), SubResource("Resource_w31ts"), SubResource("Resource_6jbr2"), SubResource("Resource_ghf6k")])
 full_image_size = Vector2(640, 180)
 dimension = 2
+
+[node name="Barrier" parent="." unique_id=943518237 instance=ExtResource("12_q1eys")]
+color = Color(0.27058825, 0.67058825, 0.8392157, 1)
 
 [node name="LevelManager" type="Node2D" parent="." unique_id=1596169748]
 script = ExtResource("1_5cj41")

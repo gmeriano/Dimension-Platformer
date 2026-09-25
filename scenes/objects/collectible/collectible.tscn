@@ -21,3 +21,4 @@ offset_bottom = 14.0
 color = Color(0.93333334, 1, 0.3372549, 1)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
